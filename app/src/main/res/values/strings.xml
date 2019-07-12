@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Energieverbrauch</string>
+    <string name="of">\u0020von\u0020</string>
+    <string name="used">\u0020kWh verbraucht</string>
+    <string name="MyCounters">Meine Geräte</string>
+    <string name="MyConsumption">Mein Verbrauch</string>
+    <string name="SavingTips">Spar-Tipps</string>
+    <string name="Settings">Einstellungen</string>
 </resources>
