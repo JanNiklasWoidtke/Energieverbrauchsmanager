@@ -5,19 +5,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/MyCounters"
+            android:id="@+id/nav_start"
+            android:title="@string/Start"
+            android:icon="@drawable/ic_dvr_black_24dp"/>
+        <item
+            android:id="@+id/nav_MyCounters"
             android:title="@string/MyCounters"
             android:icon="@drawable/ic_devices"/>
         <item
-            android:id="@+id/MyConsumption"
+            android:id="@+id/nav_MyConsumption"
             android:title="@string/MyConsumption"
             android:icon="@drawable/ic_consumption"/>
         <item
-            android:id="@+id/SavingTips"
+            android:id="@+id/nav_SavingTips"
             android:title="@string/SavingTips"
             android:icon="@drawable/ic_lightbulb"/>
         <item
-            android:id="@+id/Settings"
+            android:id="@+id/nav_Settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/Settings" />
     </group>

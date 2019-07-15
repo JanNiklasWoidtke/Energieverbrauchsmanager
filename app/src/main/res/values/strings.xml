@@ -6,4 +6,9 @@
     <string name="MyConsumption">Mein Verbrauch</string>
     <string name="SavingTips">Spar-Tipps</string>
     <string name="Settings">Einstellungen</string>
+    <string name="SaveEnergyToday">Energie sparen. Jetzt.</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="Start">Start</string>
+
 </resources>
