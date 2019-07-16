@@ -11,5 +11,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="Start">Start</string>
     <string name="verbraucht">verbraucht</string>
+    <string name="forNature">Für die Umwelt</string>
+    <string name="Tipp1">Tipp 1: Heizen sie nur bei geschlossenem Fenster. Soll im Winter gelüftet werden, nutzen sie Stoßlüften.</string>
 
 </resources>
