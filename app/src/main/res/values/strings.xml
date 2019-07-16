@@ -13,5 +13,17 @@
     <string name="verbraucht">verbraucht</string>
     <string name="forNature">Für die Umwelt</string>
     <string name="Tipp1">Tipp 1: Heizen sie nur bei geschlossenem Fenster. Soll im Winter gelüftet werden, nutzen sie Stoßlüften.</string>
+    <string name="AddCounter">Zähler hinzufügen</string>
+    <string name="Zählername">Zählername</string>
+    <string name="StartStandNeuerZähler">Aktueller Stand</string>
+    <string name="PreisEinheitNeuerZähler">Preis pro Einheit</string>
+    <string name="EuroProKWh">\u0020€ / kWh</string>
+    <string name="kWh">kWh</string>
+    
+    <string-array name="EinheitenDropDown">
+        <item>€</item>
+        <item>$</item>
+        <item>£</item>
+    </string-array>
 
 </resources>
