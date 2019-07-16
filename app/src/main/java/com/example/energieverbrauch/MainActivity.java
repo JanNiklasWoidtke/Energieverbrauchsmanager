@@ -1,6 +1,5 @@
 package com.example.energieverbrauch;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,28 +8,32 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public ProgressBar PBcircle;
-    public EditText EditTextMaxVerbrauchSoll;
-    public TextView TextViewAktVerbrauch;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, com.example.energieverbrauch.StartFragment.StartFragmentListener {
+
+    public StartFragment StartFragment;
+    public MyConsumptionFragment MyConsumptionFragment;
+    public MyCountersFragment MyCountersFragment;
+    public SavingTipsFragment SavingTipsFragment;
+    public SettingsFragment SettingsFragment;
+
     public DrawerLayout drawer;
 
-    float obergrenzeVerbrauch = 0;
+    int progress = 0;
+    float MaxVerbrauch = 0;
     float aktuellerVerbrauch = 10;
-    float verbrauchAnteilFloat = 0;
-    int verbrauchAnteilInt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        StartFragment = new StartFragment();
+        MyCountersFragment = new MyCountersFragment();
+        MyConsumptionFragment = new MyConsumptionFragment();
+        SavingTipsFragment = new SavingTipsFragment();
+        SettingsFragment = new SettingsFragment();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer = findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close); //ermöglicht Blinden App zu nutzen, durch Vorlesefunktion
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -47,84 +50,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) { //only switch to Start if app is started initially. Rotating the screen wont cause jumping back to start.
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new start_fragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
-/*
-        TextViewAktVerbrauch = findViewById(R.id.aktVerbrauch);
-        TextViewAktVerbrauch.setText(aktuellerVerbrauch + " kWh");
-
-        EditTextMaxVerbrauchSoll = findViewById(R.id.maxVerbrauchSoll);
-
-        EditTextMaxVerbrauchSoll.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String maxVerbrauchSollInput = EditTextMaxVerbrauchSoll.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(maxVerbrauchSollInput)) {
-
-                    obergrenzeVerbrauch = Float.parseFloat(maxVerbrauchSollInput);
-
-                    verbrauchsFortschrittBerechnen();
-
-                    verbrauchsanzeigeAktualisieren();
-                }
-
-            }
-        });
-*/
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) { //öffnet verschiedene Fragments, je nach Klick im NavDrawer
         switch (item.getItemId()) {
             case R.id.nav_start:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new start_fragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
                 break;
             case R.id.nav_MyConsumption:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyConsumption_fragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyConsumptionFragment()).commit();
                 break;
             case R.id. nav_MyCounters:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCounters_fragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
                 break;
             case R.id. nav_SavingTips:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavingTips_fragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavingTipsFragment()).commit();
                 break;
             case R.id. nav_Settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings_fragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START); //nachdem ein Menüpunkt geklickt wurde, schließt sich das Menü nach links(START)
         return true;
     }
 
     @Override
-    public void onBackPressed() {
+    public void onInputASent(int input, float input2) { //liest Wert aus EditText_StartFragment ab
+        progress = input;
+        MaxVerbrauch = input2;
+    }
+
+    public float updateHint() {
+        return MaxVerbrauch;
+    }
+
+    public int sendProgressData() {
+        return progress;
+    }
+
+    public float sendAktuelleVerbrauchsData() {
+        return aktuellerVerbrauch;
+    }
+
+
+    @Override
+    public void onBackPressed() { //sorgt dafür, dass bei klicken auf zurück bei geöffnetem Menü nicht die App, sondern das Menü geschlossen wird
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else super.onBackPressed();
-    }
-
-    public void verbrauchsFortschrittBerechnen() {
-        verbrauchAnteilFloat = aktuellerVerbrauch / obergrenzeVerbrauch * 100;// *100, da Progressbar von 0 bis 100 die Werte interpretier
-        verbrauchAnteilInt = Math.round(verbrauchAnteilFloat);
-    }
-
-    public void verbrauchsanzeigeAktualisieren() {
-        PBcircle = findViewById(R.id.PBcircle);
-        if (verbrauchAnteilInt <= 100) PBcircle.setProgress(verbrauchAnteilInt);
-        else PBcircle.setProgress(100);
-
     }
 }
