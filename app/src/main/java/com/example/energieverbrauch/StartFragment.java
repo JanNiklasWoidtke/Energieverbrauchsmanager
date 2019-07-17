@@ -23,12 +23,12 @@ public class StartFragment extends Fragment {
     public ProgressBar ProgressBar;
     public TextView TextViewAktuellerVerbrauch;
     public TextView TextViewProzentAnzeige;
-    float aktuellerVerbrauch = 0;
+    float aktuellerVerbrauch = 10;
     int progress = 0;
     float MaxVerbrauch = 0;
 
     public interface StartFragmentListener { //ermöglicht Senden an MainActivity
-        void onInputASent(int input, float input2);
+        void dataFromStartFragmentToMainActivity(int progress, float MaxVerbrauch);
     }
 
     @Nullable
@@ -38,8 +38,8 @@ public class StartFragment extends Fragment {
 
         MainActivity MainActivity = (MainActivity) getActivity();
         int hint = (int) MainActivity.updateHint();
+
         progress = MainActivity.sendProgressData();
-        aktuellerVerbrauch = MainActivity.sendAktuelleVerbrauchsData();
 
         EditTextMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
         ProgressBar = v.findViewById(R.id.PBcircle);
@@ -64,11 +64,10 @@ public class StartFragment extends Fragment {
                 CharSequence input = EditTextMaxVerbrauchSoll.getText().toString();
                 if (!TextUtils.isEmpty(input)) {
                     MaxVerbrauch = Float.parseFloat(input.toString());
-                    float verbrauchterAnteil = aktuellerVerbrauch / MaxVerbrauch * 100;
-                    progress = (int) verbrauchterAnteil;
+                    calculateProgress(aktuellerVerbrauch, MaxVerbrauch);
                     updateProgressBar(progress);
                     updatePercentage(progress);
-                    listener.onInputASent(progress, MaxVerbrauch);
+                    listener.dataFromStartFragmentToMainActivity(progress, MaxVerbrauch);
                 }
             }
         });
@@ -76,7 +75,6 @@ public class StartFragment extends Fragment {
         EditTextMaxVerbrauchSoll.setCursorVisible(false);
 
         updateProgressBar(progress);
-
         updatePercentage(progress);
 
         EditTextMaxVerbrauchSoll.setHint(Integer.toString(hint));
@@ -84,13 +82,18 @@ public class StartFragment extends Fragment {
         return v;
     }
 
+    public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
+        float verbrauchterAnteil = aktuellerVerbrauch / MaxVerbrauch * 100;
+        progress = (int) verbrauchterAnteil;
+    }
+
     public void updateProgressBar(int progress) {
         ProgressBar.setProgress(progress);
     }
 
     public void updatePercentage(int progress) {
-        if (progress<=100)TextViewProzentAnzeige.setText(progress + "%");
-        else TextViewProzentAnzeige.setText("Mehr als 100%");
+        /*if (progress<=100)*/TextViewProzentAnzeige.setText(progress + "%");
+        //else TextViewProzentAnzeige.setText("Mehr als 100%");
     }
 
     @Override
@@ -109,4 +112,3 @@ public class StartFragment extends Fragment {
         listener = null;
     }
 }
-

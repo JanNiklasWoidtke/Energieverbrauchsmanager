@@ -2,8 +2,6 @@ package com.example.energieverbrauch;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentHostCallback;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,8 +10,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, com.example.energieverbrauch.StartFragment.StartFragmentListener {
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
 
     public StartFragment StartFragment;
     public MyConsumptionFragment MyConsumptionFragment;
@@ -26,6 +26,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int progress = 0;
     float MaxVerbrauch = 0;
     float aktuellerVerbrauch = 10;
+    int anzahlZaehler = 0;
+
+    ArrayList<String> zaehlername;
+    ArrayList<Float> standBeginn;
+    ArrayList<Float> preisProEinheit;
+
+    Bundle dataToMyCountersFrag = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MyConsumptionFragment = new MyConsumptionFragment();
         SavingTipsFragment = new SavingTipsFragment();
         SettingsFragment = new SettingsFragment();
+
+        zaehlername = new ArrayList<>();
+        standBeginn = new ArrayList<>();
+        preisProEinheit = new ArrayList<>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -67,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyConsumptionFragment()).commit();
                 break;
             case R.id. nav_MyCounters:
+                dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
+                dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
+                MyCountersFragment.setArguments(dataToMyCountersFrag);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
                 break;
             case R.id. nav_SavingTips:
@@ -82,9 +96,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onInputASent(int input, float input2) { //liest Wert aus EditText_StartFragment ab
-        progress = input;
-        MaxVerbrauch = input2;
+    public void dataFromStartFragmentToMainActivity(int progressSF, float MaxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
+        progress = progressSF;
+        MaxVerbrauch = MaxVerbrauchSF;
+    }
+
+    @Override
+    public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF) {
+        anzahlZaehler++;
+        zaehlername.add(zaehlernameACF);
+        standBeginn.add(standBeginnACF);
+        preisProEinheit.add(preisProEinheitACF);
     }
 
     public float updateHint() {
