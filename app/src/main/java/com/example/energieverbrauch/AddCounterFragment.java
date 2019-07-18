@@ -25,9 +25,10 @@ public class AddCounterFragment extends Fragment {
     String zaehlername;
     float standBeginn;
     float preisProEinheit;
+    boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
 
     public interface AddCounterFragmentListener { //ermöglicht Senden an MainActivity
-        void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit);
+        void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit, boolean buttonErstelltenZaehlerHinzufuegenClicked);
     }
 
     @Nullable
@@ -35,25 +36,64 @@ public class AddCounterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_addcounter, container, false);
 
+        buttonErstelltenZaehlerHinzufuegenClicked = false;
+
         EditTextZaehlername = v.findViewById(R.id.Zählername);
         EditTextZaehlerstandBeginn = v.findViewById(R.id.ZählerstandBeginn);
         EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
         ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
 
-        EditTextZaehlername.addTextChangedListener(datenEingegebenTextWatcher);
+        EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
+        EditTextZaehlerstandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
+        EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
 
         ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
+                buttonErstelltenZaehlerHinzufuegenClicked = true;
+                listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit, buttonErstelltenZaehlerHinzufuegenClicked);
+               // getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
             }
         });
 
         return v;
     }
 
-    public TextWatcher datenEingegebenTextWatcher = new TextWatcher() {
+    public TextWatcher preisProEinheitTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            getPreisProEinheit();
+        }
+    };
+
+    public TextWatcher zaehlerstandBeginnTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            getStandBeginn();
+        }
+    };
+
+    public TextWatcher zaehlernameTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -67,8 +107,6 @@ public class AddCounterFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             getZaehlername();
-            getStandBeginn();
-            getPreisProEinheit();
         }
     };
 

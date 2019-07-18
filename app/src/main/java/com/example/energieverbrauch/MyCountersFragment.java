@@ -38,20 +38,29 @@ public class MyCountersFragment extends Fragment {
         });
 
         Bundle arguments = getArguments();
+        Button zaehlerListe  = new Button(getContext());
+
 
         if (arguments != null) {
             zaehlername = getArguments().getStringArrayList("zaehlername");
             anzahlZaehler = getArguments().getInt("anzahlZaehler");
 
-            LinearLayout ListungZaehler = new LinearLayout(getActivity());
-            ListungZaehler.setOrientation(LinearLayout.VERTICAL);
+            Toast.makeText(getContext(), String.valueOf(anzahlZaehler), Toast.LENGTH_SHORT).show();
+
+            LinearLayout linearLayoutMyCounters = v.findViewById(R.id.linearLayoutFragment_MyCounters);
+            ViewGroup.LayoutParams layoutParamsMyCounters = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, //Width of TextView
+                    ViewGroup.LayoutParams.WRAP_CONTENT); //Height of TextView
 
             for (int i = 0; i < anzahlZaehler; i++) {
-                TextView listeZaehler = new TextView(getContext());
-                String listeZaehlerText = zaehlername.get(i);
-                listeZaehler.setText(listeZaehlerText);
+                zaehlerListe.setId(i);
+                zaehlerListe.setLayoutParams(layoutParamsMyCounters);
+                final String aktuellerZaehlername = zaehlername.get(i);
+                zaehlerListe.setText(aktuellerZaehlername);
+                zaehlerListe.setTextSize(20);
+                linearLayoutMyCounters.addView(zaehlerListe);
             }
-        }else Toast.makeText(getContext(), "Fehler", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(getContext(), "Fehler", Toast.LENGTH_SHORT).show();
 
 
 

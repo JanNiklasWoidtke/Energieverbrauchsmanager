@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     float MaxVerbrauch = 0;
     float aktuellerVerbrauch = 10;
     int anzahlZaehler = 0;
+    boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
                 dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
                 MyCountersFragment.setArguments(dataToMyCountersFrag);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
                 break;
             case R.id. nav_SavingTips:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavingTipsFragment()).commit();
@@ -102,11 +103,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF) {
+    public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF, boolean buttonErstelltenZaehlerHinzufuegenClickedACF) {
         anzahlZaehler++;
         zaehlername.add(zaehlernameACF);
         standBeginn.add(standBeginnACF);
         preisProEinheit.add(preisProEinheitACF);
+        buttonErstelltenZaehlerHinzufuegenClicked = buttonErstelltenZaehlerHinzufuegenClickedACF;
+        if (buttonErstelltenZaehlerHinzufuegenClicked) {
+            buttonErstelltenZaehlerHinzufuegenClicked = false;
+            dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
+            dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
+            MyCountersFragment.setArguments(dataToMyCountersFrag);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
+        }
     }
 
     public float updateHint() {
