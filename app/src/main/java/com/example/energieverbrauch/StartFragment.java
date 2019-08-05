@@ -92,8 +92,8 @@ public class StartFragment extends Fragment {
     }
 
     public void updatePercentage(int progress) {
-        /*if (progress<=100)*/TextViewProzentAnzeige.setText(progress + "%");
-        //else TextViewProzentAnzeige.setText("Mehr als 100%");
+        if (progress<=100)TextViewProzentAnzeige.setText(progress + "%");
+        else TextViewProzentAnzeige.setText("Mehr als 100%");
     }
 
     @Override

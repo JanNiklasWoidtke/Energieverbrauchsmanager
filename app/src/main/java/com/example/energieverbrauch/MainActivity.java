@@ -1,5 +1,6 @@
 package com.example.energieverbrauch;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -38,15 +44,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        zaehlername = new ArrayList<>();
+        standBeginn = new ArrayList<>();
+        preisProEinheit = new ArrayList<>();
+
+        datenLaden();
+
         StartFragment = new StartFragment();
         MyCountersFragment = new MyCountersFragment();
         MyConsumptionFragment = new MyConsumptionFragment();
         SavingTipsFragment = new SavingTipsFragment();
         SettingsFragment = new SettingsFragment();
-
-        zaehlername = new ArrayList<>();
-        standBeginn = new ArrayList<>();
-        preisProEinheit = new ArrayList<>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -71,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { //öffnet verschiedene Fragments, je nach Klick im NavDrawer
+        datenSpeichern();
         switch (item.getItemId()) {
             case R.id.nav_start:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
@@ -78,16 +87,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_MyConsumption:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyConsumptionFragment()).commit();
                 break;
-            case R.id. nav_MyCounters:
+            case R.id.nav_MyCounters:
                 dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
+                dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
                 dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
                 MyCountersFragment.setArguments(dataToMyCountersFrag);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
                 break;
-            case R.id. nav_SavingTips:
+            case R.id.nav_SavingTips:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavingTipsFragment()).commit();
                 break;
-            case R.id. nav_Settings:
+            case R.id.nav_Settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
         }
@@ -104,18 +114,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF, boolean buttonErstelltenZaehlerHinzufuegenClickedACF) {
-        anzahlZaehler++;
         zaehlername.add(zaehlernameACF);
         standBeginn.add(standBeginnACF);
         preisProEinheit.add(preisProEinheitACF);
         buttonErstelltenZaehlerHinzufuegenClicked = buttonErstelltenZaehlerHinzufuegenClickedACF;
         if (buttonErstelltenZaehlerHinzufuegenClicked) {
             buttonErstelltenZaehlerHinzufuegenClicked = false;
+            anzahlZaehler++;
             dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
             dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
+            dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
             MyCountersFragment.setArguments(dataToMyCountersFrag);
+            datenSpeichern();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
         }
+    }
+
+    public float[] floatArrayListToFloatArray(ArrayList<Float> standBeginn) {
+        int sizeFloatArrayList = standBeginn.size();
+        float[] standBeginnFloatArray = new float[sizeFloatArrayList];
+        for (int i = 0; i < sizeFloatArrayList; i++) {
+            standBeginnFloatArray[i] = standBeginn.get(i);
+        }
+
+        dataToMyCountersFrag.putInt("arrayLaenge", sizeFloatArrayList);
+
+        return standBeginnFloatArray;
     }
 
     public float updateHint() {
@@ -135,6 +159,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() { //sorgt dafür, dass bei klicken auf zurück bei geöffnetem Menü nicht die App, sondern das Menü geschlossen wird
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else super.onBackPressed();
+        } else {
+            // super.onBackPressed();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        datenSpeichern();
+        super.onDestroy();
+    }
+
+    public void datenSpeichern() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String zaehlernameString = gson.toJson(zaehlername);
+        editor.putString("zaehlername", zaehlernameString);
+
+        String standBeginnString = gson.toJson(standBeginn);
+        editor.putString("standBeginn", standBeginnString);
+
+        String preisProEinheitString = gson.toJson(preisProEinheit);
+        editor.putString("preisProEinheit", preisProEinheitString);
+
+        String anzahlZaehlerString = gson.toJson(anzahlZaehler);
+        editor.putString("anzahlZaehler", anzahlZaehlerString);
+
+        String maxVerbrauchString = gson.toJson(MaxVerbrauch);
+        editor.putString("maxVerbrauch", maxVerbrauchString);
+
+        String progressString = gson.toJson(progress);
+        editor.putString("progress", progressString);
+
+        editor.apply();
+    }
+
+    public void datenLaden() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        String zaehlernameString = sharedPreferences.getString("zaehlername", null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        zaehlername = gson.fromJson(zaehlernameString, type);
+        if (zaehlername == null) zaehlername = new ArrayList<>();
+
+        String standBeginnString = sharedPreferences.getString("standBeginn", null);
+        Type type1 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        standBeginn = gson.fromJson(standBeginnString, type1);
+        if (standBeginn == null) standBeginn = new ArrayList<>();
+
+        anzahlZaehler = zaehlername.size();
     }
 }

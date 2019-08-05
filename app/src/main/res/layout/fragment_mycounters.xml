@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutFragment_MyCounters"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/linearLayoutFragment_MyCounters"
     android:layout_margin="16dp"
+    android:orientation="vertical"
     android:padding="10dp">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/MyCounters"
-        android:textSize="32sp"
-        android:layout_gravity="center"/>
+        android:textSize="32sp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/ButtonZählerHinzufügen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_black_48dp"
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add_black_48dp" />
 
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tableLayout">
+
+    </TableLayout>
 
 </LinearLayout>
