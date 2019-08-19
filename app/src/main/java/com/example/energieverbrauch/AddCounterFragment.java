@@ -6,29 +6,31 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddCounterFragment extends Fragment {
 
     public AddCounterFragmentListener listener;
 
     EditText EditTextZaehlername;
-    EditText EditTextZaehlerstandBeginn;
+    EditText EditTextStandBeginn;
     EditText EditTextPreisProEinheit;
     Button ButtonErstelltenZaehlerHinzufuegen;
 
     String zaehlername;
-    float standBeginn;
+    float standBeginn = -1;
     float preisProEinheit;
     boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
 
     public interface AddCounterFragmentListener { //ermöglicht Senden an MainActivity
-        void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit, boolean buttonErstelltenZaehlerHinzufuegenClicked);
+        void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit);
     }
 
     @Nullable
@@ -39,20 +41,21 @@ public class AddCounterFragment extends Fragment {
         buttonErstelltenZaehlerHinzufuegenClicked = false;
 
         EditTextZaehlername = v.findViewById(R.id.Zählername);
-        EditTextZaehlerstandBeginn = v.findViewById(R.id.ZählerstandBeginn);
+        EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
         EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
         ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
 
         EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
-        EditTextZaehlerstandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
+        EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
         EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
 
         ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonErstelltenZaehlerHinzufuegenClicked = true;
-                listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit, buttonErstelltenZaehlerHinzufuegenClicked);
-               // getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyCountersFragment()).commit();
+                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText()) || TextUtils.isEmpty(EditTextPreisProEinheit.getText()) ) {
+                    Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
+                }
+                else listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
             }
         });
 
@@ -115,7 +118,7 @@ public class AddCounterFragment extends Fragment {
     }
 
     public void getStandBeginn() {
-        String standBeginnString = EditTextZaehlerstandBeginn.getText().toString();
+        String standBeginnString = EditTextStandBeginn.getText().toString();
         standBeginn = Float.parseFloat(standBeginnString);
     }
 

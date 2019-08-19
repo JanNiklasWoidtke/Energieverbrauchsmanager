@@ -77,6 +77,7 @@ public class MyCountersFragment extends Fragment {
             bundleAuslesen();
             zaehlerTabelleErstellen();
         }
+
         return v;
     }
 

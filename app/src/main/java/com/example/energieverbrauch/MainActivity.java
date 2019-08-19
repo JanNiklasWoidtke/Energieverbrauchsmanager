@@ -128,19 +128,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF, boolean buttonErstelltenZaehlerHinzufuegenClickedACF) {
+    public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF) {
         zaehlername.add(zaehlernameACF);
         standBeginn.add(standBeginnACF);
         preisProEinheit.add(preisProEinheitACF);
-        buttonErstelltenZaehlerHinzufuegenClicked = buttonErstelltenZaehlerHinzufuegenClickedACF;
-        if (buttonErstelltenZaehlerHinzufuegenClicked) {
-            buttonErstelltenZaehlerHinzufuegenClicked = false;
-            anzahlZaehler++;
-            bundleDataToMyCountersFragFuellen();
-            datenSpeichern();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
-        }
-    }
+        anzahlZaehler++;
+        bundleDataToMyCountersFragFuellen();
+        datenSpeichern();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
+}
 
     public float[] floatArrayListToFloatArray(ArrayList<Float> arrayListFloat) {
         float[] FloatArray = new float[arrayListFloat.size()];

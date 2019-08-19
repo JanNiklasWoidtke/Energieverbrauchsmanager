@@ -24,6 +24,7 @@
     <string name="anteilGesVerbrauch">Anteil am Verbrauch</string>
     <string name="werteAkt">Werte aktualisieren</string>
     <string name="werteAktualisiert">Werte aktualisiert!</string>
+    <string name="fehlerhafteEingabe">Füllen sie alle Felder aus!</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
