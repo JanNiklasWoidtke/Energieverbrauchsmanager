@@ -134,17 +134,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenSpeichern();
         bundleDataToMyCountersFragFuellen();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
-}
-
-    public float[] floatArrayListToFloatArray(ArrayList<Float> arrayListFloat) {
-        float[] FloatArray = new float[arrayListFloat.size()];
-        for (int i = 0; i < arrayListFloat.size(); i++) {
-            FloatArray[i] = arrayListFloat.get(i);
-        }
-
-        dataToMyCountersFrag.putInt("arrayLaenge", arrayListFloat.size());
-
-        return FloatArray;
     }
 
     public void bundleDataToStartFragFuellen() {
@@ -162,6 +151,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
+
+    public float[] floatArrayListToFloatArray(ArrayList<Float> arrayListFloat) {
+        float[] FloatArray = new float[arrayListFloat.size()];
+        for (int i = 0; i < arrayListFloat.size(); i++) {
+            FloatArray[i] = arrayListFloat.get(i);
+        }
+
+        dataToMyCountersFrag.putInt("arrayLaenge", arrayListFloat.size());
+
+        return FloatArray;
+    }
 
     @Override
     public void onBackPressed() { //sorgt dafür, dass bei klicken auf zurück bei geöffnetem Menü nicht die App, sondern das Menü geschlossen wird
