@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MyCountersFragment.MyCountersFragmentListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
 
     public StartFragment StartFragment;
     public MyConsumptionFragment MyConsumptionFragment;
@@ -29,17 +29,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public DrawerLayout drawer;
 
+    public static final String MAXVERBRAUCH = "maxVerbrauch";
+    public static final String PROGRESS = "progress";
+
     int progress = 0;
     float MaxVerbrauch = 0;
     float aktuellerVerbrauch = 10;
     int anzahlZaehler = 0;
     boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
+    boolean werteAktualisiert = true;
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
     ArrayList<Float> preisProEinheit;
+    ArrayList<Float> aktuellerStand;
+
+    NavigationView navigationView;
 
     Bundle dataToMyCountersFrag = new Bundle();
+    Bundle dataToStartFrag = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         standBeginn = new ArrayList<>();
         preisProEinheit = new ArrayList<>();
 
-        datenLaden();
+        datenLadenMyCounters();
+
+        datenLadenStartFragment();
 
         StartFragment = new StartFragment();
         MyCountersFragment = new MyCountersFragment();
@@ -68,30 +78,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) { //only switch to Start if app is started initially. Rotating the screen wont cause jumping back to start.
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
+            bundleDataToStartFragFuellen();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, StartFragment).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { //öffnet verschiedene Fragments, je nach Klick im NavDrawer
-        datenSpeichern();
         switch (item.getItemId()) {
             case R.id.nav_start:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
+                bundleDataToStartFragFuellen();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, StartFragment).commit();
                 break;
             case R.id.nav_MyConsumption:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyConsumptionFragment()).commit();
                 break;
             case R.id.nav_MyCounters:
-                dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
-                dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
-                dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
-                MyCountersFragment.setArguments(dataToMyCountersFrag);
+                bundleDataToMyCountersFragFuellen();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
                 break;
             case R.id.nav_SavingTips:
@@ -101,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
         }
-
+        datenSpeichern();
         drawer.closeDrawer(GravityCompat.START); //nachdem ein Menüpunkt geklickt wurde, schließt sich das Menü nach links(START)
         return true;
     }
@@ -110,6 +118,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void dataFromStartFragmentToMainActivity(int progressSF, float MaxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
         progress = progressSF;
         MaxVerbrauch = MaxVerbrauchSF;
+        datenSpeichern();
+    }
+
+    @Override
+    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, boolean werteAktualisiertMCF) {
+        aktuellerStand = aktuellerStandMCF;
+        werteAktualisiert = werteAktualisiertMCF;
+        bundleDataToMyCountersFragFuellen();
     }
 
     @Override
@@ -121,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (buttonErstelltenZaehlerHinzufuegenClicked) {
             buttonErstelltenZaehlerHinzufuegenClicked = false;
             anzahlZaehler++;
-            dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
-            dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
-            dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
-            MyCountersFragment.setArguments(dataToMyCountersFrag);
+            bundleDataToMyCountersFragFuellen();
             datenSpeichern();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
         }
@@ -132,26 +145,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public float[] floatArrayListToFloatArray(ArrayList<Float> standBeginn) {
         int sizeFloatArrayList = standBeginn.size();
-        float[] standBeginnFloatArray = new float[sizeFloatArrayList];
+        float[] FloatArray = new float[sizeFloatArrayList];
         for (int i = 0; i < sizeFloatArrayList; i++) {
-            standBeginnFloatArray[i] = standBeginn.get(i);
+            FloatArray[i] = standBeginn.get(i);
         }
 
         dataToMyCountersFrag.putInt("arrayLaenge", sizeFloatArrayList);
 
-        return standBeginnFloatArray;
+        return FloatArray;
     }
 
-    public float updateHint() {
-        return MaxVerbrauch;
+    public void bundleDataToStartFragFuellen() {
+        dataToStartFrag.putInt("progress", progress);
+        dataToStartFrag.putFloat("maxVerbrauch", MaxVerbrauch);
+        StartFragment.setArguments(dataToStartFrag);
     }
 
-    public int sendProgressData() {
-        return progress;
-    }
-
-    public float sendAktuelleVerbrauchsData() {
-        return aktuellerVerbrauch;
+    public void bundleDataToMyCountersFragFuellen() {
+        dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
+        dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
+        dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
+        dataToMyCountersFrag.putFloatArray("aktuellerStand", floatArrayListToFloatArray(aktuellerStand));
+        dataToMyCountersFrag.putBoolean("werteAktualisiert", werteAktualisiert);
+        MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
 
@@ -162,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             // super.onBackPressed();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_start);
         }
     }
 
@@ -175,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
+
         String zaehlernameString = gson.toJson(zaehlername);
         editor.putString("zaehlername", zaehlernameString);
 
@@ -184,34 +202,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String preisProEinheitString = gson.toJson(preisProEinheit);
         editor.putString("preisProEinheit", preisProEinheitString);
 
-        String anzahlZaehlerString = gson.toJson(anzahlZaehler);
-        editor.putString("anzahlZaehler", anzahlZaehlerString);
+        String aktuellerStandString = gson.toJson(aktuellerStand);
+        editor.putString("aktuellerStand", aktuellerStandString);
 
-        String maxVerbrauchString = gson.toJson(MaxVerbrauch);
+        String maxVerbrauchString = String.valueOf(MaxVerbrauch);
         editor.putString("maxVerbrauch", maxVerbrauchString);
 
-        String progressString = gson.toJson(progress);
-        editor.putString("progress", progressString);
+        editor.putInt("progress", progress);
 
         editor.apply();
     }
 
-    public void datenLaden() {
+    public void datenLadenMyCounters() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         Gson gson = new Gson();
 
         String zaehlernameString = sharedPreferences.getString("zaehlername", null);
-        Type type = new TypeToken<ArrayList<String>>() {
+        Type typeArrayListString = new TypeToken<ArrayList<String>>() {
         }.getType();
-        zaehlername = gson.fromJson(zaehlernameString, type);
+        zaehlername = gson.fromJson(zaehlernameString, typeArrayListString);
         if (zaehlername == null) zaehlername = new ArrayList<>();
 
         String standBeginnString = sharedPreferences.getString("standBeginn", null);
-        Type type1 = new TypeToken<ArrayList<Float>>() {
+        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
         }.getType();
-        standBeginn = gson.fromJson(standBeginnString, type1);
+        standBeginn = gson.fromJson(standBeginnString, typeArrayListFloat);
         if (standBeginn == null) standBeginn = new ArrayList<>();
 
+        String aktuellerStandString = sharedPreferences.getString("standBeginn", null);
+        aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat);
+        if (aktuellerStand == null) aktuellerStand = new ArrayList<>();
+
         anzahlZaehler = zaehlername.size();
+    }
+
+    public void datenLadenStartFragment() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        String maxVerbrauchString = sharedPreferences.getString("maxVerbrauch", null);
+        if (maxVerbrauchString != null) MaxVerbrauch = Float.parseFloat(maxVerbrauchString);
+
+        progress = sharedPreferences.getInt("progress", 0);
     }
 }

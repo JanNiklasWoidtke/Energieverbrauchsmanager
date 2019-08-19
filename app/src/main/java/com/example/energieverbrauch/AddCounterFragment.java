@@ -139,4 +139,6 @@ public class AddCounterFragment extends Fragment {
         super.onDetach();
         listener = null;
     }
+
+
 }

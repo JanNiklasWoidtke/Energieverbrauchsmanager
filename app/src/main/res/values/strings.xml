@@ -19,7 +19,12 @@
     <string name="PreisEinheitNeuerZähler">Preis pro Einheit</string>
     <string name="EuroProKWh">\u0020€ / kWh</string>
     <string name="kWh">kWh</string>
-    
+    <string name="geraetename">Gerätename</string>
+    <string name="aktStand">Aktueller Stand</string>
+    <string name="anteilGesVerbrauch">Anteil am Verbrauch</string>
+    <string name="werteAkt">Werte aktualisieren</string>
+    <string name="werteAktualisiert">Werte aktualisiert!</string>
+
     <string-array name="EinheitenDropDown">
         <item>€</item>
         <item>$</item>

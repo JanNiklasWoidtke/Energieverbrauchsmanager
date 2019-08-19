@@ -36,17 +36,20 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start, container, false);
 
-        MainActivity MainActivity = (MainActivity) getActivity();
-        int hint = (int) MainActivity.updateHint();
-
-        progress = MainActivity.sendProgressData();
-
         EditTextMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
         ProgressBar = v.findViewById(R.id.PBcircle);
         TextViewAktuellerVerbrauch = v.findViewById(R.id.aktVerbrauch);
         TextViewProzentAnzeige = v.findViewById(R.id.prozentAnzeige);
 
-        TextViewAktuellerVerbrauch.setText(Float.toString(aktuellerVerbrauch));
+        getBundleDataFromMainActivity();
+
+        TextViewAktuellerVerbrauch.setText(String.valueOf(aktuellerVerbrauch));
+
+        EditTextMaxVerbrauchSoll.setCursorVisible(false);
+        EditTextMaxVerbrauchSoll.setText(String.valueOf(MaxVerbrauch));
+
+        updateProgressBar(progress);
+        updatePercentage(progress);
 
         EditTextMaxVerbrauchSoll.addTextChangedListener(new TextWatcher() {
             @Override
@@ -72,13 +75,6 @@ public class StartFragment extends Fragment {
             }
         });
 
-        EditTextMaxVerbrauchSoll.setCursorVisible(false);
-
-        updateProgressBar(progress);
-        updatePercentage(progress);
-
-        EditTextMaxVerbrauchSoll.setHint(Integer.toString(hint));
-        
         return v;
     }
 
@@ -92,8 +88,17 @@ public class StartFragment extends Fragment {
     }
 
     public void updatePercentage(int progress) {
-        if (progress<=100)TextViewProzentAnzeige.setText(progress + "%");
+        if (progress <= 100) TextViewProzentAnzeige.setText(progress + "%");
         else TextViewProzentAnzeige.setText("Mehr als 100%");
+    }
+
+    public void getBundleDataFromMainActivity() {
+        Bundle dataFromMainActivity = getArguments();
+
+        if (dataFromMainActivity != null) {
+            progress = dataFromMainActivity.getInt("progress", 0);
+            MaxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
+        }
     }
 
     @Override
