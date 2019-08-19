@@ -37,6 +37,7 @@ public class MyCountersFragment extends Fragment {
     public EditText aktuellerStandListe;
 
     public TableLayout tableLayout;
+
     public TableRow tableRow;
 
     int anzahlZaehler = 0;
