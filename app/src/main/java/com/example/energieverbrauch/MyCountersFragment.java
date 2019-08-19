@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,13 @@ public class MyCountersFragment extends Fragment {
             zaehlerTabelleErstellen();
         }
 
+        ButtonWerteAkt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                werteAktualisieren();
+            }
+        });
+
         return v;
     }
 
@@ -137,8 +145,9 @@ public class MyCountersFragment extends Fragment {
             aktuellerStandListe = new EditText(getContext());
             aktuellerStandListe.setLayoutParams(layoutParamsTableRow);
 
-            if (aktuellerStand.size() > 0) aktuellerStandListe.setHint(aktuellerStand.get(i).toString()); //Sind noch keine neuen Werte eingegeben, wird der Anfanswert als Hint gesetzt
-            else aktuellerStandListe.setHint(standBeginn.get(i).toString());
+            if (aktuellerStand.size() > 0)
+                aktuellerStandListe.setText(String.valueOf(aktuellerStand.get(i))); //Sind noch keine neuen Werte eingegeben, wird der Anfanswert als Hint gesetzt
+            else aktuellerStandListe.setText(String.valueOf(standBeginn.get(i)));
 
             aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER);
             aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -152,12 +161,12 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void werteAktualisieren() {
-        aktuellerStand.clear();
-        for (int i = 0; i < anzahlZaehler; i++) {
-            if (!alleEditTextAktuellerStand.get(i).getText().toString().equals("")) {
-                aktuellerStand.add(Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
-            } else aktuellerStand.add(standBeginn.get(i));
+        for (int i = 0; i < zaehlername.size(); i++) {
+            if (!TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText())) {
+                aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
+            }
         }
+        listener.dataFromMyCountersToMainActivity(aktuellerStand);
     }
 
     @Override
@@ -178,6 +187,18 @@ public class MyCountersFragment extends Fragment {
 }
 
 /*
+Funktion werteAktualisieren
+aktuellerStand.clear();
+        for (int i = 0; i < anzahlZaehler; i++) {
+            if (!alleEditTextAktuellerStand.get(i).getText().toString().equals("")) {
+                aktuellerStand.add(Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
+            } else aktuellerStand.add(standBeginn.get(i));
+        }
+
+        ENDE
+
+
+
 
             if (aktuellerStand.size() > 0) Toast.makeText(getContext(), aktuellerStand.get(0).toString(), Toast.LENGTH_SHORT).show(); //Testfunktion
             else Toast.makeText(getContext(), "aktueller Stand ist leer", Toast.LENGTH_SHORT).show(); //Testfunktion

@@ -122,7 +122,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF) {
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
+        datenSpeichern();
         bundleDataToMyCountersFragFuellen();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
     }
 
     @Override
