@@ -133,7 +133,6 @@ public class MyCountersFragment extends Fragment {
             if (i == 2) tableLayout.addView(tableRow);
         }
 
-
         for (int i = 0; i < zaehlername.size(); i++) {
             zaehlerListe = new TextView(getContext());
             tableRow = new TableRow(getContext());
