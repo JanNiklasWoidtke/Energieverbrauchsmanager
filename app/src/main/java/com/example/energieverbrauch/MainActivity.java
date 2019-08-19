@@ -123,14 +123,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
         datenSpeichern();
-        bundleDataToMyCountersFragFuellen();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
+        datenLadenMyCounters();
     }
 
     @Override
     public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF) {
         zaehlername.add(zaehlernameACF);
         standBeginn.add(standBeginnACF);
+        aktuellerStand.add(standBeginnACF);         //wird ein neuer Zähler hinzugefügt, ist der aktuelle Stand der Anfangsstand
         preisProEinheit.add(preisProEinheitACF);
         anzahlZaehler++;
         datenSpeichern();
@@ -223,8 +223,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         standBeginn = gson.fromJson(standBeginnString, typeArrayListFloat);
         if (standBeginn == null) standBeginn = new ArrayList<>();
 
-        String aktuellerStandString = sharedPreferences.getString("standBeginn", null);
-        aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat);
+        String aktuellerStandString = sharedPreferences.getString("aktuellerStand", null);
+        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat2);
         if (aktuellerStand == null) aktuellerStand = new ArrayList<>();
 
         anzahlZaehler = zaehlername.size();

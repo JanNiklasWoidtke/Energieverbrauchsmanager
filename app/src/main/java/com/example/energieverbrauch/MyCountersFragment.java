@@ -114,6 +114,8 @@ public class MyCountersFragment extends Fragment {
     public void zaehlerTabelleErstellen() {
         headerArrayFuellen();
 
+       // alleEditTextAktuellerStand.clear();
+
         tableRow = new TableRow(getContext());
         ViewGroup.LayoutParams layoutParamsTableRow = new TableRow.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -132,7 +134,7 @@ public class MyCountersFragment extends Fragment {
         }
 
 
-        for (int i = 0; i < aktuellerStand.size(); i++) {
+        for (int i = 0; i < zaehlername.size(); i++) {
             zaehlerListe = new TextView(getContext());
             tableRow = new TableRow(getContext());
             tableRow.setLayoutParams(layoutParamsTableRow);
@@ -166,6 +168,7 @@ public class MyCountersFragment extends Fragment {
                 aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
             }
         }
+
         listener.dataFromMyCountersToMainActivity(aktuellerStand);
     }
 
