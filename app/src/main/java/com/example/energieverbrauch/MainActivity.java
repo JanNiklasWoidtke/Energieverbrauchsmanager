@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         standBeginn = new ArrayList<>();
         preisProEinheit = new ArrayList<>();
 
-        datenLadenMyCounters();
-
         datenLadenStartFragment();
 
         StartFragment = new StartFragment();
@@ -133,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         standBeginn.add(standBeginnACF);
         preisProEinheit.add(preisProEinheitACF);
         anzahlZaehler++;
-        bundleDataToMyCountersFragFuellen();
         datenSpeichern();
+        bundleDataToMyCountersFragFuellen();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
 }
 
@@ -156,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void bundleDataToMyCountersFragFuellen() {
+        datenLadenMyCounters();
         dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
         dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
         dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));

@@ -124,7 +124,7 @@ public class MyCountersFragment extends Fragment {
         }
 
 
-        for (int i = 0; i < anzahlZaehler; i++) {
+        for (int i = 0; i < aktuellerStand.size(); i++) {
             zaehlerListe = new TextView(getContext());
             tableRow = new TableRow(getContext());
             tableRow.setLayoutParams(layoutParamsTableRow);
