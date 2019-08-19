@@ -114,7 +114,7 @@ public class MyCountersFragment extends Fragment {
     public void zaehlerTabelleErstellen() {
         headerArrayFuellen();
 
-       // alleEditTextAktuellerStand.clear();
+        alleEditTextAktuellerStand.clear();
 
         tableRow = new TableRow(getContext());
         ViewGroup.LayoutParams layoutParamsTableRow = new TableRow.LayoutParams(
