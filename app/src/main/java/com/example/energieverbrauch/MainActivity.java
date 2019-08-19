@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, boolean werteAktualisiertMCF) {
+        aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
         werteAktualisiert = werteAktualisiertMCF;
         bundleDataToMyCountersFragFuellen();
@@ -143,14 +144,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public float[] floatArrayListToFloatArray(ArrayList<Float> standBeginn) {
-        int sizeFloatArrayList = standBeginn.size();
-        float[] FloatArray = new float[sizeFloatArrayList];
-        for (int i = 0; i < sizeFloatArrayList; i++) {
-            FloatArray[i] = standBeginn.get(i);
+    public float[] floatArrayListToFloatArray(ArrayList<Float> arrayListFloat) {
+        float[] FloatArray = new float[arrayListFloat.size()];
+        for (int i = 0; i < arrayListFloat.size(); i++) {
+            FloatArray[i] = arrayListFloat.get(i);
         }
 
-        dataToMyCountersFrag.putInt("arrayLaenge", sizeFloatArrayList);
+        dataToMyCountersFrag.putInt("arrayLaenge", arrayListFloat.size());
 
         return FloatArray;
     }
