@@ -41,7 +41,6 @@ public class MyCountersFragment extends Fragment {
     public TableRow tableRow;
 
     int anzahlZaehler = 0;
-    boolean werteAktualisiert = false;
     float[] aktuellerStandFloatArray;
 
     ArrayList<String> zaehlername = new ArrayList<>();                      //Liste enthält alle Zählernamen
@@ -53,7 +52,7 @@ public class MyCountersFragment extends Fragment {
     Bundle dataFromMainAcitivity = new Bundle();                            //Bundle enthält die für das Fragment notwendigen Daten, die aus der MainActivity verteilt werden
 
     public interface MyCountersFragmentListener { //ermöglicht Datenübertragung in die MainActivity aus dem Fragment
-        void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStand, boolean werteAktualisiert); //übergibt die aktuellen Zählerstände und die Information, ob Werte aktualisiert wurden an die MainActivity
+        void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStand); //übergibt die aktuellen Zählerstände und die Information, ob Werte aktualisiert wurden an die MainActivity
     }
 
     @Nullable
@@ -75,23 +74,17 @@ public class MyCountersFragment extends Fragment {
         dataFromMainAcitivity = getArguments(); //Argumente aus dem Bundle werden für das Fragment gesetzt, damit Daten entnommen werden können
 
         if (dataFromMainAcitivity != null) { //wenn Argumente übergeben wurden...
-
-            if (aktuellerStand.size() > 0) Toast.makeText(getContext(), aktuellerStand.get(0).toString(), Toast.LENGTH_SHORT).show(); //Testfunktion
-            else Toast.makeText(getContext(), "aktueller Stand ist leer", Toast.LENGTH_SHORT).show(); //Testfunktion
-
-            ButtonWerteAkt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    werteAktualisiert = getArguments().getBoolean("werteAktualisiert");                 //Boolesche Variable, ob Werte aktualisiert wurden, wird dem Bundle entnommen
-                    werteAktualisieren();                                                                    //Funktion zum aktualisieren der aktuellen Zählerstände
-                    listener.dataFromMyCountersToMainActivity(aktuellerStand, werteAktualisiert);            //Interface wird aufgerufen, um Daten an MainActivity zu übergeben
-                    Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();     //Toast zur Bestätigung des Nutzers, dass Daten aktualsiert wurden (muss Prüfung bekommen)
-                }
-            });
-
-            zaehlerListeErstellen();    //Funktion zum Erstellen der Tabelle mit Zählerinformationen
+            bundleAuslesen();
+            zaehlerTabelleErstellen();
         }
         return v;
+    }
+
+    public void bundleAuslesen() {
+        zaehlername = dataFromMainAcitivity.getStringArrayList("zaehlername");
+        standBeginn = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("standBeginn"));
+        aktuellerStand = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("aktuellerStand"));
+        anzahlZaehler = dataFromMainAcitivity.getInt("anzahlZaehler");
     }
 
     public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {
@@ -109,15 +102,8 @@ public class MyCountersFragment extends Fragment {
         headerArray.add(R.string.anteilGesVerbrauch);
     }
 
-    public void zaehlerListeErstellen() {
+    public void zaehlerTabelleErstellen() {
         headerArrayFuellen();
-
-        zaehlername = getArguments().getStringArrayList("zaehlername");
-        anzahlZaehler = getArguments().getInt("anzahlZaehler");
-
-        float[] standBeginnFloatArray = getArguments().getFloatArray("standBeginn");
-
-        standBeginn = floatArrayToArrayList(standBeginnFloatArray);
 
         tableRow = new TableRow(getContext());
         ViewGroup.LayoutParams layoutParamsTableRow = new TableRow.LayoutParams(
@@ -171,8 +157,6 @@ public class MyCountersFragment extends Fragment {
                 aktuellerStand.add(Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
             } else aktuellerStand.add(standBeginn.get(i));
         }
-
-        werteAktualisiert = true;
     }
 
     @Override
@@ -191,3 +175,21 @@ public class MyCountersFragment extends Fragment {
         listener = null;
     }
 }
+
+/*
+
+            if (aktuellerStand.size() > 0) Toast.makeText(getContext(), aktuellerStand.get(0).toString(), Toast.LENGTH_SHORT).show(); //Testfunktion
+            else Toast.makeText(getContext(), "aktueller Stand ist leer", Toast.LENGTH_SHORT).show(); //Testfunktion
+
+            ButtonWerteAkt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    werteAktualisiert = getArguments().getBoolean("werteAktualisiert");                 //Boolesche Variable, ob Werte aktualisiert wurden, wird dem Bundle entnommen
+                    werteAktualisieren();                                                                    //Funktion zum aktualisieren der aktuellen Zählerstände
+                    listener.dataFromMyCountersToMainActivity(aktuellerStand, werteAktualisiert);            //Interface wird aufgerufen, um Daten an MainActivity zu übergeben
+                    Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();     //Toast zur Bestätigung des Nutzers, dass Daten aktualsiert wurden (muss Prüfung bekommen)
+                }
+            });
+
+            zaehlerListeErstellen();    //Funktion zum Erstellen der Tabelle mit Zählerinformationen
+ */

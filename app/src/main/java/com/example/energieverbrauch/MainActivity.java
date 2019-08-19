@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     float aktuellerVerbrauch = 10;
     int anzahlZaehler = 0;
     boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
-    boolean werteAktualisiert = true;
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
@@ -122,10 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, boolean werteAktualisiertMCF) {
+    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF) {
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
-        werteAktualisiert = werteAktualisiertMCF;
         bundleDataToMyCountersFragFuellen();
     }
 
@@ -166,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
         dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
         dataToMyCountersFrag.putFloatArray("aktuellerStand", floatArrayListToFloatArray(aktuellerStand));
-        dataToMyCountersFrag.putBoolean("werteAktualisiert", werteAktualisiert);
         MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
