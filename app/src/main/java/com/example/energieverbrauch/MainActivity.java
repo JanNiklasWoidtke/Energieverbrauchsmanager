@@ -36,11 +36,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     float aktuellerVerbrauch = 10;
     int anzahlZaehler = 0;
     boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
+    float gesamtVerbrauch = 0;
+
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
     ArrayList<Float> preisProEinheit;
     ArrayList<Float> aktuellerStand;
+    ArrayList<Float> anteilJedesZaehlers;
 
     NavigationView navigationView;
 
@@ -118,11 +121,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF) {
+    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, ArrayList<Float> anteilJedesZaehlersMCF, float gesamtVerbrauchMCF) {
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
+
+        anteilJedesZaehlers.clear();
+        anteilJedesZaehlers = anteilJedesZaehlersMCF;
+
+        gesamtVerbrauch = gesamtVerbrauchMCF;
+
         datenSpeichern();
-        datenLadenMyCounters();
+        bundleDataToMyCountersFragFuellen();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
     }
 
     @Override
@@ -149,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
         dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
         dataToMyCountersFrag.putFloatArray("aktuellerStand", floatArrayListToFloatArray(aktuellerStand));
+        dataToMyCountersFrag.putFloatArray("anteilJedesZaehlers", floatArrayListToFloatArray(anteilJedesZaehlers));
         MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
@@ -177,8 +188,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onDestroy() {
-        datenSpeichern();
         super.onDestroy();
+
+        datenSpeichern();
     }
 
     public void datenSpeichern() {
@@ -198,8 +210,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String aktuellerStandString = gson.toJson(aktuellerStand);
         editor.putString("aktuellerStand", aktuellerStandString);
 
-        String maxVerbrauchString = String.valueOf(MaxVerbrauch);
-        editor.putString("maxVerbrauch", maxVerbrauchString);
+        String anteilJedesZaehlersString = gson.toJson(anteilJedesZaehlers);
+        editor.putString("anteilJedesZaehlers", anteilJedesZaehlersString);
+
+        editor.putFloat("maxVerbrauch", MaxVerbrauch);
+
+        editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
 
         editor.putInt("progress", progress);
 
@@ -228,14 +244,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat2);
         if (aktuellerStand == null) aktuellerStand = new ArrayList<>();
 
+        String anteilJedesZaehlersString = sharedPreferences.getString("anteilJedesZaehlers", null);
+        Type typeArrayListFloat3 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        anteilJedesZaehlers = gson.fromJson(anteilJedesZaehlersString, typeArrayListFloat3);
+        if (anteilJedesZaehlers == null) anteilJedesZaehlers = new ArrayList<>();
+
         anzahlZaehler = zaehlername.size();
     }
 
     public void datenLadenStartFragment() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
-        String maxVerbrauchString = sharedPreferences.getString("maxVerbrauch", null);
-        if (maxVerbrauchString != null) MaxVerbrauch = Float.parseFloat(maxVerbrauchString);
+        MaxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
+
+        gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
 
         progress = sharedPreferences.getInt("progress", 0);
     }
