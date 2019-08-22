@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         standBeginn = new ArrayList<>();
         preisProEinheit = new ArrayList<>();
 
-        datenLadenStartFragment();
-
         StartFragment = new StartFragment();
         MyCountersFragment = new MyCountersFragment();
         MyConsumptionFragment = new MyConsumptionFragment();
@@ -148,8 +146,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void bundleDataToStartFragFuellen() {
+        datenLadenStartFragment();
         dataToStartFrag.putInt("progress", progress);
         dataToStartFrag.putFloat("maxVerbrauch", MaxVerbrauch);
+        dataToStartFrag.putFloat("gesamtVerbrauch", gesamtVerbrauch);
         StartFragment.setArguments(dataToStartFrag);
     }
 

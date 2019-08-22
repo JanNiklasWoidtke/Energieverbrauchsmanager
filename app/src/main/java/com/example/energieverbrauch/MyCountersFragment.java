@@ -9,10 +9,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,6 @@ public class MyCountersFragment extends Fragment {
 
     int anzahlZaehler = 0;
     float gesamtVerbrauch = 0;
-    float[] aktuellerStandFloatArray;
 
     ArrayList<String> zaehlername = new ArrayList<>();                      //Liste enthält alle Zählernamen
     ArrayList<Float> standBeginn = new ArrayList<>();                       //Liste enthält die Zählerstande beim ersten Eintragen
@@ -170,6 +171,7 @@ public class MyCountersFragment extends Fragment {
             headerElemente.setText(headerArray.get(i));
             headerElemente.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             headerElemente.setPadding(0, 0, 48, 16);
+            headerElemente.setGravity(Gravity.CENTER);
             tableRow.addView(headerElemente, i);
 
             if (i == 2) tableLayout.addView(tableRow);
@@ -202,6 +204,7 @@ public class MyCountersFragment extends Fragment {
 
             aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER);
             aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            aktuellerStandListe.setGravity(Gravity.END);
 
             alleEditTextAktuellerStand.add(aktuellerStandListe); //fügt EditText dem Array hinzu, um später über ID Wert abzufragen
 
@@ -210,8 +213,9 @@ public class MyCountersFragment extends Fragment {
             anteilVerbrauch = new TextView(getContext());
             anteilVerbrauch.setLayoutParams(layoutParamsTableRow);
             if (anteilJedesZaehlers.size() > i) {
-                anteilVerbrauch.setText(String.valueOf(anteilJedesZaehlers.get(i)));
+                anteilVerbrauch.setText(String.format("%.1f", anteilJedesZaehlers.get(i)*100) + "%");
                 anteilVerbrauch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                anteilVerbrauch.setGravity(Gravity.END);
             }
 
 

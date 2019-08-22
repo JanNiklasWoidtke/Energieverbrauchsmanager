@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class StartFragment extends Fragment {
 
@@ -23,7 +24,7 @@ public class StartFragment extends Fragment {
     public ProgressBar ProgressBar;
     public TextView TextViewAktuellerVerbrauch;
     public TextView TextViewProzentAnzeige;
-    float aktuellerVerbrauch = 10;
+    float gesamtVerbrauch = 0;
     int progress = 0;
     float MaxVerbrauch = 0;
 
@@ -43,11 +44,13 @@ public class StartFragment extends Fragment {
 
         getBundleDataFromMainActivity();
 
-        TextViewAktuellerVerbrauch.setText(String.valueOf(aktuellerVerbrauch));
+        Toast.makeText(getContext(), String.valueOf(gesamtVerbrauch), Toast.LENGTH_SHORT).show();
 
-        EditTextMaxVerbrauchSoll.setCursorVisible(false);
+        TextViewAktuellerVerbrauch.setText(String.valueOf(gesamtVerbrauch));
+
         EditTextMaxVerbrauchSoll.setText(String.valueOf(MaxVerbrauch));
 
+        calculateProgress(gesamtVerbrauch, MaxVerbrauch);
         updateProgressBar(progress);
         updatePercentage(progress);
 
@@ -67,7 +70,7 @@ public class StartFragment extends Fragment {
                 CharSequence input = EditTextMaxVerbrauchSoll.getText().toString();
                 if (!TextUtils.isEmpty(input)) {
                     MaxVerbrauch = Float.parseFloat(input.toString());
-                    calculateProgress(aktuellerVerbrauch, MaxVerbrauch);
+                    calculateProgress(gesamtVerbrauch, MaxVerbrauch);
                     updateProgressBar(progress);
                     updatePercentage(progress);
                     listener.dataFromStartFragmentToMainActivity(progress, MaxVerbrauch);
@@ -76,6 +79,17 @@ public class StartFragment extends Fragment {
         });
 
         return v;
+    }
+
+
+    public void getBundleDataFromMainActivity() {
+        Bundle dataFromMainActivity = getArguments();
+
+        if (dataFromMainActivity != null) {
+            progress = dataFromMainActivity.getInt("progress", 0);
+            MaxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
+            gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
+        }
     }
 
     public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
@@ -90,15 +104,6 @@ public class StartFragment extends Fragment {
     public void updatePercentage(int progress) {
         if (progress <= 100) TextViewProzentAnzeige.setText(progress + "%");
         else TextViewProzentAnzeige.setText("Mehr als 100%");
-    }
-
-    public void getBundleDataFromMainActivity() {
-        Bundle dataFromMainActivity = getArguments();
-
-        if (dataFromMainActivity != null) {
-            progress = dataFromMainActivity.getInt("progress", 0);
-            MaxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
-        }
     }
 
     @Override
@@ -117,3 +122,4 @@ public class StartFragment extends Fragment {
         listener = null;
     }
 }
+
