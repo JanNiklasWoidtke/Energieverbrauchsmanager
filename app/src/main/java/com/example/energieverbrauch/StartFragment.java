@@ -44,8 +44,6 @@ public class StartFragment extends Fragment {
 
         getBundleDataFromMainActivity();
 
-        Toast.makeText(getContext(), String.valueOf(gesamtVerbrauch), Toast.LENGTH_SHORT).show();
-
         TextViewAktuellerVerbrauch.setText(String.valueOf(gesamtVerbrauch));
 
         EditTextMaxVerbrauchSoll.setText(String.valueOf(MaxVerbrauch));

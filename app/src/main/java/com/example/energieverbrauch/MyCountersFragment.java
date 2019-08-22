@@ -119,8 +119,6 @@ public class MyCountersFragment extends Fragment {
         for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {                                   //Berechnung des Gesamtverbrauchs
             gesamtVerbrauch += verbrauchJedesZaehlers.get(i);                                       //Gesamtverbrauch = Summe der Verbrauchsstände jedes Zählers
         }
-
-        Toast.makeText(getContext(), String.valueOf(gesamtVerbrauch), Toast.LENGTH_SHORT).show();
     }
 
     public void anteilVerbrauchBerechnen() {
