@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MyCountersFragment.MyCountersFragmentListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SettingsFragment.SettingsFragmentListener, MyCountersFragment.MyCountersFragmentListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
 
     public StartFragment StartFragment;
     public MyConsumptionFragment MyConsumptionFragment;
@@ -28,14 +28,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public DrawerLayout drawer;
 
-    public static final String MAXVERBRAUCH = "maxVerbrauch";
-    public static final String PROGRESS = "progress";
-
     int progress = 0;
-    float MaxVerbrauch = 0;
-    float aktuellerVerbrauch = 10;
+    float maxVerbrauch = 0;
     int anzahlZaehler = 0;
-    boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
     float gesamtVerbrauch = 0;
 
 
@@ -114,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void dataFromStartFragmentToMainActivity(int progressSF, float MaxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
         progress = progressSF;
-        MaxVerbrauch = MaxVerbrauchSF;
+        maxVerbrauch = MaxVerbrauchSF;
         datenSpeichern();
     }
 
@@ -148,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void bundleDataToStartFragFuellen() {
         datenLadenStartFragment();
         dataToStartFrag.putInt("progress", progress);
-        dataToStartFrag.putFloat("maxVerbrauch", MaxVerbrauch);
+        dataToStartFrag.putFloat("maxVerbrauch", maxVerbrauch);
         dataToStartFrag.putFloat("gesamtVerbrauch", gesamtVerbrauch);
         StartFragment.setArguments(dataToStartFrag);
     }
@@ -193,6 +188,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenSpeichern();
     }
 
+    public void resetData() {
+        zaehlername.clear();
+        standBeginn.clear();
+        aktuellerStand.clear();
+        preisProEinheit.clear();
+        anteilJedesZaehlers.clear();
+
+        maxVerbrauch = 0;
+        progress = 0;
+        gesamtVerbrauch = 0;
+        anzahlZaehler = 0;
+
+        datenSpeichern();
+        datenLadenMyCounters();
+        datenLadenStartFragment();
+    }
+
     public void datenSpeichern() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -213,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String anteilJedesZaehlersString = gson.toJson(anteilJedesZaehlers);
         editor.putString("anteilJedesZaehlers", anteilJedesZaehlersString);
 
-        editor.putFloat("maxVerbrauch", MaxVerbrauch);
+        editor.putFloat("maxVerbrauch", maxVerbrauch);
 
         editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
 
@@ -256,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void datenLadenStartFragment() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
-        MaxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
+        maxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
 
         gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
 
