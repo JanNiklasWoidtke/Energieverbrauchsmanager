@@ -52,10 +52,10 @@ public class AddCounterFragment extends Fragment {
         ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText()) || TextUtils.isEmpty(EditTextPreisProEinheit.getText()) ) {
+                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText()) || TextUtils.isEmpty(EditTextPreisProEinheit.getText())) {
                     Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
-                }
-                else listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
+                } else
+                    listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
             }
         });
 
@@ -118,13 +118,17 @@ public class AddCounterFragment extends Fragment {
     }
 
     public void getStandBeginn() {
-        String standBeginnString = EditTextStandBeginn.getText().toString();
-        standBeginn = Float.parseFloat(standBeginnString);
+        if (!TextUtils.isEmpty(EditTextStandBeginn.getText())) {
+            String standBeginnString = EditTextStandBeginn.getText().toString();
+            standBeginn = Float.parseFloat(standBeginnString);
+        }
     }
 
-    public void getPreisProEinheit () {
-        String preisProEinheitString = EditTextPreisProEinheit.getText().toString();
-        preisProEinheit = Float.parseFloat(preisProEinheitString);
+    public void getPreisProEinheit() {
+        if (!TextUtils.isEmpty(EditTextPreisProEinheit.getText())) {
+            String preisProEinheitString = EditTextPreisProEinheit.getText().toString();
+            preisProEinheit = Float.parseFloat(preisProEinheitString);
+        }
     }
 
     @Override

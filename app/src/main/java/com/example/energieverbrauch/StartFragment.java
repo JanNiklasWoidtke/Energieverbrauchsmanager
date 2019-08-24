@@ -14,13 +14,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class StartFragment extends Fragment {
 
     public StartFragmentListener listener;
 
-    public EditText EditTextMaxVerbrauchSoll;
+    public EditText editTextMaxVerbrauchSoll;
     public ProgressBar ProgressBar;
     public TextView TextViewAktuellerVerbrauch;
     public TextView TextViewProzentAnzeige;
@@ -37,7 +36,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start, container, false);
 
-        EditTextMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
+        editTextMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
         ProgressBar = v.findViewById(R.id.PBcircle);
         TextViewAktuellerVerbrauch = v.findViewById(R.id.aktVerbrauch);
         TextViewProzentAnzeige = v.findViewById(R.id.prozentAnzeige);
@@ -46,13 +45,16 @@ public class StartFragment extends Fragment {
 
         TextViewAktuellerVerbrauch.setText(String.valueOf(gesamtVerbrauch));
 
-        EditTextMaxVerbrauchSoll.setText(String.valueOf(MaxVerbrauch));
+        editTextMaxVerbrauchSoll.setHint(String.valueOf(MaxVerbrauch));
+
+        //editTextMaxVerbrauchSoll.setHintTextColor(getResources().getColor(android.R.color.black)); //Farbe muss an Color-Scheme angepasst werden
+
 
         calculateProgress(gesamtVerbrauch, MaxVerbrauch);
         updateProgressBar(progress);
         updatePercentage(progress);
 
-        EditTextMaxVerbrauchSoll.addTextChangedListener(new TextWatcher() {
+        editTextMaxVerbrauchSoll.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -65,7 +67,7 @@ public class StartFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                CharSequence input = EditTextMaxVerbrauchSoll.getText().toString();
+                CharSequence input = editTextMaxVerbrauchSoll.getText().toString();
                 if (!TextUtils.isEmpty(input)) {
                     MaxVerbrauch = Float.parseFloat(input.toString());
                     calculateProgress(gesamtVerbrauch, MaxVerbrauch);

@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -75,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="2"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:focusableInTouchMode="true"
             android:gravity="end"
             android:background="@null"/>

@@ -1,21 +1,23 @@
 package com.example.energieverbrauch;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SettingsFragment.SettingsFragmentListener, MyCountersFragment.MyCountersFragmentListener, com.example.energieverbrauch.StartFragment.StartFragmentListener, com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
@@ -29,16 +31,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawer;
 
     int progress = 0;
+    int monat = 0;
+    int anfangsmonat = 0;
     float maxVerbrauch = 0;
     int anzahlZaehler = 0;
     float gesamtVerbrauch = 0;
-
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
     ArrayList<Float> preisProEinheit;
     ArrayList<Float> aktuellerStand;
     ArrayList<Float> anteilJedesZaehlers;
+    ArrayList<Float> monatlicherGesamtVerbrauch;
+    ArrayList<Float> monatlicherMaximalVerbrauch;
 
     NavigationView navigationView;
 
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         zaehlername = new ArrayList<>();
         standBeginn = new ArrayList<>();
         preisProEinheit = new ArrayList<>();
+        aktuellerStand = new ArrayList<>();
+        anteilJedesZaehlers = new ArrayList<>();
+        monatlicherGesamtVerbrauch = new ArrayList<>();
+        monatlicherMaximalVerbrauch = new ArrayList<>();
 
         StartFragment = new StartFragment();
         MyCountersFragment = new MyCountersFragment();
@@ -63,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        monatsAbgleich();
+
+
+        Toast.makeText(this, String.valueOf(monat), Toast.LENGTH_SHORT).show();
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -78,6 +92,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, StartFragment).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
+    }
+
+    public void monatsAbgleich() {
+
+        datenLadenMonat();
+
+        Calendar calendar = Calendar.getInstance();
+
+        if (monat < calendar.get(Calendar.MONTH) + 1)
+            if (monat == 0) {                               //verhindert speichern leerer Daten bei erstmaligem Öffnen der App
+                monat = calendar.get(Calendar.MONTH) + 1;
+                anfangsmonat = monat;
+            } else {
+                monat = calendar.get(Calendar.MONTH) + 1;
+                monatlichesSpeichern();
+            }
     }
 
     @Override
@@ -148,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StartFragment.setArguments(dataToStartFrag);
     }
 
+
     public void bundleDataToMyCountersFragFuellen() {
         datenLadenMyCounters();
         dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
@@ -176,7 +207,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             // super.onBackPressed();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StartFragment()).commit();
+            datenLadenStartFragment();
+            bundleDataToStartFragFuellen();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, StartFragment).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
     }
@@ -225,11 +258,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String anteilJedesZaehlersString = gson.toJson(anteilJedesZaehlers);
         editor.putString("anteilJedesZaehlers", anteilJedesZaehlersString);
 
+        String monatlicherGesamtVerbrauchString = gson.toJson(monatlicherGesamtVerbrauch);
+        editor.putString("monatlicherGesamtVerbrauch", monatlicherGesamtVerbrauchString);
+
+        String monatlicherMaxVerbrauchString = gson.toJson(monatlicherMaximalVerbrauch);
+        editor.putString("monatlicherMaxVerbrauch", monatlicherMaxVerbrauchString);
+
         editor.putFloat("maxVerbrauch", maxVerbrauch);
 
         editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
 
         editor.putInt("progress", progress);
+
+        editor.putInt("monat", monat);
 
         editor.apply();
     }
@@ -274,4 +315,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progress = sharedPreferences.getInt("progress", 0);
     }
+
+    public void datenLadenMonat() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        monat = sharedPreferences.getInt("monat", 0);
+
+        Gson gson = new Gson();
+
+        String monatlicherGesamtVerbrauchString = sharedPreferences.getString("monatlicherGesamtVerbrauch", null);
+        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        monatlicherGesamtVerbrauch = gson.fromJson(monatlicherGesamtVerbrauchString, typeArrayListFloat);
+        if (monatlicherGesamtVerbrauch == null) monatlicherGesamtVerbrauch = new ArrayList<>();
+
+        String monatlicherMaxVerbrauchString = sharedPreferences.getString("monatlicherMaxVerbrauch", null);
+        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        monatlicherMaximalVerbrauch = gson.fromJson(monatlicherMaxVerbrauchString, typeArrayListFloat2);
+        if (monatlicherMaximalVerbrauch == null) monatlicherMaximalVerbrauch = new ArrayList<>();
+    }
+
+    public void monatlichesSpeichern() {
+        monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
+        gesamtVerbrauch = 0;
+        monatlicherMaximalVerbrauch.add(maxVerbrauch);
+        maxVerbrauch = 0;
+
+        datenSpeichern();
+    }
+
 }
