@@ -159,3 +159,5 @@ public class SettingsFragment extends Fragment {
         listener = null;
     }
 }
+
+//Bei reset sind switches falsch getogglet

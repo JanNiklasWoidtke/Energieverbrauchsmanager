@@ -315,6 +315,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         preisProEinheit = 0;
         grundBetrag = 0;
 
+        darkModeAktiviert = false;
+        benachrichtigungenZulaessig = true;
+
         //vermutlich alles resettet
 
         datenSpeichernMonatlich();
@@ -329,8 +332,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         datenLadenSettings();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragment()).commit();
-        navigationView.setCheckedItem(R.id.nav_start);
+        navigationView.setCheckedItem(R.id.nav_Settings);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
     }
 
     public void datenSpeichernStartFrag() {
