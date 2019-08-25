@@ -12,16 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class TabContainerFragment extends Fragment implements StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener,
-        Test2Fragment.OnFragmentInteractionListener,
-        Test1Fragment.OnFragmentInteractionListener {
+        StartFragmentJahr.OnFragmentInteractionListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab_container, container, false);
 
-        TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayout);
+        final TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayout);
 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
@@ -30,8 +28,8 @@ public class TabContainerFragment extends Fragment implements StartFragment.OnFr
         final ViewPager viewPager = (ViewPager)v.findViewById(R.id.viewPager);
         final PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

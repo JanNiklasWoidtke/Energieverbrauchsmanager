@@ -1,6 +1,7 @@
 package com.example.energieverbrauch;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -174,6 +175,7 @@ public class MyCountersFragment extends Fragment {
             headerElemente.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             headerElemente.setPadding(0, 0, 48, 16);
             headerElemente.setGravity(Gravity.CENTER);
+            headerElemente.setTypeface(null, Typeface.BOLD);
             tableRow.addView(headerElemente, i);
 
             if (i == 2) tableLayout.addView(tableRow);
@@ -204,7 +206,7 @@ public class MyCountersFragment extends Fragment {
                 aktuellerStandListe.setText(String.valueOf(aktuellerStand.get(i))); //Sind noch keine neuen Werte eingegeben, wird der Anfanswert als Text gesetzt
             else aktuellerStandListe.setText(String.valueOf(standBeginn.get(i)));
 
-            aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER);
+            aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             aktuellerStandListe.setGravity(Gravity.END);
 

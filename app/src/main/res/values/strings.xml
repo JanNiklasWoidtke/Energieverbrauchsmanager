@@ -35,6 +35,10 @@
     <string name="textPreisNichtHinzugefuegt">Sie haben noch keinen Preis eingegeben. Geben sie entweder jetzt einen Preis ein, oder fügen sie ihn später in Einstellungen hinzu</string>
     <string name="jetztAendern">Jetzt ändern</string>
     <string name="spaeterAendern">Später ändern</string>
+    <string name="switchDarkMode">Dark Mode</string>
+    <string name="textPreisSettings">Preis pro Einheit in €/kWh</string>
+    <string name="textGrundBetrag">Grundbetrag in €/Jahr</string>
+    <string name="textBenachrichtigungen">Benachrichtigungen zulassen</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
