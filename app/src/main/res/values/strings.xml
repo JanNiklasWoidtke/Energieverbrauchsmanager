@@ -31,11 +31,18 @@
     <string name="resetMessage">Sind sie sicher, dass sie alle Daten löschen wollen?</string>
     <string name="ja">Ja</string>
     <string name="nein">Nein</string>
+    <string name="titlePreisNichtHinzugefuegt">Hinweis</string>
+    <string name="textPreisNichtHinzugefuegt">Sie haben noch keinen Preis eingegeben. Geben sie entweder jetzt einen Preis ein, oder fügen sie ihn später in Einstellungen hinzu</string>
+    <string name="jetztAendern">Jetzt ändern</string>
+    <string name="spaeterAendern">Später ändern</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
         <item>$</item>
         <item>£</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

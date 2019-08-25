@@ -1,6 +1,7 @@
 package com.example.energieverbrauch;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,10 +26,10 @@ public class StartFragment extends Fragment {
     public TextView TextViewProzentAnzeige;
     float gesamtVerbrauch = 0;
     int progress = 0;
-    float MaxVerbrauch = 0;
+    float maxVerbrauch = 0;
 
     public interface StartFragmentListener { //ermöglicht Senden an MainActivity
-        void dataFromStartFragmentToMainActivity(int progress, float MaxVerbrauch);
+        void dataFromStartFragmentToMainActivity(int progress, float maxVerbrauch);
     }
 
     @Nullable
@@ -45,12 +46,13 @@ public class StartFragment extends Fragment {
 
         TextViewAktuellerVerbrauch.setText(String.valueOf(gesamtVerbrauch));
 
-        editTextMaxVerbrauchSoll.setHint(String.valueOf(MaxVerbrauch));
+
+        editTextMaxVerbrauchSoll.setHint(String.valueOf(maxVerbrauch));
 
         //editTextMaxVerbrauchSoll.setHintTextColor(getResources().getColor(android.R.color.black)); //Farbe muss an Color-Scheme angepasst werden
 
 
-        calculateProgress(gesamtVerbrauch, MaxVerbrauch);
+        calculateProgress(gesamtVerbrauch, maxVerbrauch);
         updateProgressBar(progress);
         updatePercentage(progress);
 
@@ -69,11 +71,11 @@ public class StartFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 CharSequence input = editTextMaxVerbrauchSoll.getText().toString();
                 if (!TextUtils.isEmpty(input)) {
-                    MaxVerbrauch = Float.parseFloat(input.toString());
-                    calculateProgress(gesamtVerbrauch, MaxVerbrauch);
+                    maxVerbrauch = Float.parseFloat(input.toString());
+                    calculateProgress(gesamtVerbrauch, maxVerbrauch);
                     updateProgressBar(progress);
                     updatePercentage(progress);
-                    listener.dataFromStartFragmentToMainActivity(progress, MaxVerbrauch);
+                    listener.dataFromStartFragmentToMainActivity(progress, maxVerbrauch);
                 }
             }
         });
@@ -83,13 +85,11 @@ public class StartFragment extends Fragment {
 
 
     public void getBundleDataFromMainActivity() {
-        Bundle dataFromMainActivity = getArguments();
 
-        if (dataFromMainActivity != null) {
-            progress = dataFromMainActivity.getInt("progress", 0);
-            MaxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
-            gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
-        }
+        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();       //uneleganter Weg, funktioniert aber
+        progress = dataFromMainActivity.getInt("progress", 0);
+        maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
+        gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
     }
 
     public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
@@ -120,6 +120,11 @@ public class StartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
     }
 }
 

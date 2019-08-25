@@ -1,6 +1,8 @@
 package com.example.energieverbrauch;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddCounterFragment extends Fragment {
@@ -22,12 +25,12 @@ public class AddCounterFragment extends Fragment {
     EditText EditTextZaehlername;
     EditText EditTextStandBeginn;
     EditText EditTextPreisProEinheit;
+    TextView textViewPreisEinheit;
     Button ButtonErstelltenZaehlerHinzufuegen;
 
     String zaehlername;
     float standBeginn = -1;
     float preisProEinheit;
-    boolean buttonErstelltenZaehlerHinzufuegenClicked = false;
 
     public interface AddCounterFragmentListener { //ermöglicht Senden an MainActivity
         void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit);
@@ -38,26 +41,54 @@ public class AddCounterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_addcounter, container, false);
 
-        buttonErstelltenZaehlerHinzufuegenClicked = false;
+        Bundle dataFromMyCountersFrag = new Bundle();
 
-        EditTextZaehlername = v.findViewById(R.id.Zählername);
-        EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
-        EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
-        ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
+        dataFromMyCountersFrag = getArguments();
 
-        EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
-        EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
-        EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
+        if (dataFromMyCountersFrag != null) {
 
-        ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText()) || TextUtils.isEmpty(EditTextPreisProEinheit.getText())) {
-                    Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
-                } else
-                    listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
+            final int zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
+
+            EditTextZaehlername = v.findViewById(R.id.Zählername);
+            EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
+            textViewPreisEinheit = v.findViewById(R.id.textViewPreisEinheit);
+            EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
+            ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
+
+            EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
+            EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
+
+            if (zaehlernameSize == 0) {
+                EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
+                EditTextPreisProEinheit.setHint(R.string.PreisEinheitNeuerZähler);
+
+                textViewPreisEinheit.setText(R.string.EuroProKWh);
+            } else {
+                EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorBackground)); //muss an Background Colour des Schemes angepasst werden
             }
-        });
+            ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText())) {
+                        Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
+                    } else if (TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && zaehlernameSize == 0) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.titlePreisNichtHinzugefuegt)
+                                .setMessage(R.string.textPreisNichtHinzugefuegt)
+                                .setPositiveButton(R.string.jetztAendern, null)
+                                .setNegativeButton(R.string.spaeterAendern, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, 0);
+                                    }
+                                })
+                                .show();
+                    } else {
+                        listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
+                    }
+                }
+            });
+        }
 
         return v;
     }

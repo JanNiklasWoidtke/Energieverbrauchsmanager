@@ -50,6 +50,9 @@ public class MyCountersFragment extends Fragment {
     ArrayList<EditText> alleEditTextAktuellerStand = new ArrayList<>();     //Liste enthält alle EditText-Felder in denen der aktuelle Stand des jeweiligen Zählers eingegeben werden kann
 
     Bundle dataFromMainAcitivity = new Bundle();                            //Bundle enthält die für das Fragment notwendigen Daten, die aus der MainActivity verteilt werden
+    Bundle dataToAddCountersFrag = new Bundle();
+
+    Fragment AddCounterFragment = new AddCounterFragment();
 
     public interface MyCountersFragmentListener { //ermöglicht Datenübertragung in die MainActivity aus dem Fragment
         void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStand,
@@ -69,7 +72,8 @@ public class MyCountersFragment extends Fragment {
         ButtonAddCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddCounterFragment()).commit(); //wird der Button gedrückt, wird das Fragment zum erstellen eines Zählers aufgerufen
+                bundleDataToAddCountersFragFuellen();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, AddCounterFragment).commit(); //wird der Button gedrückt, wird das Fragment zum erstellen eines Zählers aufgerufen
             }
         });
 
@@ -100,6 +104,12 @@ public class MyCountersFragment extends Fragment {
         return v;
     }
 
+    public void bundleDataToAddCountersFragFuellen() {
+        AddCounterFragment = new AddCounterFragment();
+        dataToAddCountersFrag.putInt("zaehlernameSize", zaehlername.size());
+        AddCounterFragment.setArguments(dataToAddCountersFrag);
+    }
+
     public void gesamtVerbrauchBerechnen() {
         verbrauchJedesZaehlers.clear();
         for (int i = 0; i < aktuellerStand.size(); i++) { //füllen der Liste mit dem Verbrauch jeden Zählers
@@ -116,7 +126,9 @@ public class MyCountersFragment extends Fragment {
     public void anteilVerbrauchBerechnen() {
         anteilJedesZaehlers.clear();
         for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {
-            anteilJedesZaehlers.add(verbrauchJedesZaehlers.get(i) / gesamtVerbrauch);
+            if (gesamtVerbrauch != 0) {
+                anteilJedesZaehlers.add(verbrauchJedesZaehlers.get(i) / gesamtVerbrauch);
+            }
         }
     }
 
@@ -203,7 +215,7 @@ public class MyCountersFragment extends Fragment {
             anteilVerbrauch = new TextView(getContext());
             anteilVerbrauch.setLayoutParams(layoutParamsTableRow);
             if (anteilJedesZaehlers.size() > i) {
-                anteilVerbrauch.setText(String.format("%.1f", anteilJedesZaehlers.get(i)*100) + "%");
+                anteilVerbrauch.setText(String.format("%.1f", anteilJedesZaehlers.get(i) * 100) + "%");
                 anteilVerbrauch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 anteilVerbrauch.setGravity(Gravity.END);
             }
@@ -219,6 +231,7 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void werteAktualisieren() {
+        int j = zaehlername.size();
         for (int i = 0; i < zaehlername.size(); i++) {                                                                  //für alle Zähler
             if (!TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText())) {                                      //wenn das EditTet-Feld nicht leer ist
                 aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));        //ändere den aktuellen Stand jedes geänderten Zählers auf den eingegebenen Wert

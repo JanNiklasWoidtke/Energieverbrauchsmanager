@@ -8,42 +8,42 @@
     tools:context=".MainActivity">
 
 
-            <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100sp">
+
+        <ProgressBar
+            android:id="@+id/PBcircleJahr"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressDrawable="@drawable/circle" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/prozentAnzeigeJahr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="100sp">
+                android:textSize="32sp" />
 
-                <ProgressBar
-                    android:id="@+id/PBcircle"
-                    style="?android:progressBarStyleHorizontal"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_gravity="center"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progressDrawable="@drawable/circle" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/prozentAnzeige"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="32sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/verbraucht"
-                        android:textSize="24sp" />
-                </LinearLayout>
-            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verbraucht"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -52,14 +52,13 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/aktVerbrauch"
+            android:id="@+id/aktVerbrauchJahr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/von"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +66,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/maxVerbrauchSoll"
+            android:id="@+id/maxVerbrauchSollJahr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
