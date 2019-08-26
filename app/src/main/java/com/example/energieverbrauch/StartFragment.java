@@ -1,6 +1,10 @@
 package com.example.energieverbrauch;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,10 +13,13 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,7 +36,7 @@ public class StartFragment extends Fragment {
     float maxVerbrauch = 0;
 
     public interface StartFragmentListener { //ermöglicht Senden an MainActivity
-        void dataFromStartFragmentToMainActivity(int progress, float maxVerbrauch);
+        void dataFromStartFragmentToMainActivity(float maxVerbrauch);
     }
 
     @Nullable
@@ -75,7 +82,7 @@ public class StartFragment extends Fragment {
                     calculateProgress(gesamtVerbrauch, maxVerbrauch);
                     updateProgressBar(progress);
                     updatePercentage(progress);
-                    listener.dataFromStartFragmentToMainActivity(progress, maxVerbrauch);
+                    listener.dataFromStartFragmentToMainActivity(maxVerbrauch);
                 }
             }
         });
@@ -83,18 +90,21 @@ public class StartFragment extends Fragment {
         return v;
     }
 
-
     public void getBundleDataFromMainActivity() {
+        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();
 
-        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();       //uneleganter Weg, funktioniert aber
         progress = dataFromMainActivity.getInt("progress", 0);
         maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
         gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
     }
 
     public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
-        float verbrauchterAnteil = aktuellerVerbrauch / MaxVerbrauch * 100;
-        progress = (int) verbrauchterAnteil;
+        if (maxVerbrauch != 0) {
+            progress = (int) (aktuellerVerbrauch / MaxVerbrauch * 100);
+        }
+        else {
+            progress = 0;
+        }
     }
 
     public void updateProgressBar(int progress) {
@@ -102,8 +112,13 @@ public class StartFragment extends Fragment {
     }
 
     public void updatePercentage(int progress) {
-        if (progress <= 100) TextViewProzentAnzeige.setText(progress + "%");
-        else TextViewProzentAnzeige.setText("Mehr als 100%");
+        if (progress <= 100) {
+            TextViewProzentAnzeige.setText(progress + "%");
+            ProgressBar.getProgressDrawable().clearColorFilter();
+        } else {
+            TextViewProzentAnzeige.setText("Mehr als 100%");
+            ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);
+        }
     }
 
     @Override
@@ -128,3 +143,5 @@ public class StartFragment extends Fragment {
     }
 }
 
+
+//Mock-Ups: https://placeit.net/c/mockups/stages/galaxy-s9-mockup-template-against-transparent-background-a19508?customG_0=pwu6ngf3d7

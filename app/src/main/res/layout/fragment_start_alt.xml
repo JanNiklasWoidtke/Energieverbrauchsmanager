@@ -9,7 +9,7 @@
     android:layout_marginBottom="20dp">
 
     <TextView
-        android:id="@+id/textViewJahr"
+        android:id="@+id/textViewMonat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="28sp"
@@ -25,7 +25,7 @@
         android:layout_gravity="center">
 
         <ProgressBar
-            android:id="@+id/PBcircleJahr"
+            android:id="@+id/PBcircle"
             style="?android:progressBarStyleHorizontal"
             android:layout_width="300dp"
             android:layout_height="300dp"
@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/prozentAnzeigeJahr"
+                android:id="@+id/prozentAnzeige"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="32sp" />
@@ -58,7 +58,7 @@
                 android:focusableInTouchMode="true">
 
                 <TextView
-                    android:id="@+id/aktVerbrauchJahr"
+                    android:id="@+id/aktVerbrauch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -72,7 +72,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/maxVerbrauchSollJahr"
+                    android:id="@+id/maxVerbrauchSoll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -110,7 +110,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/erwarteteJahresKosten"
+            android:text="@string/erwarteteMonatKosten"
             android:textSize="20sp"/>
 
         <LinearLayout
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textViewErwarteteJahresKosten"
+                android:id="@+id/textViewErwarteteMonatKosten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"/>

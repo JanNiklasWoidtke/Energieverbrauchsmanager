@@ -23,10 +23,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SettingsFragment.SettingsFragmentListener,
         MyCountersFragment.MyCountersFragmentListener,
         com.example.energieverbrauch.StartFragment.StartFragmentListener,
-        StartFragmentJahr.StartFragmentJahrListener,
         com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener,
+        StartFragmentAlt.StartFragmentAltListener,
         StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener {
+        StartFragmentJahr.OnFragmentInteractionListener,
+        StartFragmentAlt.OnFragmentInteractionListener {
 
     public StartFragment StartFragment;
     public StartFragmentJahr StartFragmentJahr;
@@ -36,13 +37,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public SettingsFragment SettingsFragment;
     public TabContainerFragment TabContainerFragment;
     public AddCounterFragment AddCounterFragment;
+    public StartFragmentAlt StartFragmentAlt;
 
     public DrawerLayout drawer;
 
-    int progress = 0;
     int monat = 0;
     int anfangsmonat = 0;
     int anfangsMonatDiagramme = 0;
+    int anfangsTag = 0;
+    int jahr = 0;
+
     float maxVerbrauch = 0;
     int anzahlZaehler = 0;
     float gesamtVerbrauch = 0;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     boolean benachrichtigungenZulaessig = true;
     boolean darkModeAktiviert = false;
+    boolean neuerMonat = false;
+    boolean neuesJahr = false;
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
@@ -87,15 +93,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SavingTipsFragment = new SavingTipsFragment();
         SettingsFragment = new SettingsFragment();
         AddCounterFragment = new AddCounterFragment();
-
         TabContainerFragment = new TabContainerFragment();
+
+        StartFragmentAlt = new StartFragmentAlt();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+/*
         //Hilfsfunktion
         float hilfsfloat1 = 1;
         float hilfsfloat2 = 9;
@@ -103,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monatlicherGesamtVerbrauch.add(hilfsfloat2);
 
         monatlichesSpeichern();
-
-        // monatsAbgleich();
+*/
+        monatsAbgleich();
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -128,7 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Calendar calendar = Calendar.getInstance();
 
-        if (monat < calendar.get(Calendar.MONTH) + 1)
+        if (monat < calendar.get(Calendar.MONTH) + 1) {
+            neuerMonat = true;
+
             if (monat == 0) {                               //verhindert speichern leerer Daten bei erstmaligem Öffnen der App
                 monat = calendar.get(Calendar.MONTH) + 1;
                 anfangsmonat = monat;
@@ -136,8 +145,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 monat = calendar.get(Calendar.MONTH) + 1;
                 anfangsMonatDiagramme++;
-                monatlichesSpeichern();
             }
+
+            monatlichesSpeichern();
+        } else {
+            neuerMonat = false;
+        }
     }
 
     @Override
@@ -167,17 +180,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromStartFragmentToMainActivity(int progressSF, float MaxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
-        progress = progressSF;
-        maxVerbrauch = MaxVerbrauchSF;
-        datenSpeichernStartFrag();
-    }
+    public void dataFromStartFragmentToMainActivity(float maxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
+        datenLadenMonat();
+        monatlicherMaximalVerbrauch.add(maxVerbrauchSF);
+        datenSpeichernMonatlich();
 
-    @Override
-    public void dataFromStartFragmentJahrToMainActivity(int progressSFJ, float maxVerbrauchSFJ) {
-        progressJahr = progressSFJ;
-        maxVerbrauchJahr = maxVerbrauchSFJ;
-        datenSpeichernStartFragJahr();
+        datenLadenStartFragment();
+        maxVerbrauch = maxVerbrauchSF;
+        datenSpeichernStartFrag();
     }
 
     @Override
@@ -188,9 +198,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         anteilJedesZaehlers.clear();
         anteilJedesZaehlers = anteilJedesZaehlersMCF;
 
+        datenLadenStartFragment();
+
         gesamtVerbrauch = gesamtVerbrauchMCF;
 
         datenSpeichernMyCounters();
+        datenSpeichernStartFrag();
+
         MyCountersFragment = new MyCountersFragment();
         bundleDataToMyCountersFragFuellen();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
@@ -212,9 +226,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void bundleDataToStartFragFuellen() {
         datenLadenStartFragment();
-        dataToStartFrag.putInt("progress", progress);
+        datenLadenSettings();
         dataToStartFrag.putFloat("maxVerbrauch", maxVerbrauch);
         dataToStartFrag.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+        dataToStartFrag.putFloat("preisProEinheit", preisProEinheit);
+        dataToStartFrag.putFloat("grundBetrag", grundBetrag);
         StartFragment.setArguments(dataToStartFrag);
     }
 
@@ -304,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monatlicherMaximalVerbrauch.clear();
 
         maxVerbrauch = 0;
-        progress = 0;
         gesamtVerbrauch = 0;
         anzahlZaehler = 0;
         gesamtVerbrauchJahr = 0;
@@ -328,10 +343,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         datenLadenMyCounters();
         datenLadenStartFragment();
-        datenLadenStartFragmentJahr();
         datenLadenMonat();
         datenLadenSettings();
 
+        bundleDataToSettingsFragFuellen();
         navigationView.setCheckedItem(R.id.nav_Settings);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
     }
@@ -343,7 +358,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Daten von Start Fragment
         editor.putFloat("maxVerbrauch", maxVerbrauch);
         editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
-        editor.putInt("progress", progress);
 
         editor.apply();
     }
@@ -469,18 +483,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
         maxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
-
+        float test = gesamtVerbrauch;
         gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
-
-        progress = sharedPreferences.getInt("progress", 0);
-    }
-
-    public void datenLadenStartFragmentJahr() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-
-        maxVerbrauchJahr = sharedPreferences.getFloat("maxVerbrauchJahr", 0);
-
-        progressJahr = sharedPreferences.getInt("progressJahr", 0);
     }
 
     public void datenLadenMonat() {
@@ -508,10 +512,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void monatlichesSpeichern() {
+
         monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
         gesamtVerbrauch = 0;
-        monatlicherMaximalVerbrauch.add(maxVerbrauch);
-        maxVerbrauch = 0;
 
         datenSpeichernMonatlich();
     }
@@ -521,27 +524,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void gesamtVerbrauchJahrBerechnen() {
+        //Berechnet den Gesamtverbrauch der letzten 12 Monate, es sei denn, es sind weniger als 12 Monatsdaten vorhanden. Dann werden nur vorhandene summiert
+
+        gesamtVerbrauchJahr = 0;
+
+        int zaehler = monatlicherGesamtVerbrauch.size() - 12;
+
+        for (int i = 0; i < 12 && i < monatlicherGesamtVerbrauch.size(); i++) {
+            if (zaehler < 0) {
+                zaehler = 0;
+            }
+            gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(zaehler);
+            zaehler++;
+        }
+    }
+
+    public void maxVerbrauchJahrBerechnen() {
+        //Berechnet den Gesamtverbrauch der letzten 12 Monate, es sei denn, es sind weniger als 12 Monatsdaten vorhanden. Dann werden nur vorhandene summiert
+
+        maxVerbrauchJahr = 0;
+
+        int zaehler = monatlicherMaximalVerbrauch.size() - 12;
+
+        for (int i = 0; i < 12 && i < monatlicherMaximalVerbrauch.size(); i++) {
+            if (zaehler < 0) {
+                zaehler = 0;
+            }
+            maxVerbrauchJahr += monatlicherMaximalVerbrauch.get(zaehler);
+            zaehler++;
+        }
+    }
+
     public Bundle dataToStartFragMethod() {
         datenLadenStartFragment();
+        datenLadenSettings();
 
-        dataToStartFrag.putInt("progress", progress);
         dataToStartFrag.putFloat("maxVerbrauch", maxVerbrauch);
         dataToStartFrag.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+        dataToStartFrag.putFloat("preisProEinheit", preisProEinheit);
+        dataToStartFrag.putFloat("grundBetrag", grundBetrag);
+
+        dataToStartFrag.putBoolean("neuerMonat", neuerMonat);
+
+        neuerMonat = false;
 
         return dataToStartFrag;
     }
 
     public Bundle dataToStartFragJahrMethod() {
         datenLadenMonat();
-        gesamtVerbrauchJahr = 0;
-        for (int i = 0; i < monatlicherGesamtVerbrauch.size(); i++) {
-            gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(i);
-        }
-        datenLadenStartFragmentJahr();
+
+        gesamtVerbrauchJahrBerechnen();
+        maxVerbrauchJahrBerechnen();
+
+        datenLadenSettings();
+        datenLadenStartFragment();
 
         dataToStartFragJahr.putFloat("gesamtVerbrauchJahr", gesamtVerbrauchJahr);
         dataToStartFragJahr.putFloat("maxVerbrauchJahr", maxVerbrauchJahr);
-        dataToStartFragJahr.putInt("progressJahr", progressJahr);
+        dataToStartFragJahr.putFloat("preisProEinheit", preisProEinheit);
+        dataToStartFragJahr.putFloat("grundBetrag", grundBetrag);
+        dataToStartFragJahr.putFloat("gesamtVerbrauchAktMonat", gesamtVerbrauch);
         return dataToStartFragJahr;
     }
+
+
 }

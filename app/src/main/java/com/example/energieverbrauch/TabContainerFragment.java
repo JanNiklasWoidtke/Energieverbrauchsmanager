@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class TabContainerFragment extends Fragment implements StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener {
+        StartFragmentJahr.OnFragmentInteractionListener,
+        StartFragmentAlt.OnFragmentInteractionListener{
 
     @Nullable
     @Override

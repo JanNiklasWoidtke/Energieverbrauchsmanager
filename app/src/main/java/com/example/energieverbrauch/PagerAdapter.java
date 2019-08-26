@@ -19,8 +19,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                StartFragment startFragment = new StartFragment();
-                return new StartFragment();
+                return new StartFragmentAlt();
             case 1:
                 return new StartFragmentJahr();
             default:

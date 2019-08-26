@@ -18,7 +18,7 @@
     <string name="StartStandNeuerZähler">Aktueller Stand</string>
     <string name="PreisEinheitNeuerZähler">Preis pro Einheit</string>
     <string name="EuroProKWh">\u0020€ / kWh</string>
-    <string name="kWh">kWh</string>
+    <string name="kWh">\u0020kWh</string>
     <string name="geraetename">Gerätename</string>
     <string name="aktStand">Aktueller Stand</string>
     <string name="anteilGesVerbrauch">Anteil am Verbrauch</string>
@@ -39,6 +39,12 @@
     <string name="textPreisSettings">Preis pro Einheit in €/kWh</string>
     <string name="textGrundBetrag">Grundbetrag in €/Jahr</string>
     <string name="textBenachrichtigungen">Benachrichtigungen zulassen</string>
+    <string name="erwarteteMonatKosten">Erwartete Kosten für diesen Monat</string>
+    <string name="euro">\u0020€</string>
+    <string name="erwarteteJahresKosten">Erwartete Kosten für dieses Jahr</string>
+    <string name="neuesMonatsZielTitle">Neues Monatsziel festlegen</string>
+    <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
+    <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
