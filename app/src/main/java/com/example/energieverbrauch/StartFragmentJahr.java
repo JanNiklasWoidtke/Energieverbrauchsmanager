@@ -89,7 +89,9 @@ public class StartFragmentJahr extends Fragment {
 
     public void calculateProgress() {
         if (maxVerbrauchJahr != 0) {
-            progressJahr = (int) ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat)/ maxVerbrauchJahr * 100);
+            progressJahr = (int) ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / maxVerbrauchJahr * 100);
+        } else if (gesamtVerbrauchJahr + gesamtVerbrauchJahr == 0) {
+            progressJahr = 0;
         } else {
             progressJahr = 101;
         }

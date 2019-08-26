@@ -139,8 +139,10 @@ public class StartFragmentAlt extends Fragment {
     public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
         if (maxVerbrauch != 0) {
             progress = (int) (aktuellerVerbrauch / MaxVerbrauch * 100);
-        } else {
+        } else if (aktuellerVerbrauch == 0) {
             progress = 0;
+        } else {
+            progress = 101;
         }
     }
 
