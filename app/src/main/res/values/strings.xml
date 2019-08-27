@@ -32,7 +32,7 @@
     <string name="ja">Ja</string>
     <string name="nein">Nein</string>
     <string name="titlePreisNichtHinzugefuegt">Hinweis</string>
-    <string name="textPreisNichtHinzugefuegt">Sie haben noch keinen Preis eingegeben. Geben sie entweder jetzt einen Preis ein, oder fügen sie ihn später in Einstellungen hinzu</string>
+    <string name="textPreisNichtHinzugefuegt">Sie haben noch keinen Preis eingegeben. Geben sie entweder jetzt einen Preis ein, oder fügen sie ihn später in Einstellungen hinzu. Dort können sie auch den Grundbetrag ihres Tarifs angeben</string>
     <string name="jetztAendern">Jetzt ändern</string>
     <string name="spaeterAendern">Später ändern</string>
     <string name="switchDarkMode">Dark Mode</string>
@@ -45,6 +45,9 @@
     <string name="neuesMonatsZielTitle">Neues Monatsziel festlegen</string>
     <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
     <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
+    <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel</string>
+    <string name="headerMyConsumptionSollIst2">der letzten 12 Monate</string>
+    <string name="hintNeuesZiel">Ziel in kWh</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>

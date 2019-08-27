@@ -31,6 +31,7 @@ public class AddCounterFragment extends Fragment {
     String zaehlername;
     float standBeginn = -1;
     float preisProEinheit;
+    int zaehlernameSize = 0;
 
     public interface AddCounterFragmentListener { //ermöglicht Senden an MainActivity
         void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit);
@@ -47,8 +48,8 @@ public class AddCounterFragment extends Fragment {
 
         if (dataFromMyCountersFrag != null) {
 
-            final int zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
-
+            zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
+        }
             EditTextZaehlername = v.findViewById(R.id.Zählername);
             EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
             textViewPreisEinheit = v.findViewById(R.id.textViewPreisEinheit);
@@ -89,7 +90,7 @@ public class AddCounterFragment extends Fragment {
                     }
                 }
             });
-        }
+
 
         return v;
     }

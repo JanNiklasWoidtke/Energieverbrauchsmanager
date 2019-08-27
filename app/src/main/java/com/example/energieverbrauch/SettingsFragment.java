@@ -27,6 +27,11 @@ public class SettingsFragment extends Fragment {
     EditText editTextPreisProEinheit;
     EditText editTextGrundBetrag;
 
+    float grundBetrag = 0;
+    float preisProEinheit = 0;
+    boolean darkModeAktiviert = false;
+    boolean benachrichtigungenZulaessig = true;
+
     public interface SettingsFragmentListener {
         void resetData();
 
@@ -50,26 +55,22 @@ public class SettingsFragment extends Fragment {
         editTextGrundBetrag = v.findViewById(R.id.editTextGrundBetrag);
         editTextPreisProEinheit = v.findViewById(R.id.editTextPreis);
 
-        float grundBetrag = 0;
-        float preisProEinheit = 0;
-        boolean darkModeAktiviert = false;
-        boolean benachrichtigungenZulaessig = true;
 
-        Bundle statesFromMainActivity = new Bundle();
 
-        statesFromMainActivity = getArguments();
+
+        Bundle statesFromMainActivity = getArguments();
 
         if (statesFromMainActivity != null) {
             preisProEinheit = statesFromMainActivity.getFloat("preisProEinheit", 0);
             grundBetrag = statesFromMainActivity.getFloat("grundBetrag", 0);
             darkModeAktiviert = statesFromMainActivity.getBoolean("darkModeAktiviert", false);
             benachrichtigungenZulaessig = statesFromMainActivity.getBoolean("benachrichtigungenZulaessig", true);
-
-            switchBenachrichtigungen.setChecked(benachrichtigungenZulaessig);
-            switchDarkMode.setChecked(darkModeAktiviert);
-            editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
-            editTextGrundBetrag.setText(String.valueOf(grundBetrag));
         }
+
+        switchBenachrichtigungen.setChecked(benachrichtigungenZulaessig);
+        switchDarkMode.setChecked(darkModeAktiviert);
+        editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
+        editTextGrundBetrag.setText(String.valueOf(grundBetrag));
 
         switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

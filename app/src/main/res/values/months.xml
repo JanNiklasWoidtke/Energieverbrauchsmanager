@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="monate">
-        <item name="januar">Januar</item>
-        <item name="februar">Februar</item>
-        <item name="maerz">März</item>
-        <item name="april">April</item>
+        <item name="leer"> </item>
+        <item name="januar">Jan</item>
+        <item name="februar">Feb</item>
+        <item name="maerz">Mar</item>
+        <item name="april">Apr</item>
         <item name="mai">Mai</item>
-        <item name="juni">Juni</item>
-        <item name="juli">Juli</item>
-        <item name="august">August</item>
-        <item name="september">September</item>
-        <item name="oktober">Oktober</item>
-        <item name="november">November</item>
-        <item name="dezember">Dezember</item>
+        <item name="juni">Jun</item>
+        <item name="juli">Jul</item>
+        <item name="august">Aug</item>
+        <item name="september">Sep</item>
+        <item name="oktober">Okt</item>
+        <item name="november">Nov</item>
+        <item name="dezember">Dez</item>
     </string-array>
 
 </resources>

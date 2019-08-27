@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,8 @@ public class StartFragmentAlt extends Fragment {
 
         editTextNeuerMaxVerbrauch.setInputType(InputType.TYPE_CLASS_NUMBER);
         editTextNeuerMaxVerbrauch.setSingleLine();
+        editTextNeuerMaxVerbrauch.setGravity(Gravity.CENTER);
+        editTextNeuerMaxVerbrauch.setHint(R.string.hintNeuesZiel);
 
         alertNeuerMaxVerbrauch.setTitle(R.string.neuesMonatsZielTitle);
         alertNeuerMaxVerbrauch.setMessage(R.string.neuesMonatsZielMessage);

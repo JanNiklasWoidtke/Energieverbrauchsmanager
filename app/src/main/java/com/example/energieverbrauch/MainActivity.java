@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int monat = 0;
     int anfangsmonat = 0;
     int anfangsMonatDiagramme = 0;
-    int anfangsTag = 0;
-    int jahr = 0;
 
     float maxVerbrauch = 0;
     int anzahlZaehler = 0;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     boolean benachrichtigungenZulaessig = true;
     boolean darkModeAktiviert = false;
     boolean neuerMonat = false;
-    boolean neuesJahr = false;
 
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
@@ -127,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, TabContainerFragment).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
+       /*
+        //Push-Benachrichtigun
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0");
+*/
     }
 
     public void monatsAbgleich() {
@@ -325,20 +328,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gesamtVerbrauchJahr = 0;
         maxVerbrauchJahr = 0;
         progressJahr = 0;
+
         monat = 0;
         anfangsmonat = 0;
+        anfangsMonatDiagramme = 0;
+
         preisProEinheit = 0;
         grundBetrag = 0;
 
         darkModeAktiviert = false;
         benachrichtigungenZulaessig = true;
 
-        //vermutlich alles resettet
+        neuerMonat = true;
 
-        datenSpeichernMonatlich();
-        datenSpeichernStartFragJahr();
         datenSpeichernStartFrag();
+        datenSpeichernStartFragJahr();
         datenSpeichernMyCounters();
+        datenSpeichernMonatlich();
         datenSpeichernSettings();
 
         datenLadenMyCounters();
@@ -348,7 +354,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bundleDataToSettingsFragFuellen();
         navigationView.setCheckedItem(R.id.nav_Settings);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+        bundleDataToSettingsFragFuellen();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SettingsFragment).commit();
     }
 
     public void datenSpeichernStartFrag() {

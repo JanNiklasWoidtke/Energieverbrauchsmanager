@@ -87,6 +87,10 @@ public class MyCountersFragment extends Fragment {
             zaehlerTabelleErstellen();
         }
 
+        if (zaehlername.size() == 0) {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddCounterFragment()).commit();
+        }
+
         ButtonWerteAkt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

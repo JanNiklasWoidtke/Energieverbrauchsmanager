@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MyConsumptionFragment extends Fragment {
@@ -43,41 +49,80 @@ public class MyConsumptionFragment extends Fragment {
         return v;
     }
 
-    public void barChartSollIstErstellen(){
+    public void barChartSollIstErstellen() {
 
-        ArrayList<BarEntry> entriesIstMonatlicherSollIstVergleich = new ArrayList<>();
+        //Gesamtverbrauch Einträge erstellen und formatieren
 
-        for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
-            entriesIstMonatlicherSollIstVergleich.add(new BarEntry(2 * i - 0.375f, monatlicherGesamtVerbrauch.get(i - 1)));
-        }
+        ArrayList<BarEntry> entriesBarGesamtVerbrauchUnter = new ArrayList<>();
+        ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
 
-        BarDataSet barDataSetIstMonatlicherSollIstVergleich = new BarDataSet(entriesIstMonatlicherSollIstVergleich, null);
-
-        barDataSetIstMonatlicherSollIstVergleich.setColor(Color.GREEN);
-        barDataSetIstMonatlicherSollIstVergleich.setDrawValues(false);
-
-        ArrayList<BarEntry> entriesSollMonatlicherSollIstVergleich = new ArrayList<>();
 
         for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
-            entriesSollMonatlicherSollIstVergleich.add(new BarEntry(2 * i + 0.375f, monatlicherMaxVerbrauch.get(i - 1)));
+            if (monatlicherGesamtVerbrauch.get(i - 1) < monatlicherMaxVerbrauch.get(i - 1)) {
+                entriesBarGesamtVerbrauchUnter.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
+            }
+            else {
+                entriesBarGesamtVerbrauchUeber.add(new BarEntry(i-0.2f, monatlicherGesamtVerbrauch.get(i-1)));
+            }
+        }
+        BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
+        BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
+
+        barDataSetGesamtVerbrauchUnter.setColor(Color.GREEN);
+        barDataSetGesamtVerbrauchUnter.setDrawValues(false);
+
+        barDataSetGesamtVerbrauchUeber.setColor(Color.RED);
+        barDataSetGesamtVerbrauchUeber.setDrawValues(false);
+
+        //MaxVerbrauch Einträge erstellen und formatieren
+
+        ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
+
+        for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
+            entriesBarMaxVerbrauch.add(new BarEntry(i + 0.2f, monatlicherMaxVerbrauch.get(i - 1)));
         }
 
-        BarDataSet barDataSetSollMonatlicherSollIstVergleich = new BarDataSet(entriesSollMonatlicherSollIstVergleich, null);
-        barDataSetSollMonatlicherSollIstVergleich.setColor(Color.RED);
-        barDataSetSollMonatlicherSollIstVergleich.setDrawValues(false);
+        BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
+        barDataSetMaxVerbrauch.setColor(Color.BLACK);
+        barDataSetMaxVerbrauch.setDrawValues(false);
 
-        BarData barDataMonatlicherSollIstVergleich = new BarData(barDataSetIstMonatlicherSollIstVergleich, barDataSetSollMonatlicherSollIstVergleich);
+        //Data-Sets der Bardata hinzufügen und formatieren
 
-        barDataMonatlicherSollIstVergleich.setBarWidth(0.75f);
+        BarData barDataMonatlicherSollIstVergleich = new BarData(barDataSetGesamtVerbrauchUnter, barDataSetMaxVerbrauch, barDataSetGesamtVerbrauchUeber);
+
+        barDataMonatlicherSollIstVergleich.setBarWidth(0.4f);
         monatlicherSollIstVergleich.setData(barDataMonatlicherSollIstVergleich);
 
-        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
-        monatlicherSollIstVergleich.getLegend().setEnabled(false);
-        XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
+        //x-Achse formatieren
+
+        final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                String[] monate = getResources().getStringArray(R.array.monate);
+                if (value == 0) return monate[(int) value];
+                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()){
+                    return monate[(int) (value + anfangsMonatDiagramme)];
+                }
+                else {
+                    return monate[(int) (value + anfangsMonatDiagramme - 12)];
+                }
+            }
+        });
+
+        //y-Achse formmatieren
+
+        final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+
+        //Chart formatieren
+
+        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
+        monatlicherSollIstVergleich.getLegend().setEnabled(false);
         monatlicherSollIstVergleich.getDescription().setEnabled(false);
         monatlicherSollIstVergleich.invalidate();
 
@@ -92,26 +137,33 @@ public class MyConsumptionFragment extends Fragment {
         return arrayList;
     }
 
-    public void bundleDataToMainActivityAuslesen() {
-        Bundle dataFromMainActivity = new Bundle();
+    public ArrayList<String> stringArraytoStringArrayList(String[] StringArray) {                             //wandelt Float-Array in ArrayList-Float um
+        // wird benötigt, da ArrayList-Float nicht über Bundle an Fragments übergeben werden kann
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (int i = 0; i < StringArray.length; i++) {
+            arrayList.add(StringArray[i]);
+        }
+        return arrayList;
+    }
 
-        dataFromMainActivity = getArguments();
+    public void bundleDataToMainActivityAuslesen() {
+        Bundle dataFromMainActivity = getArguments();
 
         if (dataFromMainActivity != null) {
-            anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme");
+            anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
             monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
             monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
         }
     }
 
     public void hilfsDatenErstellen() {
-        float hilfsfloat = 1;
+        float hilfsfloat = 10;
         monatlicherGesamtVerbrauch.clear(); //nur zum Testen
         monatlicherMaxVerbrauch.clear(); //nur zum Testen
 
         for (int i = 0; i < 12; i++) {
             monatlicherGesamtVerbrauch.add(hilfsfloat);
-            hilfsfloat++;
+            hilfsfloat += 0.1;
         }
 
         for (int i = 0; i < 12; i++) {
