@@ -2,13 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="20dp">
+    android:orientation="vertical">
 
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
         android:text="@string/headerMyConsumptionSollIst1"
         android:textSize="24sp"
         android:gravity="center_horizontal"
@@ -16,7 +17,8 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:text="@string/headerMyConsumptionSollIst2"
         android:textSize="24sp"
         android:gravity="center_horizontal"
@@ -24,8 +26,10 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:layout_marginBottom="20dp">
 
     </com.github.mikephil.charting.charts.BarChart>
 

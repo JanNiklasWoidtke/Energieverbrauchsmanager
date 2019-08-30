@@ -31,6 +31,7 @@ public class StartFragmentJahr extends Fragment {
     float preisProEinheit = 0;
 
     int tagImJahr = 0;
+    int anzahlMonate = 0;
     String jahr;
 
     @Nullable
@@ -61,8 +62,15 @@ public class StartFragmentJahr extends Fragment {
     }
 
     public void aktuelleWerteSetzen() {
-        textViewJahr.setText(jahr);
-
+        if (anzahlMonate == 0) {
+            textViewJahr.setText(R.string.nochKeineDater);
+        }
+        else if (anzahlMonate > 1) {
+            textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate));
+        }
+        else {
+            textViewJahr.setText(R.string.anzahlMonateEins);
+        }
         TextViewAktuellerVerbrauchJahr.setText(String.valueOf(gesamtVerbrauchJahr + gesamtVerbrauchAktMonat));
 
         textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauchJahr));
@@ -85,6 +93,7 @@ public class StartFragmentJahr extends Fragment {
         grundBetrag = dataFromMainActivityJahr.getFloat("grundBetrag", 0);
         preisProEinheit = dataFromMainActivityJahr.getFloat("preisProEinheit", 0);
         gesamtVerbrauchAktMonat = dataFromMainActivityJahr.getFloat("gesamtVerbrauchAktMonat", 0);
+        anzahlMonate = dataFromMainActivityJahr.getInt("anzahlMonate", 0);
     }
 
     public void calculateProgress() {

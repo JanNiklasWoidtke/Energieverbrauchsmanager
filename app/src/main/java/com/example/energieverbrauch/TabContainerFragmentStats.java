@@ -11,30 +11,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TabContainerFragment extends Fragment implements StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener,
-        StartFragmentAlt.OnFragmentInteractionListener{
+public class TabContainerFragmentStats extends Fragment implements Soll_Ist_Vergleich_Fragment.OnFragmentInteractionListener,
+        Referenzwerte_Fragment.OnFragmentInteractionListener
+{
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tab_container, container, false);
+        View v = inflater.inflate(R.layout.fragment_tab_container_stats, container, false);
 
-        final TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayout);
+        final TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayoutStats);
 
+        tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager)v.findViewById(R.id.viewPager);
-        final PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        final ViewPager viewPagerStats = (ViewPager)v.findViewById(R.id.viewPagerStats);
+        final PagerAdapterStats pagerAdapterStats = new PagerAdapterStats(getFragmentManager(), tabLayout.getTabCount(), getContext());
+
+        viewPagerStats.setAdapter(pagerAdapterStats);
+        tabLayout.setupWithViewPager(viewPagerStats);
+        viewPagerStats.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                viewPagerStats.setCurrentItem(tab.getPosition());
             }
 
             @Override

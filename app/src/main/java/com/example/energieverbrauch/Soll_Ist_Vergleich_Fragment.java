@@ -1,11 +1,11 @@
 package com.example.energieverbrauch;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +18,11 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
-public class MyConsumptionFragment extends Fragment {
+public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     int anfangsMonatDiagramme = 0;
 
@@ -36,7 +34,7 @@ public class MyConsumptionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_myconsumption, container, false);
+        View v = inflater.inflate(R.layout.fragment_soll_ist, container, false);
 
         monatlicherSollIstVergleich = (BarChart) v.findViewById(R.id.barChart);
 
@@ -169,6 +167,10 @@ public class MyConsumptionFragment extends Fragment {
         for (int i = 0; i < 12; i++) {
             monatlicherMaxVerbrauch.add(10.5f);
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
     }
 }
 

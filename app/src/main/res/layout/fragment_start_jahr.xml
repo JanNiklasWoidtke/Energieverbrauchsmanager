@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:layout_marginBottom="20dp">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textViewJahr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:textColor="@color/colorPrimaryDark"/>
-
+        android:text=""
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="28sp"
+        android:layout_gravity="center"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="4">
 
         <ProgressBar
             android:id="@+id/PBcircleJahr"
             style="?android:progressBarStyleHorizontal"
             android:layout_width="300dp"
             android:layout_height="300dp"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:indeterminate="false"
-            android:layout_centerInParent="true"
             android:max="100"
             android:progressDrawable="@drawable/circle" />
 
@@ -79,16 +79,15 @@
                     android:background="@null"
                     android:focusableInTouchMode="true"
                     android:gravity="end"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kWh"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
             </LinearLayout>
-
 
 
             <TextView
@@ -102,16 +101,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/erwarteteJahresKosten"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -121,13 +120,13 @@
                 android:id="@+id/textViewErwarteteJahresKosten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:text="@string/euro"/>
+                android:text="@string/euro"
+                android:textSize="24sp" />
         </LinearLayout>
 
 

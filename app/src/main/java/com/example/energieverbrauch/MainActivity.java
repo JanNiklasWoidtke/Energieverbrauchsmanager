@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,11 +31,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public StartFragment StartFragment;
     public StartFragmentJahr StartFragmentJahr;
-    public MyConsumptionFragment MyConsumptionFragment;
+    public Soll_Ist_Vergleich_Fragment MyConsumptionFragment;
     public MyCountersFragment MyCountersFragment;
     public SavingTipsFragment SavingTipsFragment;
     public SettingsFragment SettingsFragment;
-    public TabContainerFragment TabContainerFragment;
+    public TabContainerFragmentStart TabContainerFragment;
     public AddCounterFragment AddCounterFragment;
     public StartFragmentAlt StartFragmentAlt;
 
@@ -45,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int monat = 0;
     int anfangsmonat = 0;
     int anfangsMonatDiagramme = 0;
+
+    String [] tabNames;
 
     float maxVerbrauch = 0;
     int anzahlZaehler = 0;
@@ -87,11 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StartFragment = new StartFragment();
         StartFragmentJahr = new StartFragmentJahr();
         MyCountersFragment = new MyCountersFragment();
-        MyConsumptionFragment = new MyConsumptionFragment();
+        MyConsumptionFragment = new Soll_Ist_Vergleich_Fragment();
         SavingTipsFragment = new SavingTipsFragment();
         SettingsFragment = new SettingsFragment();
         AddCounterFragment = new AddCounterFragment();
-        TabContainerFragment = new TabContainerFragment();
+        TabContainerFragment = new TabContainerFragmentStart();
 
         StartFragmentAlt = new StartFragmentAlt();
 
@@ -160,11 +161,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { //öffnet verschiedene Fragments, je nach Klick im NavDrawer
         switch (item.getItemId()) {
             case R.id.nav_start:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
                 break;
             case R.id.nav_MyConsumption:
-                bundleDataToMyConsumptionFragFuellen();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyConsumptionFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStats()).commit();
                 break;
             case R.id.nav_MyCounters:
                 bundleDataToMyCountersFragFuellen();
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // super.onBackPressed();
             datenLadenStartFragment();
             bundleDataToStartFragFuellen();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
     }
@@ -352,10 +352,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         datenLadenSettings();
 
-        bundleDataToSettingsFragFuellen();
         navigationView.setCheckedItem(R.id.nav_Settings);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+
         bundleDataToSettingsFragFuellen();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SettingsFragment).commit();
     }
 
     public void datenSpeichernStartFrag() {
@@ -585,6 +585,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gesamtVerbrauchJahrBerechnen();
         maxVerbrauchJahrBerechnen();
 
+        datenLadenMyCounters();
         datenLadenSettings();
         datenLadenStartFragment();
 
@@ -593,8 +594,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToStartFragJahr.putFloat("preisProEinheit", preisProEinheit);
         dataToStartFragJahr.putFloat("grundBetrag", grundBetrag);
         dataToStartFragJahr.putFloat("gesamtVerbrauchAktMonat", gesamtVerbrauch);
+        if (zaehlername != null) {
+            dataToStartFragJahr.putInt("anzahlMonate", zaehlername.size());
+        }
         return dataToStartFragJahr;
     }
-
 
 }

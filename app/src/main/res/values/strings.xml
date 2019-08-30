@@ -41,13 +41,21 @@
     <string name="textBenachrichtigungen">Benachrichtigungen zulassen</string>
     <string name="erwarteteMonatKosten">Erwartete Kosten für diesen Monat</string>
     <string name="euro">\u0020€</string>
-    <string name="erwarteteJahresKosten">Erwartete Kosten für dieses Jahr</string>
+    <string name="erwarteteJahresKosten">Erwartete Kosten für das nächste Jahr</string>
     <string name="neuesMonatsZielTitle">Neues Monatsziel festlegen</string>
     <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
     <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
     <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel</string>
     <string name="headerMyConsumptionSollIst2">der letzten 12 Monate</string>
     <string name="hintNeuesZiel">Ziel in kWh</string>
+    <string name="anzahlMonate">Vergangene %1$d Monate</string>
+    <string name="anzahlMonateEins">Dieser Monat</string>
+    <string name="nochKeineDater">Noch keine Daten verfügbar</string>
+    <string name="monat">Monat</string>
+    <string name="jahr">Jahr</string>
+    <string name="referenzwerte">Referenzwerte</string>
+    <string name="sollIst">Soll-Ist</string>
+    <string name="durschnittswerte">Durchschnittswerte</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
