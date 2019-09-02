@@ -58,9 +58,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
             if (monatlicherGesamtVerbrauch.get(i - 1) < monatlicherMaxVerbrauch.get(i - 1)) {
                 entriesBarGesamtVerbrauchUnter.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
-            }
-            else {
-                entriesBarGesamtVerbrauchUeber.add(new BarEntry(i-0.2f, monatlicherGesamtVerbrauch.get(i-1)));
+            } else {
+                entriesBarGesamtVerbrauchUeber.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
             }
         }
         BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
@@ -103,10 +102,9 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
             public String getFormattedValue(float value, AxisBase axis) {
                 String[] monate = getResources().getStringArray(R.array.monate);
                 if (value == 0) return monate[(int) value];
-                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()){
+                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()) {
                     return monate[(int) (value + anfangsMonatDiagramme)];
-                }
-                else {
+                } else {
                     return monate[(int) (value + anfangsMonatDiagramme - 12)];
                 }
             }
@@ -145,14 +143,12 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     }
 
     public void bundleDataToMainActivityAuslesen() {
-        Bundle dataFromMainActivity = getArguments();
-
-        if (dataFromMainActivity != null) {
-            anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
-            monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
-            monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
-        }
+        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToSollIst();
+        anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
+        monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
+        monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
     }
+
 
     public void hilfsDatenErstellen() {
         float hilfsfloat = 10;

@@ -75,7 +75,7 @@ public class StartFragmentJahr extends Fragment {
 
         textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauchJahr));
 
-        float erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365;
+        float erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365; //anfangstag von tagImJahr abziehen
 
         textViewerwarteteJahresKosten.setText(String.format("%.2f", erwarteteJahresKosten));
 
@@ -94,6 +94,10 @@ public class StartFragmentJahr extends Fragment {
         preisProEinheit = dataFromMainActivityJahr.getFloat("preisProEinheit", 0);
         gesamtVerbrauchAktMonat = dataFromMainActivityJahr.getFloat("gesamtVerbrauchAktMonat", 0);
         anzahlMonate = dataFromMainActivityJahr.getInt("anzahlMonate", 0);
+
+        if (anzahlMonate > 12) {
+            anzahlMonate = 12;
+        }
     }
 
     public void calculateProgress() {

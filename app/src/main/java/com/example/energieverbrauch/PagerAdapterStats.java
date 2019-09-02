@@ -29,7 +29,6 @@ public class PagerAdapterStats extends FragmentStatePagerAdapter {
             default:
                 return null;
         }
-
     }
 
     @Override

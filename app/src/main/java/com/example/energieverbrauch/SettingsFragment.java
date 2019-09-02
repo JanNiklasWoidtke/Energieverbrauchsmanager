@@ -23,14 +23,9 @@ public class SettingsFragment extends Fragment {
     public SettingsFragmentListener listener;
     Button buttonResetData;
     Switch switchDarkMode;
-    Switch switchBenachrichtigungen;
     EditText editTextPreisProEinheit;
     EditText editTextGrundBetrag;
-
-    float grundBetrag = 0;
-    float preisProEinheit = 0;
-    boolean darkModeAktiviert = false;
-    boolean benachrichtigungenZulaessig = true;
+    EditText editTextPersonen;
 
     public interface SettingsFragmentListener {
         void resetData();
@@ -41,7 +36,7 @@ public class SettingsFragment extends Fragment {
 
         void setDarkMode();
 
-        void setBenachrichtigungen();
+        void setPersons(int persons);
     }
 
     @Nullable
@@ -49,14 +44,16 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        float grundBetrag = 0;
+        float preisProEinheit = 0;
+        final int persons = 1;
+        boolean darkModeAktiviert = false;
+
         buttonResetData = v.findViewById(R.id.buttonResetAllData);
         switchDarkMode = v.findViewById(R.id.switchDarkMode);
-        switchBenachrichtigungen = v.findViewById(R.id.switchBenachrichtigungen);
         editTextGrundBetrag = v.findViewById(R.id.editTextGrundBetrag);
         editTextPreisProEinheit = v.findViewById(R.id.editTextPreis);
-
-
-
+        editTextPersonen = v.findViewById(R.id.editTextPersonen);
 
         Bundle statesFromMainActivity = getArguments();
 
@@ -64,25 +61,17 @@ public class SettingsFragment extends Fragment {
             preisProEinheit = statesFromMainActivity.getFloat("preisProEinheit", 0);
             grundBetrag = statesFromMainActivity.getFloat("grundBetrag", 0);
             darkModeAktiviert = statesFromMainActivity.getBoolean("darkModeAktiviert", false);
-            benachrichtigungenZulaessig = statesFromMainActivity.getBoolean("benachrichtigungenZulaessig", true);
         }
 
-        switchBenachrichtigungen.setChecked(benachrichtigungenZulaessig);
         switchDarkMode.setChecked(darkModeAktiviert);
         editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
         editTextGrundBetrag.setText(String.valueOf(grundBetrag));
+        editTextPersonen.setText(String.valueOf(persons));
 
         switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 listener.setDarkMode();
-            }
-        });
-
-        switchBenachrichtigungen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                listener.setBenachrichtigungen();
             }
         });
 
@@ -101,6 +90,25 @@ public class SettingsFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(editTextGrundBetrag.getText())) {
                     listener.setGrundBetrag(Float.parseFloat(editTextGrundBetrag.getText().toString()));
+                }
+            }
+        });
+
+        editTextPersonen.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty((editTextPersonen.getText()))) {
+                    listener.setPersons(persons);
                 }
             }
         });

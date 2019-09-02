@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int monat = 0;
     int anfangsmonat = 0;
     int anfangsMonatDiagramme = 0;
-
-    String [] tabNames;
+    int tagDerLetzenStandAenderung = 0;
+    int aktuellerTagImJahr = 0;
 
     float maxVerbrauch = 0;
     int anzahlZaehler = 0;
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int progressJahr = 0;
     float preisProEinheit = 0;
     float grundBetrag = 0;
+    int anzahlPersonen = 1;
+    float vorherigerStand = 0;
 
     boolean benachrichtigungenZulaessig = true;
     boolean darkModeAktiviert = false;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Bundle dataToMyCountersFrag = new Bundle();
     Bundle dataToStartFrag = new Bundle();
     Bundle dataToStartFragJahr = new Bundle();
-    Bundle dataToMyConsumptionFrag = new Bundle();
+    Bundle dataToSollIst = new Bundle();
     Bundle statesToSettingsFrag = new Bundle();
 
     @Override
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 */
         monatsAbgleich();
 
+        erstenTagSetzen();
+
         drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close); //ermöglicht Blinden App zu nutzen, durch Vorlesefunktion
@@ -131,6 +135,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0");
 */
+    }
+
+    public void erstenTagSetzen() {
+        if (aktuellerTagImJahr == 0) {
+            aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        }
     }
 
     public void monatsAbgleich() {
@@ -174,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SavingTipsFragment()).commit();
                 break;
             case R.id.nav_Settings:
+                SettingsFragment = new SettingsFragment();
                 bundleDataToSettingsFragFuellen();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SettingsFragment).commit();
                 break;
@@ -195,6 +206,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, ArrayList<Float> anteilJedesZaehlersMCF, float gesamtVerbrauchMCF) {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        sharedPreferences.getInt("aktuellerTagImJahr", 0);
+
+        tagDerLetzenStandAenderung = aktuellerTagImJahr;
+        aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+
+        datenSpeichernDurchschnitt();
+
+        vorherigerStand = 0;
+
+        for (int i = 0; i < aktuellerStand.size(); i++) {
+            vorherigerStand += aktuellerStand.get(i);
+        }
+
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
 
@@ -247,14 +273,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
-    public void bundleDataToMyConsumptionFragFuellen() {
-        dataToMyConsumptionFrag.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
-        dataToMyConsumptionFrag.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
-        dataToMyConsumptionFrag.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
-
-        MyConsumptionFragment.setArguments(dataToMyConsumptionFrag);
-    }
-
     public void bundleDataToSettingsFragFuellen() {
         datenLadenSettings();
         statesToSettingsFrag.putBoolean("benachrichtigungenZulaessig", benachrichtigungenZulaessig);
@@ -276,9 +294,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return FloatArray;
     }
 
-    public void setBenachrichtigungen() {
-        benachrichtigungenZulaessig = !benachrichtigungenZulaessig;
-        datenSpeichernSettings();
+    public void setPersons(int persons) {
+        anzahlPersonen = persons;
     }
 
     public void setDarkMode() {
@@ -336,6 +353,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         preisProEinheit = 0;
         grundBetrag = 0;
 
+        anzahlPersonen = 1;
+
         darkModeAktiviert = false;
         benachrichtigungenZulaessig = true;
 
@@ -352,10 +371,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         datenLadenSettings();
 
+        monatsAbgleich();
+
         navigationView.setCheckedItem(R.id.nav_Settings);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
 
-        bundleDataToSettingsFragFuellen();
+    }
+
+    public void datenSpeichernDurchschnitt(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("aktuellerTagImJahr", aktuellerTagImJahr);
+        editor.putInt("tagDerLetztenEingabe", tagDerLetzenStandAenderung);
+
+        editor.apply();
     }
 
     public void datenSpeichernStartFrag() {
@@ -401,6 +432,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         editor.putFloat("preisProEinheit", preisProEinheit);
 
+        editor.putFloat("vorherigerStand", vorherigerStand);
+
         editor.apply();
     }
 
@@ -438,6 +471,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         editor.putFloat("preisProEinheit", preisProEinheit);
 
+        editor.putInt("anzahlPersonen", anzahlPersonen);
+
         editor.apply();
     }
 
@@ -451,6 +486,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         preisProEinheit = sharedPreferences.getFloat("preisProEinheit", 0);
 
         grundBetrag = sharedPreferences.getFloat("grundBetrag", 0);
+
+        anzahlPersonen = sharedPreferences.getInt("anzahlPersonen", 1);
     }
 
     public void datenLadenMyCounters() {
@@ -490,7 +527,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
         maxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
-        float test = gesamtVerbrauch;
         gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
     }
 
@@ -594,10 +630,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToStartFragJahr.putFloat("preisProEinheit", preisProEinheit);
         dataToStartFragJahr.putFloat("grundBetrag", grundBetrag);
         dataToStartFragJahr.putFloat("gesamtVerbrauchAktMonat", gesamtVerbrauch);
-        if (zaehlername != null) {
-            dataToStartFragJahr.putInt("anzahlMonate", zaehlername.size());
+        if (monatlicherGesamtVerbrauch != null) {
+            dataToStartFragJahr.putInt("anzahlMonate", monatlicherGesamtVerbrauch.size());
         }
         return dataToStartFragJahr;
+    }
+
+    public Bundle dataToReferenzwerteFragMethod() {
+        Bundle dataToReferenzFrag = new Bundle();
+
+        datenLadenMonat();
+
+        gesamtVerbrauchJahrBerechnen();
+
+        dataToReferenzFrag.putFloat("eigenerVerbrauch", gesamtVerbrauchJahr + gesamtVerbrauch);
+
+        return dataToReferenzFrag;
+    }
+
+    public Bundle dataToDurchschnitt() {
+        Bundle dataToDurchschnitt = new Bundle();
+
+        datenLadenMonat();
+        gesamtVerbrauchJahrBerechnen();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        dataToDurchschnitt.putFloat("aktuellerStand", gesamtVerbrauchJahr + sharedPreferences.getFloat("gesamtVerbrauch", 0));
+        dataToDurchschnitt.putFloat("vorherigerStand", sharedPreferences.getFloat("vorherigerStand", 0));
+        dataToDurchschnitt.putInt("aktuellerTagImJahr", sharedPreferences.getInt("aktuellerTagImJahr", 0));
+        dataToDurchschnitt.putInt("tagDerLetztenEingabe", sharedPreferences.getInt("tagDerLetztenEingabe", 0));
+
+        return dataToDurchschnitt;
+    }
+
+    public Bundle dataToSollIst() {
+        dataToSollIst.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
+        dataToSollIst.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
+        dataToSollIst.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
+
+        return dataToSollIst;
     }
 
 }

@@ -16,4 +16,11 @@
         <item name="dezember">Dez</item>
     </string-array>
 
+    <integer-array name="referenzwerte">
+        <item name="1 Person"> 1400 </item>
+        <item name="2 Person"> 2000 </item>
+        <item name="3 Person"> 2700 </item>
+        <item name="4 Person"> 3000 </item>
+    </integer-array>
+
 </resources>

@@ -8,16 +8,38 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class DurschnittsWerte_Fragment extends Fragment {
+
+    TextView durchschnittsVerbrauch;
+    TextView durchschnittsKosten;
+
+    float vorherigerStand = 0;
+    float aktuellerStand = 0;
+    int aktuellerTagImJahr = 0;
+    int tagDerLetztenEingabe = 0;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_durchschnittswerte, container, false);
 
+        durchschnittsVerbrauch = v.findViewById(R.id.textViewDurchschnittsVerbrauch);
+        durchschnittsKosten = v.findViewById(R.id.textViewDurchschnittsKosten);
+
+        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToDurchschnitt();
+
+        aktuellerStand = dataFromMainActivity.getFloat("aktuellerStand", 0);
+        vorherigerStand = dataFromMainActivity.getFloat("vorherigerStand", 0);
+        aktuellerTagImJahr = dataFromMainActivity.getInt("aktuellerTagImJahr", 0);
+        tagDerLetztenEingabe = dataFromMainActivity.getInt("tagDerLetztenEingabe", 0);
+
         return v;
     }
+
+
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
