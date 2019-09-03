@@ -71,20 +71,21 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         for (int i = 0; i < 12; i++) {
             if (i + anfangsMonatDiagramme - 1 < 12) {
-                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
+                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
             }
             else {
-                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
+                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
             }
         }
 
         LineDataSet lineDataSet = new LineDataSet(entriesReferenzWerte, null);
+        lineDataSet.setColor(R.color.colorPrimaryDark);
+        lineDataSet.setCircleColor(R.color.colorPrimaryDark);
 
         lineData.addDataSet(lineDataSet);
     }
 
     public void combinedChartErstellen() {
-        /*
         //x-Achse formatieren
 
         final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
@@ -117,7 +118,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         monatlicherSollIstVergleich.getDescription().setEnabled(false);
         monatlicherSollIstVergleich.animateY(2000);
         monatlicherSollIstVergleich.invalidate();
-        */
+
         monatlicherSollIstVergleich.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
         });
