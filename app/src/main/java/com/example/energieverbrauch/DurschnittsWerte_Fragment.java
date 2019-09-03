@@ -14,6 +14,7 @@ public class DurschnittsWerte_Fragment extends Fragment {
 
     TextView durchschnittsVerbrauch;
     TextView durchschnittsKosten;
+    TextView durchschnittCO2;
 
     float vorherigerStand = 0;
     float aktuellerStand = 0;
@@ -32,6 +33,7 @@ public class DurschnittsWerte_Fragment extends Fragment {
 
         durchschnittsVerbrauch = v.findViewById(R.id.textViewDurchschnittsVerbrauch);
         durchschnittsKosten = v.findViewById(R.id.textViewDurchschnittsKosten);
+        durchschnittCO2 = v.findViewById(R.id.co2Verbrauch);
 
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToDurchschnitt();
 
@@ -54,7 +56,7 @@ public class DurschnittsWerte_Fragment extends Fragment {
 
         durchschnittsKosten.setText(String.valueOf(durchschnittlicherVerbrauchProTag * preisProEinheit));
 
-
+        durchschnittCO2.setText(String.valueOf(durchschnittlicherVerbrauchProTag * 537)); //537 g/kWh als Quellwert vom UBA
 
         return v;
     }

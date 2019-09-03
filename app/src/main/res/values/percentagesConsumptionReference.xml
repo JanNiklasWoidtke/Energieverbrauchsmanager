@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="percentages">
+        <item name="jan">932</item>
+        <item name="feb">857</item>
+        <item name="mar">892</item>
+        <item name="apr">806</item>
+        <item name="mai">783</item>
+        <item name="jun">756</item>
+        <item name="jul">777</item>
+        <item name="aug">761</item>
+        <item name="sep">792</item>
+        <item name="oct">852</item>
+        <item name="nov">904</item>
+        <item name="dec">833</item>
+    </integer-array>
+</resources>

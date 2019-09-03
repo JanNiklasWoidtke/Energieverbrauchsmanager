@@ -64,6 +64,10 @@
     <string name="durchKostenProTag">Durchschnittliche Kosten</string>
     <string name="kWhProTag">\u0020kWh / Tag</string>
     <string name="euroProTah">\u0020€ / Tag</string>
+    <string name="bottom_arrow">&#9660;</string>
+    <string name="grammProTag">\u0020g / Tag</string>
+    <string name="co2Emissionen">CO2-Emissionen pro Tag durch Strom</string>
+    <string name="unzulaessigeEingabe">Unzulässige Eingabe für Zähler %1$s</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>

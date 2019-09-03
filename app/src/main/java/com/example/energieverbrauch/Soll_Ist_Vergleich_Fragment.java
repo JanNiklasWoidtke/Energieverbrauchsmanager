@@ -10,13 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
@@ -25,29 +30,107 @@ import java.util.ArrayList;
 public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     int anfangsMonatDiagramme = 0;
+    int anzahlPersonen = 1;
 
     ArrayList<Float> monatlicherGesamtVerbrauch = new ArrayList<>();
     ArrayList<Float> monatlicherMaxVerbrauch = new ArrayList<>();
 
-    BarChart monatlicherSollIstVergleich;
+    CombinedChart monatlicherSollIstVergleich;
+
+    BarData barData = new BarData();
+
+    LineData lineData = new LineData();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_soll_ist, container, false);
 
-        monatlicherSollIstVergleich = (BarChart) v.findViewById(R.id.barChart);
+        monatlicherSollIstVergleich = v.findViewById(R.id.combinedChartSollIst);
 
         bundleDataToMainActivityAuslesen();
 
         hilfsDatenErstellen();
 
-        barChartSollIstErstellen();
+        barChartDataErstellen();
+
+        lineChartDataErstellen();
+
+        combinedChartErstellen();
 
         return v;
     }
 
-    public void barChartSollIstErstellen() {
+    public void lineChartDataErstellen() {
+
+        float referenzVerbrauch = getResources().getIntArray(R.array.referenzwerte)[anzahlPersonen];
+
+        ArrayList<Entry> entriesReferenzWerte = new ArrayList<>();
+
+        int[] percentages = getResources().getIntArray(R.array.percentages);
+
+        for (int i = 0; i < 12; i++) {
+            if (i + anfangsMonatDiagramme - 1 < 12) {
+                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
+            }
+            else {
+                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
+            }
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(entriesReferenzWerte, null);
+
+        lineData.addDataSet(lineDataSet);
+    }
+
+    public void combinedChartErstellen() {
+        /*
+        //x-Achse formatieren
+
+        final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                String[] monate = getResources().getStringArray(R.array.monate);
+                if (value == 0) return monate[(int) value];
+                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()) {
+                    return monate[(int) (value + anfangsMonatDiagramme)];
+                } else {
+                    return monate[(int) (value + anfangsMonatDiagramme - 12)];
+                }
+            }
+        });
+
+        //y-Achse formmatieren
+
+        final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+
+        //Chart formatieren
+
+        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
+        monatlicherSollIstVergleich.getLegend().setEnabled(false);
+        monatlicherSollIstVergleich.getDescription().setEnabled(false);
+        monatlicherSollIstVergleich.animateY(2000);
+        monatlicherSollIstVergleich.invalidate();
+        */
+        monatlicherSollIstVergleich.setDrawOrder(new CombinedChart.DrawOrder[]{
+                CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
+        });
+
+        CombinedData combinedData = new CombinedData();
+        combinedData.setData(barData);
+        combinedData.setData(lineData);
+
+        monatlicherSollIstVergleich.setData(combinedData);
+        monatlicherSollIstVergleich.invalidate();
+    }
+
+    public void barChartDataErstellen() {
 
         //Gesamtverbrauch Einträge erstellen und formatieren
 
@@ -85,44 +168,12 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         //Data-Sets der Bardata hinzufügen und formatieren
 
-        BarData barDataMonatlicherSollIstVergleich = new BarData(barDataSetGesamtVerbrauchUnter, barDataSetMaxVerbrauch, barDataSetGesamtVerbrauchUeber);
+        barData.addDataSet(barDataSetGesamtVerbrauchUnter);
+        barData.addDataSet(barDataSetGesamtVerbrauchUeber);
+        barData.addDataSet(barDataSetMaxVerbrauch);
 
-        barDataMonatlicherSollIstVergleich.setBarWidth(0.4f);
-        monatlicherSollIstVergleich.setData(barDataMonatlicherSollIstVergleich);
-
-        //x-Achse formatieren
-
-        final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(0);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                String[] monate = getResources().getStringArray(R.array.monate);
-                if (value == 0) return monate[(int) value];
-                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()) {
-                    return monate[(int) (value + anfangsMonatDiagramme)];
-                } else {
-                    return monate[(int) (value + anfangsMonatDiagramme - 12)];
-                }
-            }
-        });
-
-        //y-Achse formmatieren
-
-        final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
-        yAxis.setDrawGridLines(false);
-
-        //Chart formatieren
-
-        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
-        monatlicherSollIstVergleich.getLegend().setEnabled(false);
-        monatlicherSollIstVergleich.getDescription().setEnabled(false);
-        monatlicherSollIstVergleich.animateY(2000);
-        monatlicherSollIstVergleich.invalidate();
-
+        barData.setBarWidth(0.4f);
+        //monatlicherSollIstVergleich.setData(barDataMonatlicherSollIstVergleich);
     }
 
     public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {                             //wandelt Float-Array in ArrayList-Float um
@@ -148,21 +199,22 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
         monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
         monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
+        anzahlPersonen = dataFromMainActivity.getInt("anzahlPersonen", 1);
     }
 
 
     public void hilfsDatenErstellen() {
-        float hilfsfloat = 10;
+        float hilfsfloat = 160;
         monatlicherGesamtVerbrauch.clear(); //nur zum Testen
         monatlicherMaxVerbrauch.clear(); //nur zum Testen
 
         for (int i = 0; i < 12; i++) {
             monatlicherGesamtVerbrauch.add(hilfsfloat);
-            hilfsfloat += 0.1;
+            hilfsfloat += 2;
         }
 
         for (int i = 0; i < 12; i++) {
-            monatlicherMaxVerbrauch.add(10.5f);
+            monatlicherMaxVerbrauch.add(170f);
         }
     }
 

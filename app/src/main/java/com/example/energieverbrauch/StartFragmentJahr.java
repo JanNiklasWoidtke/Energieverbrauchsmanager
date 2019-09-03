@@ -29,9 +29,11 @@ public class StartFragmentJahr extends Fragment {
     float gesamtVerbrauchAktMonat = 0;
     float grundBetrag = 0;
     float preisProEinheit = 0;
+    float erwarteteJahresKosten = 0;
 
     int tagImJahr = 0;
     int anzahlMonate = 0;
+    int anfangsTag = 0;
     String jahr;
 
     @Nullable
@@ -64,24 +66,30 @@ public class StartFragmentJahr extends Fragment {
     public void aktuelleWerteSetzen() {
         if (anzahlMonate == 0) {
             textViewJahr.setText(R.string.nochKeineDater);
-        }
-        else if (anzahlMonate > 1) {
+        } else if (anzahlMonate > 1) {
             textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate));
-        }
-        else {
+        } else {
             textViewJahr.setText(R.string.anzahlMonateEins);
         }
         TextViewAktuellerVerbrauchJahr.setText(String.valueOf(gesamtVerbrauchJahr + gesamtVerbrauchAktMonat));
 
         textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauchJahr));
 
-        float erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365; //anfangstag von tagImJahr abziehen
+        if (anfangsTag < tagImJahr) {
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (tagImJahr-anfangsTag) * 365; //anfangstag von tagImJahr abziehen
+        }
+        else if (anfangsTag == tagImJahr){
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * (365-anfangsTag);
+        }
+        else {
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365;
+        }
 
         textViewerwarteteJahresKosten.setText(String.format("%.2f", erwarteteJahresKosten));
 
         calculateProgress();
-        updateProgressBar(progressJahr);
-        updatePercentage(progressJahr);
+        updateProgressBar();
+        updatePercentage();
     }
 
 
@@ -94,6 +102,7 @@ public class StartFragmentJahr extends Fragment {
         preisProEinheit = dataFromMainActivityJahr.getFloat("preisProEinheit", 0);
         gesamtVerbrauchAktMonat = dataFromMainActivityJahr.getFloat("gesamtVerbrauchAktMonat", 0);
         anzahlMonate = dataFromMainActivityJahr.getInt("anzahlMonate", 0);
+        anfangsTag = dataFromMainActivityJahr.getInt("anfangsTag", 0);
 
         if (anzahlMonate > 12) {
             anzahlMonate = 12;
@@ -103,20 +112,20 @@ public class StartFragmentJahr extends Fragment {
     public void calculateProgress() {
         if (maxVerbrauchJahr != 0) {
             progressJahr = (int) ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / maxVerbrauchJahr * 100);
-        } else if (gesamtVerbrauchJahr + gesamtVerbrauchJahr == 0) {
+        } else if ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) == 0) {
             progressJahr = 0;
         } else {
             progressJahr = 101;
         }
     }
 
-    public void updateProgressBar(int progress) {
-        ProgressBar.setProgress(progress);
+    public void updateProgressBar() {
+        ProgressBar.setProgress(progressJahr);
     }
 
-    public void updatePercentage(int progress) {
-        if (progress <= 100) {
-            TextViewProzentAnzeige.setText(progress + "%");
+    public void updatePercentage() {
+        if (progressJahr < 100) {
+            TextViewProzentAnzeige.setText(progressJahr + "%");
         } else {
             TextViewProzentAnzeige.setText("Mehr als 100%");
             ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);

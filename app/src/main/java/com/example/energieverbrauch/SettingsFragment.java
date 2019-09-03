@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
 
         float grundBetrag = 0;
         float preisProEinheit = 0;
-        final int persons = 1;
+        int anzahlPersonen = 1;
         boolean darkModeAktiviert = false;
 
         buttonResetData = v.findViewById(R.id.buttonResetAllData);
@@ -61,12 +61,13 @@ public class SettingsFragment extends Fragment {
             preisProEinheit = statesFromMainActivity.getFloat("preisProEinheit", 0);
             grundBetrag = statesFromMainActivity.getFloat("grundBetrag", 0);
             darkModeAktiviert = statesFromMainActivity.getBoolean("darkModeAktiviert", false);
+            anzahlPersonen = statesFromMainActivity.getInt("anzahlPersonen", 1);
         }
 
         switchDarkMode.setChecked(darkModeAktiviert);
         editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
         editTextGrundBetrag.setText(String.valueOf(grundBetrag));
-        editTextPersonen.setText(String.valueOf(persons));
+        editTextPersonen.setText(String.valueOf(anzahlPersonen));
 
         switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -88,7 +89,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(editTextGrundBetrag.getText())) {
+                if (!TextUtils.isEmpty(editTextGrundBetrag.getText()) && !editTextGrundBetrag.getText().toString().equals(".")) {
                     listener.setGrundBetrag(Float.parseFloat(editTextGrundBetrag.getText().toString()));
                 }
             }
@@ -107,8 +108,8 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty((editTextPersonen.getText()))) {
-                    listener.setPersons(persons);
+                if (!TextUtils.isEmpty((editTextPersonen.getText())) && !editTextPersonen.getText().toString().equals(".")) {
+                    listener.setPersons(Integer.parseInt(editTextPersonen.getText().toString()));
                 }
             }
         });
@@ -126,7 +127,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(editTextPreisProEinheit.getText())) {
+                if (!TextUtils.isEmpty(editTextPreisProEinheit.getText()) && !editTextPreisProEinheit.getText().toString().equals(".")) {
                     listener.setPreisProEinheit(Float.parseFloat(editTextPreisProEinheit.getText().toString()));
                 }
             }

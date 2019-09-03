@@ -122,9 +122,9 @@ public class StartFragmentAlt extends Fragment {
 
         textViewMonatKosten.setText(String.format("%.2f", erwarteteMonatlicheKosten));
 
-        calculateProgress(gesamtVerbrauch, maxVerbrauch);
-        updateProgressBar(progress);
-        updatePercentage(progress);
+        calculateProgress();
+        updateProgressBar();
+        updatePercentage();
     }
 
     public void getBundleDataFromMainActivity() {
@@ -137,22 +137,22 @@ public class StartFragmentAlt extends Fragment {
         neuerMonat = dataFromMainActivity.getBoolean("neuerMonat", false);
     }
 
-    public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
+    public void calculateProgress() {
         if (maxVerbrauch != 0) {
-            progress = (int) (aktuellerVerbrauch / MaxVerbrauch * 100);
-        } else if (aktuellerVerbrauch == 0) {
+            progress = (int) (gesamtVerbrauch / maxVerbrauch * 100);
+        } else if (gesamtVerbrauch == 0) {
             progress = 0;
         } else {
             progress = 101;
         }
     }
 
-    public void updateProgressBar(int progress) {
+    public void updateProgressBar() {
         ProgressBar.setProgress(progress);
     }
 
-    public void updatePercentage(int progress) {
-        if (progress <= 100) {
+    public void updatePercentage() {
+        if (progress < 100) {
             TextViewProzentAnzeige.setText(progress + "%");
             ProgressBar.getProgressDrawable().clearColorFilter();
         } else {

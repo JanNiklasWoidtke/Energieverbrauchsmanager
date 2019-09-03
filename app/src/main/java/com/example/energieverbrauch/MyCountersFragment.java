@@ -237,15 +237,28 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void werteAktualisieren() {
-        int j = zaehlername.size();
-        for (int i = 0; i < zaehlername.size(); i++) {                                                                  //für alle Zähler
-            if (!TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText())) {                                      //wenn das EditTet-Feld nicht leer ist
-                aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));        //ändere den aktuellen Stand jedes geänderten Zählers auf den eingegebenen Wert
+        boolean unzulaessigeEingabe = false;
+        int zeile = 0;
+
+        for (int i = 0; i < zaehlername.size(); i++) {
+            if (TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText()) || alleEditTextAktuellerStand.get(i).getText().toString().equals(".")) {
+                unzulaessigeEingabe = true;
+                zeile = i;
+                i = zaehlername.size();
             }
         }
 
-        Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();                                  //Toast zur visuellen Bestätigung, bis jetzt ohne Prüfung, ob tatsächlich Werte aktualisiert wurden
-
+        if (!unzulaessigeEingabe) {
+            for (int i = 0; i < zaehlername.size(); i++) {                                                                  //für alle Zähler
+                if (!TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText()) && !alleEditTextAktuellerStand.get(i).getText().toString().equals(".")) {                                      //wenn das EditTet-Feld nicht leer ist
+                    aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));        //ändere den aktuellen Stand jedes geänderten Zählers auf den eingegebenen Wert
+                }
+            }
+            Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();                                  //Toast zur visuellen Bestätigung, bis jetzt ohne Prüfung, ob tatsächlich Werte aktualisiert wurden
+        }
+        else {
+            Toast.makeText(getContext(), String.format(getResources().getString(R.string.unzulaessigeEingabe), zaehlername.get(zeile)), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

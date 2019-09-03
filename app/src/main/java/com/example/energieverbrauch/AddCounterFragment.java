@@ -50,46 +50,47 @@ public class AddCounterFragment extends Fragment {
 
             zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
         }
-            EditTextZaehlername = v.findViewById(R.id.Zählername);
-            EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
-            textViewPreisEinheit = v.findViewById(R.id.textViewPreisEinheit);
-            EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
-            ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
+        EditTextZaehlername = v.findViewById(R.id.Zählername);
+        EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
+        textViewPreisEinheit = v.findViewById(R.id.textViewPreisEinheit);
+        EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
+        ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
 
-            EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
-            EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
+        EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
+        EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
 
-            if (zaehlernameSize == 0) {
-                EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
-                EditTextPreisProEinheit.setHint(R.string.PreisEinheitNeuerZähler);
+        if (zaehlernameSize == 0) {
+            EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
+            EditTextPreisProEinheit.setHint(R.string.PreisEinheitNeuerZähler);
 
-                textViewPreisEinheit.setText(R.string.EuroProKWh);
-            } else {
-                EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorWhiteAsStandardBackground)); //muss an Background Colour des Schemes angepasst werden
-                EditTextPreisProEinheit.setEms(0); //isClickable(false) funktioniert nicht
-            }
-            ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText())) {
-                        Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
-                    } else if (TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && zaehlernameSize == 0) {
-                        new AlertDialog.Builder(getContext())
-                                .setTitle(R.string.titlePreisNichtHinzugefuegt)
-                                .setMessage(R.string.textPreisNichtHinzugefuegt)
-                                .setPositiveButton(R.string.jetztAendern, null)
-                                .setNegativeButton(R.string.spaeterAendern, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, 0);
-                                    }
-                                })
-                                .show();
-                    } else {
-                        listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
-                    }
+            textViewPreisEinheit.setText(R.string.EuroProKWh);
+        } else {
+            EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorWhiteAsStandardBackground)); //muss an Background Colour des Schemes angepasst werden
+            EditTextPreisProEinheit.setEms(0); //isClickable(false) funktioniert nicht
+        }
+
+        ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText())) {
+                    Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && zaehlernameSize == 0) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.titlePreisNichtHinzugefuegt)
+                            .setMessage(R.string.textPreisNichtHinzugefuegt)
+                            .setPositiveButton(R.string.jetztAendern, null)
+                            .setNegativeButton(R.string.spaeterAendern, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, 0);
+                                }
+                            })
+                            .show();
+                } else {
+                    listener.dataFromAddCounterFragmentToMainActivity(zaehlername, standBeginn, preisProEinheit);
                 }
-            });
+            }
+        });
 
 
         return v;
@@ -147,18 +148,18 @@ public class AddCounterFragment extends Fragment {
     };
 
     public void getZaehlername() {
-        zaehlername = EditTextZaehlername.getText().toString();
+            zaehlername = EditTextZaehlername.getText().toString();
     }
 
     public void getStandBeginn() {
-        if (!TextUtils.isEmpty(EditTextStandBeginn.getText())) {
+        if (!TextUtils.isEmpty(EditTextStandBeginn.getText()) && !EditTextStandBeginn.getText().toString().equals(".")) {
             String standBeginnString = EditTextStandBeginn.getText().toString();
             standBeginn = Float.parseFloat(standBeginnString);
         }
     }
 
     public void getPreisProEinheit() {
-        if (!TextUtils.isEmpty(EditTextPreisProEinheit.getText())) {
+        if (!TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && !EditTextPreisProEinheit.getText().toString().equals(".")) {
             String preisProEinheitString = EditTextPreisProEinheit.getText().toString();
             preisProEinheit = Float.parseFloat(preisProEinheitString);
         }
