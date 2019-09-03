@@ -654,12 +654,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         gesamtVerbrauchJahrBerechnen();
 
+        datenLadenSettings();
+
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
         dataToDurchschnitt.putFloat("aktuellerStand", gesamtVerbrauchJahr + sharedPreferences.getFloat("gesamtVerbrauch", 0));
         dataToDurchschnitt.putFloat("vorherigerStand", sharedPreferences.getFloat("vorherigerStand", 0));
         dataToDurchschnitt.putInt("aktuellerTagImJahr", sharedPreferences.getInt("aktuellerTagImJahr", 0));
         dataToDurchschnitt.putInt("tagDerLetztenEingabe", sharedPreferences.getInt("tagDerLetztenEingabe", 0));
+        dataToDurchschnitt.putFloat("preisProEinheit", preisProEinheit);
 
         return dataToDurchschnitt;
     }

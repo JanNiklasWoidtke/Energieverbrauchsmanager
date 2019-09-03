@@ -20,6 +20,10 @@ public class DurschnittsWerte_Fragment extends Fragment {
     int aktuellerTagImJahr = 0;
     int tagDerLetztenEingabe = 0;
 
+    float preisProEinheit = 0;
+
+    float durchschnittlicherVerbrauchProTag = 0;
+
 
     @Nullable
     @Override
@@ -35,10 +39,25 @@ public class DurschnittsWerte_Fragment extends Fragment {
         vorherigerStand = dataFromMainActivity.getFloat("vorherigerStand", 0);
         aktuellerTagImJahr = dataFromMainActivity.getInt("aktuellerTagImJahr", 0);
         tagDerLetztenEingabe = dataFromMainActivity.getInt("tagDerLetztenEingabe", 0);
+        preisProEinheit = dataFromMainActivity.getFloat("preisProEinheit", 0);
+
+        if (tagDerLetztenEingabe != aktuellerTagImJahr) {
+            if (aktuellerTagImJahr < tagDerLetztenEingabe) {
+                durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (365 - tagDerLetztenEingabe + aktuellerTagImJahr);
+            } else {
+                durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (aktuellerTagImJahr - tagDerLetztenEingabe);
+            }
+        } else {
+            durchschnittlicherVerbrauchProTag = aktuellerStand - vorherigerStand;
+        }
+        durchschnittsVerbrauch.setText(String.valueOf(durchschnittlicherVerbrauchProTag));
+
+        durchschnittsKosten.setText(String.valueOf(durchschnittlicherVerbrauchProTag * preisProEinheit));
+
+
 
         return v;
     }
-
 
 
     public interface OnFragmentInteractionListener {

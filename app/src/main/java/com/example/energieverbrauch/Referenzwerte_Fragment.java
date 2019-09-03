@@ -133,6 +133,7 @@ public class Referenzwerte_Fragment extends Fragment {
         barChartReferenz.getAxisRight().setDrawAxisLine(false);
         barChartReferenz.getLegend().setEnabled(false);
         barChartReferenz.getDescription().setEnabled(false);
+        barChartReferenz.animateY(2000);
         barChartReferenz.invalidate();
     }
 

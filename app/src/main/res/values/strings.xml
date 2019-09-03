@@ -60,6 +60,10 @@
     <string name="personen">%1$d Pers.</string>
     <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte</string>
     <string name="anzahlPersonen">Anzahl Personen im Haushalt</string>
+    <string name="durchVerbrauchProTag">Durchschnittlicher Verbrauch</string>
+    <string name="durchKostenProTag">Durchschnittliche Kosten</string>
+    <string name="kWhProTag">\u0020kWh / Tag</string>
+    <string name="euroProTah">\u0020€ / Tag</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>

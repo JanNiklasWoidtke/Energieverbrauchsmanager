@@ -120,6 +120,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
         monatlicherSollIstVergleich.getLegend().setEnabled(false);
         monatlicherSollIstVergleich.getDescription().setEnabled(false);
+        monatlicherSollIstVergleich.animateY(2000);
         monatlicherSollIstVergleich.invalidate();
 
     }
