@@ -696,6 +696,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToSollIst.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
         dataToSollIst.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
         dataToSollIst.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
+        dataToSollIst.putFloat("aktuellerVerbrauch", gesamtVerbrauch);
         dataToSollIst.putInt("anzahlPersonen", anzahlPersonen);
 
         return dataToSollIst;

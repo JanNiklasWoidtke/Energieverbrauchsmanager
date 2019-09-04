@@ -32,6 +32,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     int anfangsMonatDiagramme = 0;
     int anzahlPersonen = 1;
 
+    float aktuellerVerbrauch = 0;
+
     ArrayList<Float> monatlicherGesamtVerbrauch = new ArrayList<>();
     ArrayList<Float> monatlicherMaxVerbrauch = new ArrayList<>();
 
@@ -50,7 +52,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         bundleDataToMainActivityAuslesen();
 
-        hilfsDatenErstellen();
+       // hilfsDatenErstellen();
 
         barChartDataErstellen();
 
@@ -71,10 +73,10 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         for (int i = 0; i < 12; i++) {
             if (i + anfangsMonatDiagramme - 1 < 12) {
-                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
+                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
             }
             else {
-                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
+                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
             }
         }
 
@@ -98,7 +100,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
             public String getFormattedValue(float value, AxisBase axis) {
                 String[] monate = getResources().getStringArray(R.array.monate);
                 if (value == 0) return monate[(int) value];
-                else if (value + anfangsMonatDiagramme <= monatlicherMaxVerbrauch.size()) {
+                else if (value + anfangsMonatDiagramme <= 12) {
                     return monate[(int) (value + anfangsMonatDiagramme)];
                 } else {
                     return monate[(int) (value + anfangsMonatDiagramme - 12)];
@@ -114,6 +116,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         //Chart formatieren
 
         monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
+        monatlicherSollIstVergleich.getAxisRight().setEnabled(false);
         monatlicherSollIstVergleich.getLegend().setEnabled(false);
         monatlicherSollIstVergleich.getDescription().setEnabled(false);
         monatlicherSollIstVergleich.animateY(2000);
@@ -201,6 +204,9 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
         monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
         anzahlPersonen = dataFromMainActivity.getInt("anzahlPersonen", 1);
+        aktuellerVerbrauch = dataFromMainActivity.getFloat("aktuellerVerbrauch", 0);
+        monatlicherGesamtVerbrauch.remove(monatlicherGesamtVerbrauch.size()-1);
+        monatlicherGesamtVerbrauch.add(aktuellerVerbrauch);
     }
 
 
