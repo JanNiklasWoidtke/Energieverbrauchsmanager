@@ -364,10 +364,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gesamtVerbrauchJahr = 0;
         maxVerbrauchJahr = 0;
         progressJahr = 0;
+        vorherigerStand = 0;
 
         monat = 0;
         anfangsmonat = 0;
         anfangsMonatDiagramme = 0;
+        anfangsTag = 0;
 
         preisProEinheit = 0;
         grundBetrag = 0;
@@ -378,6 +380,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         benachrichtigungenZulaessig = true;
 
         neuerMonat = true;
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("anfangsTag", anfangsTag);
+        editor.putFloat("vorherigerStand", vorherigerStand);
+        editor.apply();
 
         datenSpeichernStartFrag();
         datenSpeichernStartFragJahr();
@@ -398,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void datenSpeichernDurchschnitt(){
+    public void datenSpeichernDurchschnitt() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -694,8 +702,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenSettings(); //mögl. noch andere Settings laden
 
         dataToSollIst.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
-        dataToSollIst.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
-        dataToSollIst.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
+        if (monatlicherGesamtVerbrauch.get(0) + gesamtVerbrauch != 0) {
+            dataToSollIst.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
+            dataToSollIst.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
+        }
         dataToSollIst.putFloat("aktuellerVerbrauch", gesamtVerbrauch);
         dataToSollIst.putInt("anzahlPersonen", anzahlPersonen);
 

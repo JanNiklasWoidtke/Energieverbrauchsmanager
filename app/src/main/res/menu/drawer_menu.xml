@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_start"
             android:title="@string/Start"
-            android:icon="@drawable/ic_dvr_black_24dp"/>
+            android:icon="@drawable/ic_consumption"/>
         <item
             android:id="@+id/nav_MyCounters"
             android:title="@string/MyCounters"
@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_MyConsumption"
             android:title="@string/MyConsumption"
-            android:icon="@drawable/ic_consumption"/>
+            android:icon="@drawable/ic_assessment_black_24dp"/>
         <item
             android:id="@+id/nav_SavingTips"
             android:title="@string/SavingTips"

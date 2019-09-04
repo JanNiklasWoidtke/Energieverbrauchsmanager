@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -23,8 +25,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Soll_Ist_Vergleich_Fragment extends Fragment {
@@ -33,6 +37,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     int anzahlPersonen = 1;
 
     float aktuellerVerbrauch = 0;
+
+    boolean datenVerfuegbar = false;
 
     ArrayList<Float> monatlicherGesamtVerbrauch = new ArrayList<>();
     ArrayList<Float> monatlicherMaxVerbrauch = new ArrayList<>();
@@ -52,25 +58,40 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         bundleDataToMainActivityAuslesen();
 
-       // hilfsDatenErstellen();
+        // hilfsDatenErstellen();
 
-        barChartDataErstellen();
+        if (datenVerfuegbar) {
 
-        lineChartDataErstellen();
+            monatlicherGesamtVerbrauch.remove(monatlicherGesamtVerbrauch.size() - 1);
+            monatlicherGesamtVerbrauch.add(aktuellerVerbrauch);
 
-        combinedChartErstellen();
+            barChartDataErstellen();
 
+            lineChartDataErstellen();
+
+            combinedChartErstellen();
+        } else {
+            Toast.makeText(getContext(), R.string.nochKeineDater, Toast.LENGTH_SHORT).show();
+        }
         return v;
     }
 
     public void lineChartDataErstellen() {
+
+        if (anzahlPersonen > 3) {
+            anzahlPersonen = 3;
+        }
+
+        if (anzahlPersonen < 0){
+            anzahlPersonen = 0;
+        }
 
         float referenzVerbrauch = getResources().getIntArray(R.array.referenzwerte)[anzahlPersonen];
 
         ArrayList<Entry> entriesReferenzWerte = new ArrayList<>();
 
         int[] percentages = getResources().getIntArray(R.array.percentages);
-
+/*
         for (int i = 0; i < 12; i++) {
             if (i + anfangsMonatDiagramme - 1 < 12) {
                 entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
@@ -79,6 +100,19 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
                 entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
             }
         }
+*/
+
+
+
+        for (int i = 12; i > 0; i--) {
+            if (anfangsMonatDiagramme + i - 12 >= 0) {
+                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[anfangsMonatDiagramme + i - 12] / 10000));
+            } else {
+                entriesReferenzWerte.add(new Entry(i, referenzVerbrauch * percentages[anfangsMonatDiagramme + i] / 10000));
+            }
+        }
+
+        Collections.sort(entriesReferenzWerte, new EntryXComparator());
 
         LineDataSet lineDataSet = new LineDataSet(entriesReferenzWerte, null);
         lineDataSet.setColor(R.color.colorPrimaryDark);
@@ -93,15 +127,19 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(13);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
+        anfangsMonatDiagramme++;
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 String[] monate = getResources().getStringArray(R.array.monate);
                 if (value == 0) return monate[(int) value];
-                else if (value + anfangsMonatDiagramme <= 12) {
+                else if (value + anfangsMonatDiagramme < 12) {
                     return monate[(int) (value + anfangsMonatDiagramme)];
+                } else if (value + anfangsMonatDiagramme - 12 == 0) {
+                    return monate[12];
                 } else {
                     return monate[(int) (value + anfangsMonatDiagramme - 12)];
                 }
@@ -123,7 +161,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         monatlicherSollIstVergleich.invalidate();
 
         monatlicherSollIstVergleich.setDrawOrder(new CombinedChart.DrawOrder[]{
-                CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
         });
 
         CombinedData combinedData = new CombinedData();
@@ -142,13 +180,29 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
 
 
-        for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
+        /*for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
             if (monatlicherGesamtVerbrauch.get(i - 1) < monatlicherMaxVerbrauch.get(i - 1)) {
                 entriesBarGesamtVerbrauchUnter.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
             } else {
                 entriesBarGesamtVerbrauchUeber.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
             }
+        }*/
+
+        int stelle = 12;
+
+        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
+            if (monatlicherGesamtVerbrauch.get(i) < monatlicherMaxVerbrauch.get(i)) {
+                entriesBarGesamtVerbrauchUnter.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
+
+            } else {
+                entriesBarGesamtVerbrauchUeber.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
+            }
+            stelle--;
         }
+
+        Collections.sort(entriesBarGesamtVerbrauchUeber, new EntryXComparator());
+        Collections.sort(entriesBarGesamtVerbrauchUnter, new EntryXComparator());
+
         BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
         BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
 
@@ -161,10 +215,17 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         //MaxVerbrauch Einträge erstellen und formatieren
 
         ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
-
+/*
         for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
             entriesBarMaxVerbrauch.add(new BarEntry(i + 0.2f, monatlicherMaxVerbrauch.get(i - 1)));
         }
+*/
+        stelle = 12;
+        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
+            entriesBarMaxVerbrauch.add(new BarEntry(stelle + 0.2f, monatlicherMaxVerbrauch.get(i)));
+        }
+
+        Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());
 
         BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
         barDataSetMaxVerbrauch.setColor(Color.BLACK);
@@ -200,15 +261,19 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     public void bundleDataToMainActivityAuslesen() {
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToSollIst();
-        anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
-        monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
-        monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
-        anzahlPersonen = dataFromMainActivity.getInt("anzahlPersonen", 1);
-        aktuellerVerbrauch = dataFromMainActivity.getFloat("aktuellerVerbrauch", 0);
-        monatlicherGesamtVerbrauch.remove(monatlicherGesamtVerbrauch.size()-1);
-        monatlicherGesamtVerbrauch.add(aktuellerVerbrauch);
-    }
 
+        if (dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch") != null) {
+            datenVerfuegbar = true;
+            anfangsMonatDiagramme = dataFromMainActivity.getInt("anfangsMonatDiagramme") - 1;
+            monatlicherGesamtVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch"));
+            monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
+            anzahlPersonen = dataFromMainActivity.getInt("anzahlPersonen", 1) - 1;
+            aktuellerVerbrauch = dataFromMainActivity.getFloat("aktuellerVerbrauch", 0);
+        }
+        else {
+            datenVerfuegbar = false;
+        }
+    }
 
     public void hilfsDatenErstellen() {
         float hilfsfloat = 160;
