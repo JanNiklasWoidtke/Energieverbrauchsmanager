@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Energieverbrauch</string>
+    <string name="app_name">Energiemanager</string>
     <string name="of">\u0020kWh\u0020von\u0020</string>
     <string name="used">\u0020kWh verbraucht</string>
     <string name="MyCounters">Meine Geräte</string>
@@ -24,10 +24,10 @@
     <string name="anteilGesVerbrauch">Anteil am Verbrauch</string>
     <string name="werteAkt">Werte aktualisieren</string>
     <string name="werteAktualisiert">Werte aktualisiert!</string>
-    <string name="fehlerhafteEingabe">Füllen sie alle Felder aus!</string>
+    <string name="fehlerhafteEingabe">Bitte füllen sie alle Felder aus!</string>
     <string name="settings">Einstellungen</string>
     <string name="resetData">Reset</string>
-    <string name="textResetData">Löscht alle gemachten Eingaben und versetzt die App in den Neuinstallationszustand</string>
+    <string name="textResetData">Löscht alle Eingaben und versetzt die App in den Neuinstallationszustand</string>
     <string name="resetMessage">Sind sie sicher, dass sie alle Daten löschen wollen?</string>
     <string name="ja">Ja</string>
     <string name="nein">Nein</string>
