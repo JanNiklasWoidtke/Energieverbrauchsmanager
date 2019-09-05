@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text=""
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorTextOnBackground"
         android:textSize="28sp"
         android:layout_gravity="center"/>
 
@@ -46,7 +46,8 @@
                 android:id="@+id/prozentAnzeigeJahr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <LinearLayout
                 android:id="@+id/linearLayoutUmEditFuerFocus"
@@ -62,13 +63,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textColor="@color/colorTextOnBackground"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/of"
+                    android:textColor="@color/colorTextOnBackground"
                     android:textSize="20sp" />
 
                 <TextView
@@ -79,12 +82,14 @@
                     android:background="@null"
                     android:focusableInTouchMode="true"
                     android:gravity="end"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textColor="@color/colorTextOnBackground"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kWh"
+                    android:textColor="@color/colorTextOnBackground"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -94,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/verbraucht"
+                android:textColor="@color/colorTextOnBackground"
                 android:textSize="24sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -110,6 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/erwarteteJahresKosten"
+            android:textColor="@color/colorTextOnBackground"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -120,12 +127,14 @@
                 android:id="@+id/textViewErwarteteJahresKosten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/euro"
+                android:textColor="@color/colorTextOnBackground"
                 android:textSize="24sp" />
         </LinearLayout>
 

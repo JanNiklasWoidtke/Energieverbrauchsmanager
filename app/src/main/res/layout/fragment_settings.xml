@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/settings"
+            android:textColor="@color/colorTextOnBackground"
             android:textSize="32sp" />
 
         <LinearLayout
@@ -32,6 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/switchDarkMode"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -49,12 +51,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
-                android:gravity="end" />
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/anzahlPersonen"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -73,12 +77,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
-                android:gravity="end" />
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textPreisSettings"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -96,12 +102,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
-                android:gravity="end"/>
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textGrundBetrag"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -118,11 +126,13 @@
 
             <Button
                 android:id="@+id/buttonResetAllData"
-                style="@style/ButtonStyle"
+                android:padding="8dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@color/colorAccent"
                 android:text="@string/resetData"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_weight="1"/>
 
             <TextView
@@ -130,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:layout_marginStart="8dp"
-                android:text="@string/textResetData" />
+                android:text="@string/textResetData"
+                android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>
 

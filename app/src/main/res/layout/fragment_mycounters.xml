@@ -27,6 +27,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/MyCounters"
+                    android:textColor="@color/colorTextOnBackground"
                     android:textSize="32sp" />
 
                 <HorizontalScrollView
@@ -37,7 +38,8 @@
                         android:id="@+id/tableLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/colorTextOnBackground">
 
                     </TableLayout>
                 </HorizontalScrollView>
@@ -49,7 +51,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:text="@string/werteAkt" />
+                    android:background="@color/colorAccent"
+                    android:text="@string/werteAkt"
+                    android:textColor="@color/colorTextOnSecondary"/>
 
             </LinearLayout>
 
@@ -59,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:src="@drawable/ic_add_black_48dp"
-                android:tint="@color/colorWhiteAsStandardBackground"
-                app:backgroundTint="@color/colorPrimary" />
+                android:tint="@color/colorTextOnSecondary"
+                app:backgroundTint="@color/colorAccent" />
 
         </FrameLayout>
 

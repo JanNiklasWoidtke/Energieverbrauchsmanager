@@ -624,6 +624,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monatlicherMaximalVerbrauch = gson.fromJson(monatlicherMaxVerbrauchString, typeArrayListFloat2);
         if (monatlicherMaximalVerbrauch == null) monatlicherMaximalVerbrauch = new ArrayList<>();
 
+        gesamtVerbrauch = sharedPreferences.getFloat(("gesamtVerbrauch"), 0); // falls datenLadenStartFrag unnötig
+
         anfangsmonat = sharedPreferences.getInt("anfangsMonat", 0);
 
         anfangsMonatDiagramme = sharedPreferences.getInt("anfangsMonatDiagramme", 0);
@@ -719,6 +721,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle dataToReferenzFrag = new Bundle();
 
         datenLadenMonat();
+//        datenLadenStartFragment(); // kann vllt. gelöscht werden
 
         gesamtVerbrauchJahrBerechnen();
 
@@ -748,6 +751,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public Bundle dataToSollIst() {
         datenLadenSettings(); //mögl. noch andere Settings laden
+        datenLadenMonat();
 
         dataToSollIst.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
         if (monatlicherGesamtVerbrauch.get(0) + gesamtVerbrauch != 0) {

@@ -7,22 +7,27 @@
         <item
             android:id="@+id/nav_start"
             android:title="@string/Start"
+            android:textColor="@color/colorTextOnBackground"
             android:icon="@drawable/ic_consumption"/>
         <item
             android:id="@+id/nav_MyCounters"
             android:title="@string/MyCounters"
+            android:textColor="@color/colorAccent"
             android:icon="@drawable/ic_devices"/>
         <item
             android:id="@+id/nav_MyConsumption"
             android:title="@string/MyConsumption"
+            android:textColor="@color/colorTextOnBackground"
             android:icon="@drawable/ic_assessment_black_24dp"/>
         <item
             android:id="@+id/nav_SavingTips"
             android:title="@string/SavingTips"
+            android:textColor="@color/colorTextOnBackground"
             android:icon="@drawable/ic_lightbulb"/>
         <item
             android:id="@+id/nav_Settings"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/Settings" />
+            android:title="@string/Settings"
+            android:textColor="@color/colorTextOnBackground"/>
     </group>
 </menu>

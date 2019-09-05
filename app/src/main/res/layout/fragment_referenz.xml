@@ -7,8 +7,9 @@
         android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:text="@string/headerReferenz"
+        android:textColor="@color/colorTextOnBackground"
         android:layout_gravity="center"
         android:textSize="24sp"
         android:gravity="center"/>
@@ -17,7 +18,7 @@
         android:id="@+id/barChartReferenz"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="15"
         android:layout_marginBottom="20dp">
 
     </com.github.mikephil.charting.charts.BarChart>

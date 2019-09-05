@@ -65,7 +65,7 @@ public class AddCounterFragment extends Fragment {
 
             textViewPreisEinheit.setText(R.string.EuroProKWh);
         } else {
-            EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorWhiteAsStandardBackground)); //muss an Background Colour des Schemes angepasst werden
+            EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorBackground)); //muss an Background Colour des Schemes angepasst werden
             EditTextPreisProEinheit.setEms(0); //isClickable(false) funktioniert nicht
         }
 
