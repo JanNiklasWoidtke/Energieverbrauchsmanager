@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         darkModeWechsel = false;
 
-        darkModeAktiviert = false;
+        darkModeAktiviert = true;
         benachrichtigungenZulaessig = true;
 
         neuerMonat = true;
@@ -442,12 +442,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         datenLadenSettings();
 
-        monatsAbgleich();
+    //    monatsAbgleich();
 
         navigationView.setCheckedItem(R.id.nav_Settings);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-
+        setDarkMode();
     }
 
     public void datenSpeichernDurchschnitt() {
