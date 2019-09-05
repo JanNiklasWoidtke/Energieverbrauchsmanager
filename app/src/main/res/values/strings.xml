@@ -46,7 +46,6 @@
     <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
     <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
     <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel \nder letzten 12 Monate</string>
-    <string name="headerMyConsumptionSollIst2">der letzten 12 Monate</string>
     <string name="hintNeuesZiel">Ziel in kWh</string>
     <string name="anzahlMonate">Vergangene %1$d Monate</string>
     <string name="anzahlMonateEins">Dieser Monat</string>
@@ -58,7 +57,7 @@
     <string name="durschnittswerte">Durchschnittswerte</string>
     <string name="meinVerbrauch">Mein Verbrauch</string>
     <string name="personen">%1$d Pers.</string>
-    <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte</string>
+    <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte pro Jahr</string>
     <string name="anzahlPersonen">Anzahl Personen im Haushalt</string>
     <string name="durchVerbrauchProTag">Durchschnittlicher Verbrauch</string>
     <string name="durchKostenProTag">Durchschnittliche Kosten</string>

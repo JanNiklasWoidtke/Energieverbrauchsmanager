@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,9 +88,11 @@ public class Referenzwerte_Fragment extends Fragment {
         BarDataSet eigenerVerbrauchDataSet = new BarDataSet(barEntryEigenerVerbrauch, "");
 
         referenzDataSet.setColor(Color.GRAY);
+        referenzDataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         referenzDataSet.setDrawValues(true);
 
-        eigenerVerbrauchDataSet.setColor(R.color.colorPrimary);
+        eigenerVerbrauchDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        eigenerVerbrauchDataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         eigenerVerbrauchDataSet.setDrawValues(true);
 
         BarData barData = new BarData(referenzDataSet, eigenerVerbrauchDataSet);
@@ -99,6 +102,7 @@ public class Referenzwerte_Fragment extends Fragment {
         final int stelleEignerVerbrauchFinal = stelleEigenerVerbrauch;
 
         final XAxis xAxis = barChartReferenz.getXAxis();
+        xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0.5f);
         xAxis.setDrawGridLines(false);

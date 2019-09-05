@@ -2,11 +2,13 @@
 <resources>
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#002984</color>
-    <color name="colorAccent">#f44336</color>
+    <color name="colorAccent">#ff6e40</color>
     <color name="colorBackground">#FAFAFA</color>
     <color name="colorTextOnPrimary">#000000</color>
     <color name="colorTextOnSecondary">#000000</color>
     <color name="colorTextOnBackground">#000000</color>
     <color name="colorWhiteAsStandardBackground">#FAFAFA</color>
     <color name="ueber100ProgressColor">#B00020</color>
+    <color name="unter100ProgressColor">#00B020</color>
+    <color name="meinVerbrauch">#ff9800</color>
 </resources>

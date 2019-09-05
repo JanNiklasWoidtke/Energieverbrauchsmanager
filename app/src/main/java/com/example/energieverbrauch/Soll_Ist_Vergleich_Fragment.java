@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,8 +116,9 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         Collections.sort(entriesReferenzWerte, new EntryXComparator());
 
         LineDataSet lineDataSet = new LineDataSet(entriesReferenzWerte, null);
-        lineDataSet.setColor(R.color.colorPrimaryDark);
-        lineDataSet.setCircleColor(R.color.colorPrimaryDark);
+        lineDataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
+        lineDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
+        lineDataSet.setCircleColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
 
         lineData.addDataSet(lineDataSet);
     }
@@ -125,6 +127,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         //x-Achse formatieren
 
         final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
+        xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(13);
@@ -150,6 +153,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
         yAxis.setDrawGridLines(false);
+        yAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
 
         //Chart formatieren
 
@@ -206,10 +210,10 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
         BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
 
-        barDataSetGesamtVerbrauchUnter.setColor(Color.GREEN);
+        barDataSetGesamtVerbrauchUnter.setColor(ContextCompat.getColor(getContext(), R.color.unter100ProgressColor));
         barDataSetGesamtVerbrauchUnter.setDrawValues(false);
 
-        barDataSetGesamtVerbrauchUeber.setColor(Color.RED);
+        barDataSetGesamtVerbrauchUeber.setColor(ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor));
         barDataSetGesamtVerbrauchUeber.setDrawValues(false);
 
         //MaxVerbrauch Einträge erstellen und formatieren
@@ -228,7 +232,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());
 
         BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
-        barDataSetMaxVerbrauch.setColor(Color.BLACK);
+        barDataSetMaxVerbrauch.setColor(Color.GRAY);
         barDataSetMaxVerbrauch.setDrawValues(false);
 
         //Data-Sets der Bardata hinzufügen und formatieren

@@ -132,7 +132,7 @@
                 android:layout_gravity="center"
                 android:background="@color/colorAccent"
                 android:text="@string/resetData"
-                android:textColor="@color/colorTextOnBackground"
+                android:textColor="@color/colorTextOnSecondary"
                 android:layout_weight="1"/>
 
             <TextView
