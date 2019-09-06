@@ -16,6 +16,22 @@
         <item name="dezember">Dez</item>
     </string-array>
 
+    <string-array name="months">
+        <item name="leer"> </item>
+        <item name="januar">Jan</item>
+        <item name="februar">Feb</item>
+        <item name="maerz">Mar</item>
+        <item name="april">Apr</item>
+        <item name="mai">May</item>
+        <item name="juni">Jun</item>
+        <item name="juli">Jul</item>
+        <item name="august">Aug</item>
+        <item name="september">Sep</item>
+        <item name="oktober">Oct</item>
+        <item name="november">Nov</item>
+        <item name="dezember">Dec</item>
+    </string-array>
+
     <integer-array name="referenzwerte">
         <item name="1 Person"> 1400 </item>
         <item name="2 Person"> 2000 </item>

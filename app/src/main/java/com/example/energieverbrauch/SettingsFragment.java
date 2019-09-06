@@ -18,6 +18,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
+/**
+ * This fragment provides the opportunity for the user to tweak values and settings of the app.
+ * DarkMode can be activated.
+ * PricePerUnit and basic costs can be adjusted.
+ * The amount of people living in the household can be changed.
+ * The app can be totally reset into PreInstallationMode.
+ */
+
 public class SettingsFragment extends Fragment {
 
     public SettingsFragmentListener listener;
@@ -28,6 +36,9 @@ public class SettingsFragment extends Fragment {
     EditText editTextPersonen;
 
     public interface SettingsFragmentListener {
+        /**
+         * Enables data transfer to the "MainActivity"
+         */
         void resetData();
 
         void setPreisProEinheit(float preisProEinheit);
@@ -39,15 +50,16 @@ public class SettingsFragment extends Fragment {
         void setPersons(int persons);
     }
 
+
+    float grundBetrag = 0;
+    float preisProEinheit = 0;
+    int anzahlPersonen = 1;
+    boolean darkModeAktiviert = false;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        float grundBetrag = 0;
-        float preisProEinheit = 0;
-        int anzahlPersonen = 1;
-        boolean darkModeAktiviert = false;
 
         buttonResetData = v.findViewById(R.id.buttonResetAllData);
         switchDarkMode = v.findViewById(R.id.switchDarkMode);
@@ -55,20 +67,20 @@ public class SettingsFragment extends Fragment {
         editTextPreisProEinheit = v.findViewById(R.id.editTextPreis);
         editTextPersonen = v.findViewById(R.id.editTextPersonen);
 
-        Bundle statesFromMainActivity = getArguments();
+        getDataFromMainActivity();
 
-        if (statesFromMainActivity != null) {
-            preisProEinheit = statesFromMainActivity.getFloat("preisProEinheit", 0);
-            grundBetrag = statesFromMainActivity.getFloat("grundBetrag", 0);
-            darkModeAktiviert = statesFromMainActivity.getBoolean("darkModeAktiviert", false);
-            anzahlPersonen = statesFromMainActivity.getInt("anzahlPersonen", 1);
-        }
+        setCurrentValues();
 
-        switchDarkMode.setChecked(darkModeAktiviert);
-        editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
-        editTextGrundBetrag.setText(String.valueOf(grundBetrag));
-        editTextPersonen.setText(String.valueOf(anzahlPersonen));
+        setListeners();
 
+        return v;
+    }
+
+    public void setListeners() {
+        /**
+         * This method sets listeners for the editable Views.
+         * On interaction the corresponding method in the interface is triggered and the data is passed to the MainActivity.
+         */
         switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -149,9 +161,36 @@ public class SettingsFragment extends Fragment {
                         .show();
             }
         });
-
-        return v;
     }
+
+    public void setCurrentValues() {
+        /**
+         * This method sets the current values obtained from the "MainActivity".
+         */
+        switchDarkMode.setChecked(darkModeAktiviert);
+        editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
+        editTextGrundBetrag.setText(String.valueOf(grundBetrag));
+        editTextPersonen.setText(String.valueOf(anzahlPersonen));
+    }
+
+    public void getDataFromMainActivity() {
+        /**
+         * This method gets the set arguments of the fragment.
+         * From the created bundle, the passed values from the "MainActivity" can be accessed via the key.
+         */
+        Bundle statesFromMainActivity = getArguments();
+
+        if (statesFromMainActivity != null) {
+            preisProEinheit = statesFromMainActivity.getFloat("preisProEinheit", 0);
+            grundBetrag = statesFromMainActivity.getFloat("grundBetrag", 0);
+            darkModeAktiviert = statesFromMainActivity.getBoolean("darkModeAktiviert", false);
+            anzahlPersonen = statesFromMainActivity.getInt("anzahlPersonen", 1);
+        }
+    }
+
+    /**
+     * The following methods are necessary to pass data between fragments and activities using the interface
+     */
 
     @Override
     public void onAttach(Context context) {
@@ -169,5 +208,3 @@ public class SettingsFragment extends Fragment {
         listener = null;
     }
 }
-
-//Bei reset sind switches falsch getogglet

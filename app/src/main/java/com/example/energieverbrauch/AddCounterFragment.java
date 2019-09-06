@@ -18,22 +18,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This Fragment is used to add devices.
+ * The user enters the required data and by clicking a button adds the device to the device-list.
+ */
+
 public class AddCounterFragment extends Fragment {
 
     public AddCounterFragmentListener listener;
 
-    EditText EditTextZaehlername;
-    EditText EditTextStandBeginn;
-    EditText EditTextPreisProEinheit;
-    TextView textViewPreisEinheit;
-    Button ButtonErstelltenZaehlerHinzufuegen;
+    EditText editTextDeviceName;
+    EditText editTextInitialStanding;
+    EditText editTextPricePerUnit;
+    TextView textViewPricePerUnit;
+    Button buttonAddNewDevice;
+
+    Bundle dataFromMyCountersFrag = new Bundle();
 
     String zaehlername;
     float standBeginn = -1;
     float preisProEinheit;
     int zaehlernameSize = 0;
 
-    public interface AddCounterFragmentListener { //ermöglicht Senden an MainActivity
+    public interface AddCounterFragmentListener {
+        /**
+         * Enables data transfer to the "MainActivity"
+         * @param Zaehlername name of the added Device
+         * @param standBeginn initial standing of the added Device
+         * @param preisProEinheit price per unit of power
+         */
         void dataFromAddCounterFragmentToMainActivity(String Zaehlername, float standBeginn, float preisProEinheit);
     }
 
@@ -42,39 +55,39 @@ public class AddCounterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_addcounter, container, false);
 
-        Bundle dataFromMyCountersFrag = new Bundle();
+        editTextDeviceName = v.findViewById(R.id.Zählername);
+        editTextInitialStanding = v.findViewById(R.id.ZählerstandBeginn);
+        textViewPricePerUnit = v.findViewById(R.id.textViewPreisEinheit);
+        editTextPricePerUnit = v.findViewById(R.id.PreisProEinheit);
+        buttonAddNewDevice = v.findViewById(R.id.ErstelltenZählerHinzufügen);
 
-        dataFromMyCountersFrag = getArguments();
+        editTextDeviceName.addTextChangedListener(deviceNameTextWatcher);
+        editTextInitialStanding.addTextChangedListener(initialStandingTextWatcher);
 
-        if (dataFromMyCountersFrag != null) {
+        getDataFromMainActivity();
 
-            zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
-        }
-        EditTextZaehlername = v.findViewById(R.id.Zählername);
-        EditTextStandBeginn = v.findViewById(R.id.ZählerstandBeginn);
-        textViewPreisEinheit = v.findViewById(R.id.textViewPreisEinheit);
-        EditTextPreisProEinheit = v.findViewById(R.id.PreisProEinheit);
-        ButtonErstelltenZaehlerHinzufuegen = v.findViewById(R.id.ErstelltenZählerHinzufügen);
+        setPricePerUnitValues();
 
-        EditTextZaehlername.addTextChangedListener(zaehlernameTextWatcher);
-        EditTextStandBeginn.addTextChangedListener(zaehlerstandBeginnTextWatcher);
+        createListenerButtonAddDevice();
 
-        if (zaehlernameSize == 0) {
-            EditTextPreisProEinheit.addTextChangedListener(preisProEinheitTextWatcher);
-            EditTextPreisProEinheit.setHint(R.string.PreisEinheitNeuerZähler);
+        return v;
+    }
 
-            textViewPreisEinheit.setText(R.string.EuroProKWh);
-        } else {
-            EditTextPreisProEinheit.setBackgroundColor(getResources().getColor(R.color.colorBackground)); //muss an Background Colour des Schemes angepasst werden
-            EditTextPreisProEinheit.setEms(0); //isClickable(false) funktioniert nicht
-        }
+    public void createListenerButtonAddDevice() {
 
-        ButtonErstelltenZaehlerHinzufuegen.setOnClickListener(new View.OnClickListener() {
+        /**
+         * This method adds an OnClickListener to the button "buttonErstelltenZaehlerHinzufuegen".
+         * If all fields are filled correctly, the device is added by tranfering the entered data to the "MainActivity".
+         * If the inputs are invalid, a Toast opens up and tells the user to enter all relevant data.
+         * If no devices are registered yet and no price per unit is entered, a DialogBox opens up to tell the user how and where to enter/change the price.
+         */
+
+        buttonAddNewDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (zaehlername == null || TextUtils.isEmpty(EditTextStandBeginn.getText())) {
+                if (zaehlername == null || TextUtils.isEmpty(editTextInitialStanding.getText())) {
                     Toast.makeText(getContext(), R.string.fehlerhafteEingabe, Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && zaehlernameSize == 0) {
+                } else if (TextUtils.isEmpty(editTextPricePerUnit.getText()) && zaehlernameSize == 0) {
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.titlePreisNichtHinzugefuegt)
                             .setMessage(R.string.textPreisNichtHinzugefuegt)
@@ -91,12 +104,44 @@ public class AddCounterFragment extends Fragment {
                 }
             }
         });
-
-
-        return v;
     }
 
-    public TextWatcher preisProEinheitTextWatcher = new TextWatcher() {
+    public void setPricePerUnitValues() {
+        /**
+         * This method sets values for the pricePerUnit-Section based on, whether a device is already registered.
+         * If no devices are registered, the pricePerUnit-Section is shown with the corresponging texts and hints.
+         * If a device is already registerd, the pricePerUnit-Section is hidden.
+         */
+        if (zaehlernameSize == 0) {
+            editTextPricePerUnit.addTextChangedListener(pricePerUnitTextWatcher);
+            editTextPricePerUnit.setHint(R.string.PreisEinheitNeuerZähler);
+
+            textViewPricePerUnit.setText(R.string.EuroProKWh);
+        } else {
+            editTextPricePerUnit.setBackgroundColor(getResources().getColor(R.color.colorBackground)); //muss an Background Colour des Schemes angepasst werden
+            editTextPricePerUnit.setEms(0); //isClickable(false) funktioniert nicht
+        }
+    }
+
+    public void getDataFromMainActivity(){
+        /**
+         * This method gets the required data from the MainActivity.
+         * The arguments of the Fragment are read and put into a bundle.
+         * Out of the bundle, the data can be accessed via the keys.
+         */
+
+        dataFromMyCountersFrag = getArguments();
+
+        if (dataFromMyCountersFrag != null) {
+            zaehlernameSize = dataFromMyCountersFrag.getInt("zaehlernameSize");
+        }
+    }
+
+    /**
+     * The following TextWatchers are used to get the text inputs from the editTexts into variables.
+     */
+
+    public TextWatcher pricePerUnitTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -109,11 +154,14 @@ public class AddCounterFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            getPreisProEinheit();
+            if (!TextUtils.isEmpty(editTextPricePerUnit.getText()) && !editTextPricePerUnit.getText().toString().equals(".")) {
+                String preisProEinheitString = editTextPricePerUnit.getText().toString();
+                preisProEinheit = Float.parseFloat(preisProEinheitString);
+            }
         }
     };
 
-    public TextWatcher zaehlerstandBeginnTextWatcher = new TextWatcher() {
+    public TextWatcher initialStandingTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -126,11 +174,14 @@ public class AddCounterFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            getStandBeginn();
+            if (!TextUtils.isEmpty(editTextInitialStanding.getText()) && !editTextInitialStanding.getText().toString().equals(".")) {
+                String standBeginnString = editTextInitialStanding.getText().toString();
+                standBeginn = Float.parseFloat(standBeginnString);
+            }
         }
     };
 
-    public TextWatcher zaehlernameTextWatcher = new TextWatcher() {
+    public TextWatcher deviceNameTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -143,27 +194,13 @@ public class AddCounterFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            getZaehlername();
+            zaehlername = editTextDeviceName.getText().toString();
         }
     };
 
-    public void getZaehlername() {
-            zaehlername = EditTextZaehlername.getText().toString();
-    }
-
-    public void getStandBeginn() {
-        if (!TextUtils.isEmpty(EditTextStandBeginn.getText()) && !EditTextStandBeginn.getText().toString().equals(".")) {
-            String standBeginnString = EditTextStandBeginn.getText().toString();
-            standBeginn = Float.parseFloat(standBeginnString);
-        }
-    }
-
-    public void getPreisProEinheit() {
-        if (!TextUtils.isEmpty(EditTextPreisProEinheit.getText()) && !EditTextPreisProEinheit.getText().toString().equals(".")) {
-            String preisProEinheitString = EditTextPreisProEinheit.getText().toString();
-            preisProEinheit = Float.parseFloat(preisProEinheitString);
-        }
-    }
+    /**
+     * The following methods are necessary to pass data between fragments and activities using the interface
+     */
 
     @Override
     public void onAttach(Context context) {

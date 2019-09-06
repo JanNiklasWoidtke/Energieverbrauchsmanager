@@ -21,18 +21,19 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+
+/**
+ * This fragment displays reference values for power consumption of housholds with different amounts of people in it.
+ * The consumption of the user is graphically comparable.
+ */
 
 public class Referenzwerte_Fragment extends Fragment {
 
     BarChart barChartReferenz;
-
     ArrayList<Integer> referenzwerte = new ArrayList<>();
-
-    int eigenerVerbrauch = 0;
-
     Bundle dataFromMainActivity = new Bundle();
+    int eigenerVerbrauch = 0;
 
     @Nullable
     @Override
@@ -41,10 +42,7 @@ public class Referenzwerte_Fragment extends Fragment {
 
         barChartReferenz = v.findViewById(R.id.barChartReferenz);
 
-
-        if (((MainActivity) getActivity()).dataToReferenzwerteFragMethod() != null) {
-            dataFromMainActivity = ((MainActivity) getActivity()).dataToReferenzwerteFragMethod();
-        }
+        dataFromMainActivity = ((MainActivity) getActivity()).dataToReferenzwerteFragMethod();
 
         referenzwerteFuellen();
 
@@ -55,6 +53,11 @@ public class Referenzwerte_Fragment extends Fragment {
     }
 
     public void referenzwerteFuellen() {
+        /**
+         * This method gets the reference values from resources and fills the ArrayList containing the values.
+         * The consumption of the user is also added in.
+         * To later display the data by increasing y-values, the ArrayList is sorted from high to low.
+         */
         for (int i = 0; i < getResources().getIntArray(R.array.referenzwerte).length; i++) {
             referenzwerte.add(getResources().getIntArray(R.array.referenzwerte)[i]);
         }
@@ -67,15 +70,18 @@ public class Referenzwerte_Fragment extends Fragment {
     }
 
     public void barChartFuellen() {
+        /**
+         * This method fills up the BarChart with data.
+         * Also, the BarChart gets formatted.
+         */
         ArrayList<BarEntry> barEntries = new ArrayList<>();
 
         int stelleEigenerVerbrauch = 0;
 
         for (int i = 1; i <= referenzwerte.size(); i++) {
-            if (referenzwerte.get(i-1) != eigenerVerbrauch) {
-                barEntries.add(new BarEntry(i, referenzwerte.get(i-1)));
-            }
-            else {
+            if (referenzwerte.get(i - 1) != eigenerVerbrauch) {
+                barEntries.add(new BarEntry(i, referenzwerte.get(i - 1)));
+            } else {
                 stelleEigenerVerbrauch = i;
             }
         }
@@ -101,6 +107,8 @@ public class Referenzwerte_Fragment extends Fragment {
 
         final int stelleEignerVerbrauchFinal = stelleEigenerVerbrauch;
 
+        // Format x-Axis
+
         final XAxis xAxis = barChartReferenz.getXAxis();
         xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -113,18 +121,17 @@ public class Referenzwerte_Fragment extends Fragment {
             public String getFormattedValue(float value, AxisBase axis) {
                 if (value == 0) {
                     return "";
-                }
-                else if ((int) value < stelleEignerVerbrauchFinal) {
+                } else if ((int) value < stelleEignerVerbrauchFinal) {
                     return String.format(getResources().getString(R.string.personen), (int) value);
-                }
-                else if ((int) value == stelleEignerVerbrauchFinal) {
+                } else if ((int) value == stelleEignerVerbrauchFinal) {
                     return getResources().getString(R.string.meinVerbrauch);
-                }
-                else {
+                } else {
                     return String.format(getResources().getString(R.string.personen), (int) value - 1);
                 }
             }
         });
+
+        // Format y-Axis
 
         final YAxis yAxis = barChartReferenz.getAxisLeft();
         yAxis.setAxisMinimum(0);
@@ -141,8 +148,6 @@ public class Referenzwerte_Fragment extends Fragment {
         barChartReferenz.invalidate();
     }
 
-
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }

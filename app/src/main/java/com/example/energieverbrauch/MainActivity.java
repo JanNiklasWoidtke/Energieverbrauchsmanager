@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<String> zaehlername;
     ArrayList<Float> standBeginn;
     ArrayList<Float> aktuellerStand;
-    ArrayList<Float> anteilJedesZaehlers;
     ArrayList<Float> monatlicherGesamtVerbrauch;
     ArrayList<Float> monatlicherMaximalVerbrauch;
 
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         zaehlername = new ArrayList<>();
         standBeginn = new ArrayList<>();
         aktuellerStand = new ArrayList<>();
-        anteilJedesZaehlers = new ArrayList<>();
         monatlicherGesamtVerbrauch = new ArrayList<>();
         monatlicherMaximalVerbrauch = new ArrayList<>();
 
@@ -147,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setDarkMode() {
+        /**
+         * This method is called, when the state of the switch "Dark Mode" is changed. The state of the boolean "darkModeAktiviert" gets toggled.
+         * The activity is restarted with the updated color scheme.
+         */
 
         darkModeAktiviert = !darkModeAktiviert;
         // datenSpeichernSettings();
@@ -169,6 +171,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setMode(){
+        /**
+         * This method is called when the activity gets started.
+         * The boolean "darkModeAktiviert" is loaded from SharedPreferences and then used to determine the color scheme of the app.
+         */
         datenLadenSettings();
 
         if(darkModeAktiviert){
@@ -181,6 +187,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void anfangsTagAbgleich() {
+        /**
+         * This method is called whenever the activity starts.
+         * The integer "anfangsTag" indicates the day in the year, when the app was first started.
+         * If the app is started for the very first time, "anfangstag" is set by using the Calendar of android.
+         * The value is saved in SharedPreferences for later usage.
+         */
         if (anfangsTag == 0) {
             anfangsTag = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
             SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
@@ -191,12 +203,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void erstenTagSetzen() {
+        /**
+         * This method is called whenever the activity starts.
+         * The integer "aktuellerTagImJahr" indicates the current day of the year and is set using the Calendar of android.
+         */
         if (aktuellerTagImJahr == 0) {
             aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         }
     }
 
     public void monatsAbgleich() {
+        /**
+         * This method is called whenever the activity starts.
+         * It compares the currently saved value of the integer "monat" to the actual current month of the year.
+         * calendar.get(Calendar.Month) returns the current month as an integer, while january corresponds to 0. So 1 is added to get a more usual format of the month.
+         * The boolean "neuerMonat" is set to true, so a new DialogBox asking to enter a new usage objective is opened when starting the "StartFragment".
+         * If the app is started for the first time, the values "monat", "anfangsmonat" and "anfangsMonatDiagramme" are set to the current month.
+         * If the app is already in use, only the current month in "monat" gets updated, while the "anfangsMonatDiagramme" variable is increased by one.
+         * All values are saved in SharedPreferences.
+         */
 
         datenLadenMonat();
 
@@ -221,7 +246,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) { //öffnet verschiedene Fragments, je nach Klick im NavDrawer
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        /**
+         * This method is the navigation center of the app.
+         * Whenever am item of the NavigationDrawer is selected, the switch-case determines what fragment to open.
+         * For specific fragments arguments are set by using bundles to distrubute data from the MainActivity to the respective fragments.
+         * After selecting a menu-item, the drawer is closed with an animation to the left of the screen.
+         */
         switch (item.getItemId()) {
             case R.id.nav_start:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
@@ -242,12 +273,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SettingsFragment).commit();
                 break;
         }
-        drawer.closeDrawer(GravityCompat.START); //nachdem ein Menüpunkt geklickt wurde, schließt sich das Menü nach links(START)
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void dataFromStartFragmentToMainActivity(float maxVerbrauchSF) { //liest Wert aus EditText_StartFragment ab
+        /**
+         * This method is called via the interface of the StartFragment.
+         * The usage objective set by the user is added to an ArrayList containing all the objectives.
+         * The current usage objective is set in the variable "MaxVerbrauch".
+         * The values are saved in SharedPreferences.
+         */
         datenLadenMonat();
         monatlicherMaximalVerbrauch.add(maxVerbrauchSF);
         datenSpeichernMonatlich();
@@ -258,10 +295,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, ArrayList<Float> anteilJedesZaehlersMCF, float gesamtVerbrauchMCF) {
+    public void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStandMCF, float gesamtVerbrauchMCF) {
+        /**
+         * This method is called via the interface of the MyCountersFragment.
+         * Values for "aktuellerTagImJahr" and "tagDerLetzenStandAenderung" are set and later used for calculating the average daily usage between two inputs.
+         * For this "vorherigerStand" also is calculated by summing up the ArrayList containing the monthly standings of powermeters.
+         * Afterwards the ArrayLists "aktuellerStand" and "anteilJedesZaehlers" and the variable "gesamtVerbrauch" are cleared and then set to the values transfered from the MyCountersFragment.
+         * A new MyCountersFragment is constructed, so that the table containing the information about the devices is newly constructed with the updated values.
+         * The arguments for the fragment are set by using a bundle and the "MyCountersFragment" is opened by the FragmentManager.
+         */
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
 
-        sharedPreferences.getInt("aktuellerTagImJahr", 0);
+        aktuellerTagImJahr = sharedPreferences.getInt("aktuellerTagImJahr", 0);
 
         tagDerLetzenStandAenderung = aktuellerTagImJahr;
         aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
@@ -277,9 +322,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         aktuellerStand.clear();
         aktuellerStand = aktuellerStandMCF;
 
-        anteilJedesZaehlers.clear();
-        anteilJedesZaehlers = anteilJedesZaehlersMCF;
-
         datenLadenStartFragment();
 
         gesamtVerbrauch = gesamtVerbrauchMCF;
@@ -294,12 +336,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void dataFromAddCounterFragmentToMainActivity(String zaehlernameACF, float standBeginnACF, float preisProEinheitACF) {
+        /**
+         * This method is called via the interface of the "AddCounterFragment".
+         * The parameters of a newly created device are transfered to the corresponding variables in the "MainActivity".
+         * The price of a unit is only set, when no devices are implemented.
+         * The data is saved using SharedPreferences.
+         * The fragment "MyCountersFragment" is opened by the FragmentManager.
+         */
         if (zaehlername.size() == 0) {
             preisProEinheit = preisProEinheitACF;
         }
         zaehlername.add(zaehlernameACF);
         standBeginn.add(standBeginnACF);
-        aktuellerStand.add(standBeginnACF);         //wird ein neuer Zähler hinzugefügt, ist der aktuelle Stand der Anfangsstand
+        aktuellerStand.add(standBeginnACF);
         anzahlZaehler++;
         datenSpeichernMyCounters();
         bundleDataToMyCountersFragFuellen();
@@ -307,6 +356,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void bundleDataToStartFragFuellen() {
+        /**
+         * This method fills the bundle for the "StartFragment" with the required data.
+         * The bundle is set as the arguments of the "StartFragment".
+         */
         datenLadenStartFragment();
         datenLadenSettings();
         dataToStartFrag.putFloat("maxVerbrauch", maxVerbrauch);
@@ -317,16 +370,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void bundleDataToMyCountersFragFuellen() {
+        /**
+         * This method fills the bundle for the "MyCountersFragment" with the required data.
+         * The bundle is set as the arguments of the "MyCountersFragment".
+         */
         datenLadenMyCounters();
         dataToMyCountersFrag.putStringArrayList("zaehlername", zaehlername);
         dataToMyCountersFrag.putInt("anzahlZaehler", anzahlZaehler);
         dataToMyCountersFrag.putFloatArray("standBeginn", floatArrayListToFloatArray(standBeginn));
         dataToMyCountersFrag.putFloatArray("aktuellerStand", floatArrayListToFloatArray(aktuellerStand));
-        dataToMyCountersFrag.putFloatArray("anteilJedesZaehlers", floatArrayListToFloatArray(anteilJedesZaehlers));
         MyCountersFragment.setArguments(dataToMyCountersFrag);
     }
 
     public void bundleDataToSettingsFragFuellen() {
+        /**
+         * This method fills the bundle for the "SettingsFragment" with the required data.
+         * The bundle is set as the arguments of the "SettingsFragment".
+         */
         datenLadenSettings();
         statesToSettingsFrag.putBoolean("benachrichtigungenZulaessig", benachrichtigungenZulaessig);
         statesToSettingsFrag.putBoolean("darkModeAktiviert", darkModeAktiviert);
@@ -338,17 +398,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public float[] floatArrayListToFloatArray(ArrayList<Float> arrayListFloat) {
+        /**
+         * This method transforms an ArrayList<Float> to a C-Style Float[].
+         */
         float[] FloatArray = new float[arrayListFloat.size()];
         for (int i = 0; i < arrayListFloat.size(); i++) {
             FloatArray[i] = arrayListFloat.get(i);
         }
 
-        dataToMyCountersFrag.putInt("arrayLaenge", arrayListFloat.size());
-
         return FloatArray;
     }
 
     public void setPersons(int persons) {
+        /**
+         * This method is called via the interface of the "SettingsFragment".
+         * The number of persons in the household is set and saved in SharedPreferences.
+         */
         anzahlPersonen = persons;
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -357,21 +422,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setGrundBetrag(float grundBetragSF) {
+        /**
+         * This method is called via the interface of the "SettingsFragment".
+         * The basic price "grundBetrag" is set and saved in SharedPreferences.
+         */
         grundBetrag = grundBetragSF;
         datenSpeichernSettings();
     }
 
     public void setPreisProEinheit(float preisProEinheitSF) {
+        /**
+         * This method is called via the interface of the "SettingsFragment".
+         * The price per unit "preisProEinheit" is set and saved in SharedPreferences.
+         */
         preisProEinheit = preisProEinheitSF;
         datenSpeichernSettings();
     }
 
     @Override
-    public void onBackPressed() { //sorgt dafür, dass bei klicken auf zurück bei geöffnetem Menü nicht die App, sondern das Menü geschlossen wird
+    public void onBackPressed() {
+        /**
+         * This method overrides "OnBackPressed()".
+         * If the NavigationDrawer is open, pressing back closes it.
+         * Else, the "TabContainerFragmentStart" containing the "StartFragment" is opened.
+         * The checked item in the NavigationDrawer is set to start.
+         */
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            // super.onBackPressed();
             datenLadenStartFragment();
             bundleDataToStartFragFuellen();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
@@ -379,16 +457,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     public void resetData() {
+        /**
+         * This method is called via the interface of the "SettingsFragment".
+         * All data is reset to the default values and saved in SharedPreferences.
+         * A new "SettingsFragment" is opened and the method "setDarkMode()" is called.
+         */
         zaehlername.clear();
         standBeginn.clear();
         aktuellerStand.clear();
-        anteilJedesZaehlers.clear();
         monatlicherGesamtVerbrauch.clear();
         monatlicherMaximalVerbrauch.clear();
 
@@ -442,202 +519,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setDarkMode();
     }
 
-    public void datenSpeichernDurchschnitt() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putInt("aktuellerTagImJahr", aktuellerTagImJahr);
-        editor.putInt("tagDerLetztenEingabe", tagDerLetzenStandAenderung);
-
-        editor.apply();
-    }
-
-    public void datenSpeichernStartFrag() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        //Daten von Start Fragment
-        editor.putFloat("maxVerbrauch", maxVerbrauch);
-        editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
-
-        editor.apply();
-    }
-
-    public void datenSpeichernStartFragJahr() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        //Daten von Start Fragment Jahr
-        editor.putFloat("maxVerbrauchJahr", maxVerbrauchJahr);
-        editor.putFloat("gesamtVerbrauchJahr", gesamtVerbrauchJahr);
-        editor.putInt("progressJahr", progressJahr);
-
-        editor.apply();
-    }
-
-    public void datenSpeichernMyCounters() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-
-        //Daten von MyCounters Fragment
-        String zaehlernameString = gson.toJson(zaehlername);
-        editor.putString("zaehlername", zaehlernameString);
-
-        String standBeginnString = gson.toJson(standBeginn);
-        editor.putString("standBeginn", standBeginnString);
-
-        String aktuellerStandString = gson.toJson(aktuellerStand);
-        editor.putString("aktuellerStand", aktuellerStandString);
-
-        String anteilJedesZaehlersString = gson.toJson(anteilJedesZaehlers);
-        editor.putString("anteilJedesZaehlers", anteilJedesZaehlersString);
-
-        editor.putFloat("preisProEinheit", preisProEinheit);
-
-        editor.putFloat("vorherigerStand", vorherigerStand);
-
-        editor.apply();
-    }
-
-    public void datenSpeichernMonatlich() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-
-        //Monatliche Daten
-        String monatlicherGesamtVerbrauchString = gson.toJson(monatlicherGesamtVerbrauch);
-        editor.putString("monatlicherGesamtVerbrauch", monatlicherGesamtVerbrauchString);
-
-        String monatlicherMaxVerbrauchString = gson.toJson(monatlicherMaximalVerbrauch);
-        editor.putString("monatlicherMaxVerbrauch", monatlicherMaxVerbrauchString);
-
-        editor.putInt("monat", monat);
-
-        editor.putInt("anfangsMonat", anfangsmonat);
-
-        editor.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
-
-        //Anwenden
-        editor.apply();
-    }
-
-    public void datenSpeichernSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putBoolean("benachrichtigungenZulaessig", benachrichtigungenZulaessig);
-
-        editor.putBoolean("darkModeAktiviert", darkModeAktiviert);
-
-        editor.putFloat("grundBetrag", grundBetrag);
-
-        editor.putFloat("preisProEinheit", preisProEinheit);
-
-        editor.putInt("anzahlPersonen", anzahlPersonen);
-
-        editor.putBoolean("darkModeWechsel", darkModeWechsel);
-
-        editor.apply();
-    }
-
-    public void datenLadenSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-
-        benachrichtigungenZulaessig = sharedPreferences.getBoolean("benachrichtigungenZulaessig", true);
-
-        darkModeAktiviert = sharedPreferences.getBoolean("darkModeAktiviert", false);
-
-        preisProEinheit = sharedPreferences.getFloat("preisProEinheit", 0);
-
-        grundBetrag = sharedPreferences.getFloat("grundBetrag", 0);
-
-        anzahlPersonen = sharedPreferences.getInt("anzahlPersonen", 1);
-
-        darkModeWechsel = sharedPreferences.getBoolean("darkModeWechsel", false);
-    }
-
-    public void datenLadenMyCounters() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-
-        String zaehlernameString = sharedPreferences.getString("zaehlername", null);
-        Type typeArrayListString = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        zaehlername = gson.fromJson(zaehlernameString, typeArrayListString);
-        if (zaehlername == null) zaehlername = new ArrayList<>();
-
-        String standBeginnString = sharedPreferences.getString("standBeginn", null);
-        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
-        }.getType();
-        standBeginn = gson.fromJson(standBeginnString, typeArrayListFloat);
-        if (standBeginn == null) standBeginn = new ArrayList<>();
-
-        String aktuellerStandString = sharedPreferences.getString("aktuellerStand", null);
-        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
-        }.getType();
-        aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat2);
-        if (aktuellerStand == null) aktuellerStand = new ArrayList<>();
-
-        String anteilJedesZaehlersString = sharedPreferences.getString("anteilJedesZaehlers", null);
-        Type typeArrayListFloat3 = new TypeToken<ArrayList<Float>>() {
-        }.getType();
-        anteilJedesZaehlers = gson.fromJson(anteilJedesZaehlersString, typeArrayListFloat3);
-        if (anteilJedesZaehlers == null) anteilJedesZaehlers = new ArrayList<>();
-
-        preisProEinheit = sharedPreferences.getFloat("preisProEinheit", 0);
-
-        anzahlZaehler = zaehlername.size();
-    }
-
-    public void datenLadenStartFragment() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-
-        maxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
-        gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
-    }
-
-    public void datenLadenMonat() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-
-        monat = sharedPreferences.getInt("monat", 0);
-
-        Gson gson = new Gson();
-
-        String monatlicherGesamtVerbrauchString = sharedPreferences.getString("monatlicherGesamtVerbrauch", null);
-        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
-        }.getType();
-        monatlicherGesamtVerbrauch = gson.fromJson(monatlicherGesamtVerbrauchString, typeArrayListFloat);
-        if (monatlicherGesamtVerbrauch == null) monatlicherGesamtVerbrauch = new ArrayList<>();
-
-        String monatlicherMaxVerbrauchString = sharedPreferences.getString("monatlicherMaxVerbrauch", null);
-        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
-        }.getType();
-        monatlicherMaximalVerbrauch = gson.fromJson(monatlicherMaxVerbrauchString, typeArrayListFloat2);
-        if (monatlicherMaximalVerbrauch == null) monatlicherMaximalVerbrauch = new ArrayList<>();
-
-        gesamtVerbrauch = sharedPreferences.getFloat(("gesamtVerbrauch"), 0); // falls datenLadenStartFrag unnötig
-
-        anfangsmonat = sharedPreferences.getInt("anfangsMonat", 0);
-
-        anfangsMonatDiagramme = sharedPreferences.getInt("anfangsMonatDiagramme", 0);
-    }
-
-    public void monatlichesSpeichern() {
-
-        monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
-        gesamtVerbrauch = 0;
-
-        datenSpeichernMonatlich();
-    }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        /**
+         * This method has to be implemented to use TabLayouts.
+         */
     }
 
     public void gesamtVerbrauchJahrBerechnen() {
-        //Berechnet den Gesamtverbrauch der letzten 12 Monate, es sei denn, es sind weniger als 12 Monatsdaten vorhanden. Dann werden nur vorhandene summiert
+        /**
+         * This method calculates the usage of the previous 12 months.
+         * If less than 12 monthly values are available, only those are summed up.
+         */
 
         gesamtVerbrauchJahr = 0;
 
@@ -653,7 +546,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void maxVerbrauchJahrBerechnen() {
-        //Berechnet den Gesamtverbrauch der letzten 12 Monate, es sei denn, es sind weniger als 12 Monatsdaten vorhanden. Dann werden nur vorhandene summiert
+        /**
+         * This method calculates the sum of the usage objectives of the previous 12 months.
+         * If less than 12 monthly values are available, only those are summed up.
+         */
 
         maxVerbrauchJahr = 0;
 
@@ -667,6 +563,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             zaehler++;
         }
     }
+
+    /**
+     * The following methods are used to transfer bundles to Fragments opened by TabLayouts.
+     * For a TabLayout to work, we need to call a new instance of it. Therefore set arguments are lost.
+     * To yet transfer data to the fragments, methods returning the required bundles are used.
+     */
 
     public Bundle dataToStartFragMethod() {
         datenLadenStartFragment();
@@ -754,6 +656,190 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToSollIst.putInt("anzahlPersonen", anzahlPersonen);
 
         return dataToSollIst;
+    }
+
+    /**
+     * The following methods take care of saving and loading data using SharedPreferences.
+     */
+
+    public void datenSpeichernDurchschnitt() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("aktuellerTagImJahr", aktuellerTagImJahr);
+        editor.putInt("tagDerLetztenEingabe", tagDerLetzenStandAenderung);
+
+        editor.apply();
+    }
+
+    public void datenSpeichernStartFrag() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //Daten von Start Fragment
+        editor.putFloat("maxVerbrauch", maxVerbrauch);
+        editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+
+        editor.apply();
+    }
+
+    public void datenSpeichernStartFragJahr() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //Daten von Start Fragment Jahr
+        editor.putFloat("maxVerbrauchJahr", maxVerbrauchJahr);
+        editor.putFloat("gesamtVerbrauchJahr", gesamtVerbrauchJahr);
+        editor.putInt("progressJahr", progressJahr);
+
+        editor.apply();
+    }
+
+    public void datenSpeichernMyCounters() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        //Daten von MyCounters Fragment
+        String zaehlernameString = gson.toJson(zaehlername);
+        editor.putString("zaehlername", zaehlernameString);
+
+        String standBeginnString = gson.toJson(standBeginn);
+        editor.putString("standBeginn", standBeginnString);
+
+        String aktuellerStandString = gson.toJson(aktuellerStand);
+        editor.putString("aktuellerStand", aktuellerStandString);
+
+        editor.putFloat("preisProEinheit", preisProEinheit);
+
+        editor.putFloat("vorherigerStand", vorherigerStand);
+
+        editor.apply();
+    }
+
+    public void datenSpeichernMonatlich() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        //Monatliche Daten
+        String monatlicherGesamtVerbrauchString = gson.toJson(monatlicherGesamtVerbrauch);
+        editor.putString("monatlicherGesamtVerbrauch", monatlicherGesamtVerbrauchString);
+
+        String monatlicherMaxVerbrauchString = gson.toJson(monatlicherMaximalVerbrauch);
+        editor.putString("monatlicherMaxVerbrauch", monatlicherMaxVerbrauchString);
+
+        editor.putInt("monat", monat);
+
+        editor.putInt("anfangsMonat", anfangsmonat);
+
+        editor.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
+
+        //Anwenden
+        editor.apply();
+    }
+
+    public void datenSpeichernSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("benachrichtigungenZulaessig", benachrichtigungenZulaessig);
+
+        editor.putBoolean("darkModeAktiviert", darkModeAktiviert);
+
+        editor.putFloat("grundBetrag", grundBetrag);
+
+        editor.putFloat("preisProEinheit", preisProEinheit);
+
+        editor.putInt("anzahlPersonen", anzahlPersonen);
+
+        editor.putBoolean("darkModeWechsel", darkModeWechsel);
+
+        editor.apply();
+    }
+
+    public void datenLadenSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        benachrichtigungenZulaessig = sharedPreferences.getBoolean("benachrichtigungenZulaessig", true);
+
+        darkModeAktiviert = sharedPreferences.getBoolean("darkModeAktiviert", false);
+
+        preisProEinheit = sharedPreferences.getFloat("preisProEinheit", 0);
+
+        grundBetrag = sharedPreferences.getFloat("grundBetrag", 0);
+
+        anzahlPersonen = sharedPreferences.getInt("anzahlPersonen", 1);
+
+        darkModeWechsel = sharedPreferences.getBoolean("darkModeWechsel", false);
+    }
+
+    public void datenLadenMyCounters() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        String zaehlernameString = sharedPreferences.getString("zaehlername", null);
+        Type typeArrayListString = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        zaehlername = gson.fromJson(zaehlernameString, typeArrayListString);
+        if (zaehlername == null) zaehlername = new ArrayList<>();
+
+        String standBeginnString = sharedPreferences.getString("standBeginn", null);
+        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        standBeginn = gson.fromJson(standBeginnString, typeArrayListFloat);
+        if (standBeginn == null) standBeginn = new ArrayList<>();
+
+        String aktuellerStandString = sharedPreferences.getString("aktuellerStand", null);
+        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        aktuellerStand = gson.fromJson(aktuellerStandString, typeArrayListFloat2);
+        if (aktuellerStand == null) aktuellerStand = new ArrayList<>();
+
+        preisProEinheit = sharedPreferences.getFloat("preisProEinheit", 0);
+
+        anzahlZaehler = zaehlername.size();
+    }
+
+    public void datenLadenStartFragment() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        maxVerbrauch = sharedPreferences.getFloat("maxVerbrauch", 0);
+        gesamtVerbrauch = sharedPreferences.getFloat("gesamtVerbrauch", 0);
+    }
+
+    public void datenLadenMonat() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+
+        monat = sharedPreferences.getInt("monat", 0);
+
+        Gson gson = new Gson();
+
+        String monatlicherGesamtVerbrauchString = sharedPreferences.getString("monatlicherGesamtVerbrauch", null);
+        Type typeArrayListFloat = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        monatlicherGesamtVerbrauch = gson.fromJson(monatlicherGesamtVerbrauchString, typeArrayListFloat);
+        if (monatlicherGesamtVerbrauch == null) monatlicherGesamtVerbrauch = new ArrayList<>();
+
+        String monatlicherMaxVerbrauchString = sharedPreferences.getString("monatlicherMaxVerbrauch", null);
+        Type typeArrayListFloat2 = new TypeToken<ArrayList<Float>>() {
+        }.getType();
+        monatlicherMaximalVerbrauch = gson.fromJson(monatlicherMaxVerbrauchString, typeArrayListFloat2);
+        if (monatlicherMaximalVerbrauch == null) monatlicherMaximalVerbrauch = new ArrayList<>();
+
+        gesamtVerbrauch = sharedPreferences.getFloat(("gesamtVerbrauch"), 0); // falls datenLadenStartFrag unnötig
+
+        anfangsmonat = sharedPreferences.getInt("anfangsMonat", 0);
+
+        anfangsMonatDiagramme = sharedPreferences.getInt("anfangsMonatDiagramme", 0);
+    }
+
+    public void monatlichesSpeichern() {
+
+        monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
+        gesamtVerbrauch = 0;
+
+        datenSpeichernMonatlich();
     }
 
 }

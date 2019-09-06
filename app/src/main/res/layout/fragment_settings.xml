@@ -7,7 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20sp">
+        android:padding="20sp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextPersonen"
@@ -69,7 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextPreis"
@@ -94,7 +100,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextGrundBetrag"

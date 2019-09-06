@@ -6,6 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+/**
+ * This class is used to switch between tabs in a tablayout.
+ */
+
 public class PagerAdapterStats extends FragmentStatePagerAdapter {
 
     int anzahlTabs;
@@ -19,6 +23,10 @@ public class PagerAdapterStats extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        /**
+         * This method returns the chosen fragment based on the int position.
+         * By swiping between fragments, position is set.
+         */
         switch (position) {
             case 0:
                 return new DurschnittsWerte_Fragment();
@@ -39,6 +47,9 @@ public class PagerAdapterStats extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+        /**
+         * This method sets the tabtitles of the tabs from resource strings.
+         */
         String[] tabTitles = new String[]{context.getResources().getString(R.string.durschnittswerte), context.getResources().getString(R.string.sollIst), context.getResources().getString(R.string.referenzwerte)};
         return tabTitles[position];
     }

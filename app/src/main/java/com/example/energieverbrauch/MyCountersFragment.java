@@ -23,6 +23,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * In this fragment the devices with the corresponding device-information are displayed in a table.
+ * A fragment to add a new device can be entered via a button.
+ */
+
 public class MyCountersFragment extends Fragment {
 
     public MyCountersFragmentListener listener;
@@ -41,24 +46,28 @@ public class MyCountersFragment extends Fragment {
     int anzahlZaehler = 0;
     float gesamtVerbrauch = 0;
 
-    ArrayList<String> zaehlername = new ArrayList<>();                      //Liste enthält alle Zählernamen
-    ArrayList<Float> standBeginn = new ArrayList<>();                       //Liste enthält die Zählerstande beim ersten Eintragen
-    ArrayList<Float> aktuellerStand = new ArrayList<>();                    //Liste enthält die aktuell eingegebenen Zählerstände
-    ArrayList<Float> verbrauchJedesZaehlers = new ArrayList<>();            //Liste enthält die aktuell verbrauchte Menge jedes Zählers
-    ArrayList<Float> anteilJedesZaehlers = new ArrayList<>();               //Liste enthält die aktuellen Anteil jedes Zaehlers am Gesamtverbrauch
+    ArrayList<String> zaehlername = new ArrayList<>();
+    ArrayList<Float> standBeginn = new ArrayList<>();
+    ArrayList<Float> aktuellerStand = new ArrayList<>();
+    ArrayList<Float> verbrauchJedesZaehlers = new ArrayList<>();
+    ArrayList<Float> anteilJedesZaehlers = new ArrayList<>();
 
-    ArrayList<Integer> headerArray = new ArrayList<>();                     //Liste enthält Überschriften der Tabelle
-    ArrayList<EditText> alleEditTextAktuellerStand = new ArrayList<>();     //Liste enthält alle EditText-Felder in denen der aktuelle Stand des jeweiligen Zählers eingegeben werden kann
+    ArrayList<Integer> headerArray = new ArrayList<>();
+    ArrayList<EditText> alleEditTextAktuellerStand = new ArrayList<>();
 
-    Bundle dataFromMainAcitivity = new Bundle();                            //Bundle enthält die für das Fragment notwendigen Daten, die aus der MainActivity verteilt werden
+    Bundle dataFromMainAcitivity = new Bundle();
     Bundle dataToAddCountersFrag = new Bundle();
 
     Fragment AddCounterFragment = new AddCounterFragment();
 
-    public interface MyCountersFragmentListener { //ermöglicht Datenübertragung in die MainActivity aus dem Fragment
-        void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStand,
-                                              ArrayList<Float> anteilJedesZaehlers,
-                                              float gesamtverbrauch); //übergibt die aktuellen Zählerstände und Anteile an die MainActivity
+    public interface MyCountersFragmentListener {
+        /**
+         * Enables data transfer to the "MainActivity"
+         *
+         * @param aktuellerStand  ArrayList containing the current standings of all devices
+         * @param gesamtverbrauch Sum of the consumption
+         */
+        void dataFromMyCountersToMainActivity(ArrayList<Float> aktuellerStand, float gesamtverbrauch);
     }
 
     @Nullable
@@ -66,26 +75,23 @@ public class MyCountersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mycounters, container, false);
 
-        ButtonAddCounter = v.findViewById(R.id.ButtonZählerHinzufügen);     //Button zum Hinzufügen eines neuen Zählers, führt in anderes Fragment
-        ButtonWerteAkt = v.findViewById(R.id.buttonWerteAkt);               //Button zum aktualisieren der Zählerstände
-        tableLayout = v.findViewById(R.id.tableLayout);                     //Tabellen-Layout zum Darstellen der Zählerinformationen
+        ButtonAddCounter = v.findViewById(R.id.ButtonZählerHinzufügen);
+        ButtonWerteAkt = v.findViewById(R.id.buttonWerteAkt);
+        tableLayout = v.findViewById(R.id.tableLayout);
 
         ButtonAddCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bundleDataToAddCountersFragFuellen();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, AddCounterFragment).commit(); //wird der Button gedrückt, wird das Fragment zum erstellen eines Zählers aufgerufen
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, AddCounterFragment).commit();
             }
         });
 
-        dataFromMainAcitivity = getArguments(); //Argumente aus dem Bundle werden für das Fragment gesetzt, damit Daten entnommen werden können
+        getDataFromMainActivity();
 
-        if (dataFromMainAcitivity != null) { //wenn Argumente übergeben wurden...
-            bundleAuslesen();
-            gesamtVerbrauchBerechnen();
-            anteilVerbrauchBerechnen();
-            zaehlerTabelleErstellen();
-        }
+        gesamtVerbrauchBerechnen();
+        anteilVerbrauchBerechnen();
+        zaehlerTabelleErstellen();
 
         if (zaehlername.size() == 0) {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddCounterFragment()).commit();
@@ -102,7 +108,7 @@ public class MyCountersFragment extends Fragment {
                     anteilVerbrauchBerechnen();
                 }
 
-                listener.dataFromMyCountersToMainActivity(aktuellerStand, anteilJedesZaehlers, gesamtVerbrauch);        //aktueller Stand wird an MainActivity übergeben
+                listener.dataFromMyCountersToMainActivity(aktuellerStand, gesamtVerbrauch);        //aktueller Stand wird an MainActivity übergeben
             }
         });
 
@@ -110,25 +116,35 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void bundleDataToAddCountersFragFuellen() {
+        /**
+         * This methods transfers the number of already added devices to the "AddCounterFragment" using bundles.
+         */
         AddCounterFragment = new AddCounterFragment();
         dataToAddCountersFrag.putInt("zaehlernameSize", zaehlername.size());
         AddCounterFragment.setArguments(dataToAddCountersFrag);
     }
 
     public void gesamtVerbrauchBerechnen() {
+        /**
+         * This method calculates the total consumption of all devices.
+         * Doing so, first the individual consumption of every device is calculated and added to an ArrayList for further usage.
+         */
         verbrauchJedesZaehlers.clear();
-        for (int i = 0; i < aktuellerStand.size(); i++) { //füllen der Liste mit dem Verbrauch jeden Zählers
-            verbrauchJedesZaehlers.add(aktuellerStand.get(i) - standBeginn.get(i));              //Verbrauch = aktueller Stand - Anfangsstand
+        for (int i = 0; i < aktuellerStand.size(); i++) {
+            verbrauchJedesZaehlers.add(aktuellerStand.get(i) - standBeginn.get(i));
         }
 
-        gesamtVerbrauch = 0;                                                                        //Rücksetzen des Gesamtverbrauchs auf 0 vor Neuberechnung
+        gesamtVerbrauch = 0;
 
-        for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {                                   //Berechnung des Gesamtverbrauchs
-            gesamtVerbrauch += verbrauchJedesZaehlers.get(i);                                       //Gesamtverbrauch = Summe der Verbrauchsstände jedes Zählers
+        for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {
+            gesamtVerbrauch += verbrauchJedesZaehlers.get(i);
         }
     }
 
     public void anteilVerbrauchBerechnen() {
+        /**
+         * This method calculates the proportion of the consumption of every device.
+         */
         anteilJedesZaehlers.clear();
         for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {
             if (gesamtVerbrauch != 0) {
@@ -137,16 +153,24 @@ public class MyCountersFragment extends Fragment {
         }
     }
 
-    public void bundleAuslesen() {                                                                          //holt die Zählernamen, Anfangsstände etc. aus den von der MainActivity gelieferten Daten
-        zaehlername = dataFromMainAcitivity.getStringArrayList("zaehlername");
-        standBeginn = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("standBeginn"));
-        aktuellerStand = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("aktuellerStand"));
-        anteilJedesZaehlers = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("anteilJedesZaehlers"));
-        anzahlZaehler = dataFromMainAcitivity.getInt("anzahlZaehler");
+    public void getDataFromMainActivity() {
+        /**
+         * This method gets the required data from the "MainActivity" by getting the arguments of the fragment in a bundle.
+         * The values stored in the bundle are accessed using the keys of the values.
+         */
+        dataFromMainAcitivity = getArguments();
+        if (dataFromMainAcitivity != null) {
+            zaehlername = dataFromMainAcitivity.getStringArrayList("zaehlername");
+            standBeginn = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("standBeginn"));
+            aktuellerStand = floatArrayToArrayList(dataFromMainAcitivity.getFloatArray("aktuellerStand"));
+            anzahlZaehler = dataFromMainAcitivity.getInt("anzahlZaehler");
+        }
     }
 
-    public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {                             //wandelt Float-Array in ArrayList-Float um
-        //standBeginn.clear();     //warum?                                                           //wird benötigt, da ArrayList-Float nicht über Bundle an Fragments übergeben werden kann
+    public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {
+        /**
+         * This method transforms an C-Style float[] in an ArrayList<Float>
+         */
         ArrayList<Float> arrayList = new ArrayList<>();
         for (int i = 0; i < FloatArray.length; i++) {
             arrayList.add(FloatArray[i]);
@@ -155,13 +179,20 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void headerArrayFuellen() {
+        /**
+         * This method adds the string for the row-headers to an ArrayList<String>
+         */
         headerArray.add(R.string.geraetename);
         headerArray.add(R.string.aktStand);
         headerArray.add(R.string.anteilGesVerbrauch);
     }
 
     public void zaehlerTabelleErstellen() {
-
+        /**
+         * This method creates the table containing the information about the devices.
+         * First, the header column is created.
+         * Afterwards, the table containing the information is created (further description for every step)
+         */
         headerArrayFuellen();
 
         alleEditTextAktuellerStand.clear();
@@ -187,13 +218,13 @@ public class MyCountersFragment extends Fragment {
 
         for (int i = 0; i < zaehlername.size(); i++) {
 
-            // Views initialisieren
+            // Initialise views
 
             zaehlerListe = new TextView(getContext());
             tableRow = new TableRow(getContext());
             tableRow.setLayoutParams(layoutParamsTableRow);
 
-            // 1. Spalte befüllen: Zählernamen
+            // Fill first column: Device Names
 
             zaehlerListe.setId(i);
             zaehlerListe.setLayoutParams(layoutParamsTableRow);
@@ -201,7 +232,7 @@ public class MyCountersFragment extends Fragment {
             zaehlerListe.setText(aktuellerZaehlername);
             zaehlerListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-            // 2. Spalte befüllen: Aktueller Stand bearbeitbar
+            // Fill second column: Current Standing editable
 
             aktuellerStandListe = new EditText(getContext());
             aktuellerStandListe.setLayoutParams(layoutParamsTableRow);
@@ -216,7 +247,7 @@ public class MyCountersFragment extends Fragment {
 
             alleEditTextAktuellerStand.add(aktuellerStandListe); //fügt EditText dem Array hinzu, um später über ID Wert abzufragen
 
-            // 3. Spalte befüllen: Anteil am Verbrauch
+            // Fill third column: Proportions of the consumption
 
             anteilVerbrauch = new TextView(getContext());
             anteilVerbrauch.setLayoutParams(layoutParamsTableRow);
@@ -227,7 +258,7 @@ public class MyCountersFragment extends Fragment {
             }
 
 
-            // Views in Spalten einfügen, Zeile zur Tabelle hinzufügen
+            // Add views to the row, add row to the table
 
             tableRow.addView(zaehlerListe, 0);
             tableRow.addView(aktuellerStandListe, 1);
@@ -237,6 +268,12 @@ public class MyCountersFragment extends Fragment {
     }
 
     public void werteAktualisieren() {
+        /**
+         * This method is used to update standings.
+         * The user can edit the standings in the EditTexts and by clicking "Refresh Values", this method is called.
+         * The inputs are read and if permissible saved.
+         * If the inputs are inadmissable, a Toast shows up and tells the user where the wrong input happened.
+         */
         boolean unzulaessigeEingabe = false;
         int zeile = 0;
 
@@ -255,11 +292,14 @@ public class MyCountersFragment extends Fragment {
                 }
             }
             Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();                                  //Toast zur visuellen Bestätigung, bis jetzt ohne Prüfung, ob tatsächlich Werte aktualisiert wurden
-        }
-        else {
+        } else {
             Toast.makeText(getContext(), String.format(getResources().getString(R.string.unzulaessigeEingabe), zaehlername.get(zeile)), Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * The following methods are necessary to pass data between fragments and activities using the interface
+     */
 
     @Override
     public void onAttach(Context context) {
@@ -277,33 +317,3 @@ public class MyCountersFragment extends Fragment {
         listener = null;
     }
 }
-
-/*
-Funktion werteAktualisieren
-aktuellerStand.clear();
-        for (int i = 0; i < anzahlZaehler; i++) {
-            if (!alleEditTextAktuellerStand.get(i).getText().toString().equals("")) {
-                aktuellerStand.add(Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
-            } else aktuellerStand.add(standBeginn.get(i));
-        }
-
-        ENDE
-
-
-
-
-            if (aktuellerStand.size() > 0) Toast.makeText(getContext(), aktuellerStand.get(0).toString(), Toast.LENGTH_SHORT).show(); //Testfunktion
-            else Toast.makeText(getContext(), "aktueller Stand ist leer", Toast.LENGTH_SHORT).show(); //Testfunktion
-
-            ButtonWerteAkt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    werteAktualisiert = getArguments().getBoolean("werteAktualisiert");                 //Boolesche Variable, ob Werte aktualisiert wurden, wird dem Bundle entnommen
-                    werteAktualisieren();                                                                    //Funktion zum aktualisieren der aktuellen Zählerstände
-                    listener.dataFromMyCountersToMainActivity(aktuellerStand, werteAktualisiert);            //Interface wird aufgerufen, um Daten an MainActivity zu übergeben
-                    Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();     //Toast zur Bestätigung des Nutzers, dass Daten aktualsiert wurden (muss Prüfung bekommen)
-                }
-            });
-
-            zaehlerListeErstellen();    //Funktion zum Erstellen der Tabelle mit Zählerinformationen
- */
