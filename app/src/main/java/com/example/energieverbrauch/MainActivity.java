@@ -109,15 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
-        //Hilfsfunktion
-        float hilfsfloat1 = 1;
-        float hilfsfloat2 = 9;
-        monatlicherGesamtVerbrauch.add(hilfsfloat1);
-        monatlicherGesamtVerbrauch.add(hilfsfloat2);
-
-        monatlichesSpeichern();
-*/
 
         anfangsTagAbgleich();
 
@@ -156,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setDarkMode() {
+
         darkModeAktiviert = !darkModeAktiviert;
         // datenSpeichernSettings();
 
