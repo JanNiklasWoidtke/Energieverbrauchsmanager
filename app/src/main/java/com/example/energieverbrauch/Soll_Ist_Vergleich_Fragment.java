@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -21,7 +20,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -63,7 +61,6 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         if (datenVerfuegbar) {
 
-            monatlicherGesamtVerbrauch.remove(monatlicherGesamtVerbrauch.size() - 1);
             monatlicherGesamtVerbrauch.add(aktuellerVerbrauch);
 
             barChartDataErstellen();
@@ -138,6 +135,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
                 if (value == 0) {
                     return monate[(int) value];
+                } else if (value == 13) {
+                    return "";
                 } else if (value + anfangsMonatDiagramme < 12) {
                     return monate[(int) (value + anfangsMonatDiagramme)];
                 } else if (value + anfangsMonatDiagramme - 12 == 0) {
@@ -227,6 +226,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         stelle = 12;
         for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
             entriesBarMaxVerbrauch.add(new BarEntry(stelle + 0.2f, monatlicherMaxVerbrauch.get(i)));
+            stelle--;
         }
 
         Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());

@@ -237,9 +237,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 monat = calendar.get(Calendar.MONTH) + 1;
                 anfangsMonatDiagramme++;
+                monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
+                gesamtVerbrauch = 0;
+
+                SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                Gson gson = new Gson();
+
+                datenLadenMyCounters();
+
+                standBeginn = aktuellerStand;
+
+                editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+
+                String standBeginnString = gson.toJson(standBeginn);
+                editor.putString("standBeginn", standBeginnString);
+
+                editor.apply();
             }
 
-            monatlichesSpeichern();
+            datenSpeichernMonatlich();
         } else {
             neuerMonat = false;
         }
@@ -511,8 +529,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         datenLadenMonat();
         datenLadenSettings();
 
-    //    monatsAbgleich();
-
         navigationView.setCheckedItem(R.id.nav_Settings);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
@@ -644,11 +660,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public Bundle dataToSollIst() {
-        datenLadenSettings(); //mögl. noch andere Settings laden
+        datenLadenSettings();
         datenLadenMonat();
 
         dataToSollIst.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
-        if (monatlicherGesamtVerbrauch.get(0) + gesamtVerbrauch != 0) {
+        if (monatlicherGesamtVerbrauch != null || gesamtVerbrauch != 0) {
             dataToSollIst.putFloatArray("monatlicherGesamtVerbrauch", floatArrayListToFloatArray(monatlicherGesamtVerbrauch));
             dataToSollIst.putFloatArray("monatlicherMaxVerbrauch", floatArrayListToFloatArray(monatlicherMaximalVerbrauch));
         }
@@ -722,7 +738,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
-        //Monatliche Daten
         String monatlicherGesamtVerbrauchString = gson.toJson(monatlicherGesamtVerbrauch);
         editor.putString("monatlicherGesamtVerbrauch", monatlicherGesamtVerbrauchString);
 
@@ -735,7 +750,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         editor.putInt("anfangsMonatDiagramme", anfangsMonatDiagramme);
 
-        //Anwenden
         editor.apply();
     }
 
@@ -832,14 +846,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         anfangsmonat = sharedPreferences.getInt("anfangsMonat", 0);
 
         anfangsMonatDiagramme = sharedPreferences.getInt("anfangsMonatDiagramme", 0);
-    }
-
-    public void monatlichesSpeichern() {
-
-        monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
-        gesamtVerbrauch = 0;
-
-        datenSpeichernMonatlich();
     }
 
 }
