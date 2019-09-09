@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TabContainerFragmentStart extends Fragment implements StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener,
-        StartFragmentAlt.OnFragmentInteractionListener{
+public class TabContainerFragmentStart extends Fragment {
 
 
     @Nullable
@@ -51,10 +49,5 @@ public class TabContainerFragmentStart extends Fragment implements StartFragment
         });
 
         return v;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

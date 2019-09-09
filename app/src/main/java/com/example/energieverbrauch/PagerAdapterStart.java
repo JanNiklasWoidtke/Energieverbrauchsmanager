@@ -29,7 +29,7 @@ public class PagerAdapterStart extends FragmentStatePagerAdapter {
          */
         switch (position) {
             case 0:
-                return new StartFragmentAlt();
+                return new StartFragment();
             case 1:
                 return new StartFragmentJahr();
             default:

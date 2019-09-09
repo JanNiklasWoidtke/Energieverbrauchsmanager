@@ -1,39 +1,49 @@
 package com.example.energieverbrauch;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class StartFragment extends Fragment {
 
     public StartFragmentListener listener;
 
-    public EditText editTextMaxVerbrauchSoll;
+    public TextView textViewMaxVerbrauchSoll;
+    public TextView textViewMonatKosten;
+    public TextView textViewMonat;
     public ProgressBar ProgressBar;
     public TextView TextViewAktuellerVerbrauch;
     public TextView TextViewProzentAnzeige;
     float gesamtVerbrauch = 0;
     int progress = 0;
     float maxVerbrauch = 0;
+    float preisProEinheit = 0;
+    float grundBetrag = 0;
+
+    int tag = 0;
+    int tageImMonat = 0;
+    String monat;
+    String jahr;
+
+    boolean neuerMonat = false;
 
     public interface StartFragmentListener { //ermöglicht Senden an MainActivity
         void dataFromStartFragmentToMainActivity(float maxVerbrauch);
@@ -42,77 +52,106 @@ public class StartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_start, container, false);
+        View v = inflater.inflate(R.layout.fragment_start_alt, container, false);
 
-        editTextMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
+        textViewMaxVerbrauchSoll = v.findViewById(R.id.maxVerbrauchSoll);
+        textViewMonatKosten = v.findViewById(R.id.textViewErwarteteMonatKosten);
+        textViewMonat = v.findViewById(R.id.textViewMonat);
         ProgressBar = v.findViewById(R.id.PBcircle);
         TextViewAktuellerVerbrauch = v.findViewById(R.id.aktVerbrauch);
         TextViewProzentAnzeige = v.findViewById(R.id.prozentAnzeige);
 
+        progress = 0;
+
+
+        aktuelleDatumsInfo();
+
         getBundleDataFromMainActivity();
+
+        if (neuerMonat) {
+            neuenMaxVerbrauchMonatFestlegen();
+        }
+
+        aktuelleWerteSetzen();
+
+        return v;
+    }
+
+    public void neuenMaxVerbrauchMonatFestlegen() {
+        AlertDialog.Builder alertNeuerMaxVerbrauch = new AlertDialog.Builder(getContext());
+        final EditText editTextNeuerMaxVerbrauch = new EditText(getContext());
+
+        editTextNeuerMaxVerbrauch.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editTextNeuerMaxVerbrauch.setSingleLine();
+        editTextNeuerMaxVerbrauch.setGravity(Gravity.CENTER);
+        editTextNeuerMaxVerbrauch.setHint(R.string.hintNeuesZiel);
+
+        alertNeuerMaxVerbrauch.setTitle(R.string.neuesMonatsZielTitle);
+        alertNeuerMaxVerbrauch.setMessage(R.string.neuesMonatsZielMessage);
+        alertNeuerMaxVerbrauch.setView(editTextNeuerMaxVerbrauch);
+
+        alertNeuerMaxVerbrauch.setPositiveButton(R.string.neuesMonatsZielPositiveButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (TextUtils.isEmpty(editTextNeuerMaxVerbrauch.getText())) {
+                    neuenMaxVerbrauchMonatFestlegen();
+                } else {
+                    maxVerbrauch = Float.parseFloat(editTextNeuerMaxVerbrauch.getText().toString());
+                    listener.dataFromStartFragmentToMainActivity(maxVerbrauch);
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
+                }
+            }
+        })
+                .show();
+    }
+
+    public void aktuelleDatumsInfo() {
+        Calendar calendar = Calendar.getInstance();
+        tag = calendar.get(Calendar.DAY_OF_MONTH);
+        tageImMonat = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        monat = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        jahr = String.valueOf(calendar.get(Calendar.YEAR));
+    }
+
+    public void aktuelleWerteSetzen() {
+        String anzeigeMonatJahr = monat + " " + jahr;
+        textViewMonat.setText(anzeigeMonatJahr);
 
         TextViewAktuellerVerbrauch.setText(String.valueOf(gesamtVerbrauch));
 
+        textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauch));
 
-        editTextMaxVerbrauchSoll.setHint(String.valueOf(maxVerbrauch));
+        float erwarteteMonatlicheKosten = grundBetrag / 12 + (preisProEinheit * gesamtVerbrauch) / tag * tageImMonat;
 
-        //editTextMaxVerbrauchSoll.setHintTextColor(getResources().getColor(android.R.color.black)); //Farbe muss an Color-Scheme angepasst werden
+        textViewMonatKosten.setText(String.format("%.2f", erwarteteMonatlicheKosten));
 
-
-        calculateProgress(gesamtVerbrauch, maxVerbrauch);
-        updateProgressBar(progress);
-        updatePercentage(progress);
-
-        editTextMaxVerbrauchSoll.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                CharSequence input = editTextMaxVerbrauchSoll.getText().toString();
-                if (!TextUtils.isEmpty(input)) {
-                    maxVerbrauch = Float.parseFloat(input.toString());
-                    calculateProgress(gesamtVerbrauch, maxVerbrauch);
-                    updateProgressBar(progress);
-                    updatePercentage(progress);
-                    listener.dataFromStartFragmentToMainActivity(maxVerbrauch);
-                }
-            }
-        });
-
-        return v;
+        calculateProgress();
+        updatePercentage();
     }
 
     public void getBundleDataFromMainActivity() {
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();
 
-        progress = dataFromMainActivity.getInt("progress", 0);
         maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
         gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
+        preisProEinheit = dataFromMainActivity.getFloat("preisProEinheit", 0);
+        grundBetrag = dataFromMainActivity.getFloat("grundBetrag", 0);
+        neuerMonat = dataFromMainActivity.getBoolean("neuerMonat", false);
     }
 
-    public void calculateProgress(float aktuellerVerbrauch, float MaxVerbrauch) {
+    public void calculateProgress() {
         if (maxVerbrauch != 0) {
-            progress = (int) (aktuellerVerbrauch / MaxVerbrauch * 100);
-        }
-        else {
+            progress = (int) (gesamtVerbrauch / maxVerbrauch * 100);
+        } else if (gesamtVerbrauch == 0) {
             progress = 0;
+        } else {
+            progress = 101;
         }
-    }
-
-    public void updateProgressBar(int progress) {
         ProgressBar.setProgress(progress);
     }
 
-    public void updatePercentage(int progress) {
-        if (progress <= 100) {
+    public void updatePercentage() {
+        if (progress < 100) {
             TextViewProzentAnzeige.setText(progress + "%");
             ProgressBar.getProgressDrawable().clearColorFilter();
         } else {
@@ -135,11 +174,6 @@ public class StartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
 

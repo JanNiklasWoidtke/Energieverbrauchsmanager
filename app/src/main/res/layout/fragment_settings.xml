@@ -10,6 +10,7 @@
         android:layout_margin="16sp"
         android:focusable="true"
         android:focusableInTouchMode="true">
+        <requestFocus />
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +87,8 @@
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
                 android:gravity="end"
-                android:textColor="@color/colorTextOnBackground"/>
+                android:textColor="@color/colorTextOnBackground"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -158,8 +160,6 @@
                 android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>
-
-
 
     </LinearLayout>
 

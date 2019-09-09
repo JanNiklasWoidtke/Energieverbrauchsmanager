@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 
 /**
@@ -168,9 +169,9 @@ public class SettingsFragment extends Fragment {
          * This method sets the current values obtained from the "MainActivity".
          */
         switchDarkMode.setChecked(darkModeAktiviert);
-        editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
         editTextGrundBetrag.setText(String.valueOf(grundBetrag));
         editTextPersonen.setText(String.valueOf(anzahlPersonen));
+        editTextPreisProEinheit.setText(String.valueOf(preisProEinheit));
     }
 
     public void getDataFromMainActivity() {

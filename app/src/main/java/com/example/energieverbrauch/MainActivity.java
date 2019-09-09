@@ -2,7 +2,6 @@ package com.example.energieverbrauch;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,11 +24,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SettingsFragment.SettingsFragmentListener,
         MyCountersFragment.MyCountersFragmentListener,
         com.example.energieverbrauch.StartFragment.StartFragmentListener,
-        com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener,
-        StartFragmentAlt.StartFragmentAltListener,
-        StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener,
-        StartFragmentAlt.OnFragmentInteractionListener {
+        com.example.energieverbrauch.AddCounterFragment.AddCounterFragmentListener {
 
     public StartFragment StartFragment;
     public StartFragmentJahr StartFragmentJahr;
@@ -39,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public SettingsFragment SettingsFragment;
     public TabContainerFragmentStart TabContainerFragment;
     public AddCounterFragment AddCounterFragment;
-    public StartFragmentAlt StartFragmentAlt;
+    public com.example.energieverbrauch.StartFragment StartFragmentAlt;
 
     public DrawerLayout drawer;
 
@@ -100,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AddCounterFragment = new AddCounterFragment();
         TabContainerFragment = new TabContainerFragmentStart();
 
-        StartFragmentAlt = new StartFragmentAlt();
+        StartFragmentAlt = new StartFragment();
 
         super.onCreate(savedInstanceState);
         setMode();
@@ -134,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         else if (savedInstanceState == null) { //only switch to Start if app is started initially. Rotating the screen wont cause jumping back to start.
-            bundleDataToStartFragFuellen();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, TabContainerFragment).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
@@ -408,20 +402,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyCountersFragment).commit();
     }
 
-    public void bundleDataToStartFragFuellen() {
-        /**
-         * This method fills the bundle for the "StartFragment" with the required data.
-         * The bundle is set as the arguments of the "StartFragment".
-         */
-        datenLadenStartFragment();
-        datenLadenSettings();
-        dataToStartFrag.putFloat("maxVerbrauch", maxVerbrauch);
-        dataToStartFrag.putFloat("gesamtVerbrauch", gesamtVerbrauch);
-        dataToStartFrag.putFloat("preisProEinheit", preisProEinheit);
-        dataToStartFrag.putFloat("grundBetrag", grundBetrag);
-        StartFragment.setArguments(dataToStartFrag);
-    }
-
     public void bundleDataToMyCountersFragFuellen() {
         /**
          * This method fills the bundle for the "MyCountersFragment" with the required data.
@@ -503,8 +483,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            datenLadenStartFragment();
-            bundleDataToStartFragFuellen();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TabContainerFragmentStart()).commit();
             navigationView.setCheckedItem(R.id.nav_start);
         }
@@ -568,13 +546,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
         setDarkMode();
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        /**
-         * This method has to be implemented to use TabLayouts.
-         */
     }
 
     public void gesamtVerbrauchJahrBerechnen() {
