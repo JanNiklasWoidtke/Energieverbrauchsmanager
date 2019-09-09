@@ -45,7 +45,7 @@
     <string name="neuesMonatsZielTitle">Neues Monatsziel festlegen</string>
     <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
     <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
-    <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel \nder letzten 12 Monate</string>
+    <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel der letzten 12 Monate</string>
     <string name="hintNeuesZiel">Ziel in kWh</string>
     <string name="anzahlMonate">Vergangene %1$d Monate</string>
     <string name="anzahlMonateEins">Dieser Monat</string>

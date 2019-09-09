@@ -230,7 +230,7 @@ public class MyCountersFragment extends Fragment {
             zaehlerListe.setLayoutParams(layoutParamsTableRow);
             final String aktuellerZaehlername = zaehlername.get(i);
             zaehlerListe.setText(aktuellerZaehlername);
-            zaehlerListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            zaehlerListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
             // Fill second column: Current Standing editable
 
@@ -242,7 +242,7 @@ public class MyCountersFragment extends Fragment {
             else aktuellerStandListe.setText(String.valueOf(standBeginn.get(i)));
 
             aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             aktuellerStandListe.setGravity(Gravity.END);
 
             alleEditTextAktuellerStand.add(aktuellerStandListe); //fügt EditText dem Array hinzu, um später über ID Wert abzufragen
@@ -253,7 +253,7 @@ public class MyCountersFragment extends Fragment {
             anteilVerbrauch.setLayoutParams(layoutParamsTableRow);
             if (anteilJedesZaehlers.size() > i) {
                 anteilVerbrauch.setText(String.format("%.1f", anteilJedesZaehlers.get(i) * 100) + "%");
-                anteilVerbrauch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                anteilVerbrauch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 anteilVerbrauch.setGravity(Gravity.END);
             }
 

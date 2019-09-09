@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20sp"
+        android:layout_margin="16sp"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -17,7 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/settings"
             android:textColor="@color/colorTextOnBackground"
-            android:textSize="32sp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,6 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/switchDarkMode"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
@@ -62,6 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/anzahlPersonen"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
@@ -90,6 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textPreisSettings"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
@@ -117,6 +120,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textGrundBetrag"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
@@ -140,6 +144,7 @@
                 android:layout_gravity="center"
                 android:background="@color/colorAccent"
                 android:text="@string/resetData"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnSecondary"
                 android:layout_weight="1"/>
 
@@ -149,6 +154,7 @@
                 android:layout_weight="3"
                 android:layout_marginStart="8dp"
                 android:text="@string/textResetData"
+                android:textSize="14sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>

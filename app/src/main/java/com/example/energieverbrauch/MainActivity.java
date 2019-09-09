@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawer;
 
     int monat = 0;
+    int anzahlJahre = 0;
     int anfangsmonat = 0;
     int anfangsMonatDiagramme = 0;
     int tagDerLetzenStandAenderung = 0;
@@ -210,6 +211,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (aktuellerTagImJahr == 0) {
             aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         }
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("aktuellerTagImJahr", aktuellerTagImJahr);
+        editor.apply();
     }
 
     public void monatsAbgleich() {
@@ -236,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 anfangsMonatDiagramme = anfangsmonat;
             } else {
                 monat = calendar.get(Calendar.MONTH) + 1;
-                anfangsMonatDiagramme++;
+                anfangsMonatDiagramme = monat;
                 monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
                 gesamtVerbrauch = 0;
 
@@ -258,7 +264,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             datenSpeichernMonatlich();
-        } else {
+        }
+
+        else if (monat == 12 && calendar.get(Calendar.MONTH) + 1 == 1) {
+            anzahlJahre++;
+            neuerMonat = true;
+            monat = calendar.get(Calendar.MONTH) + 1;
+            anfangsMonatDiagramme = monat;
+            monatlicherGesamtVerbrauch.add(gesamtVerbrauch);
+            gesamtVerbrauch = 0;
+
+            SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            Gson gson = new Gson();
+
+            datenLadenMyCounters();
+
+            standBeginn = aktuellerStand;
+
+            editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+
+            String standBeginnString = gson.toJson(standBeginn);
+            editor.putString("standBeginn", standBeginnString);
+
+            editor.apply();
+
+            datenSpeichernMonatlich();
+        }
+
+        else {
             neuerMonat = false;
         }
     }

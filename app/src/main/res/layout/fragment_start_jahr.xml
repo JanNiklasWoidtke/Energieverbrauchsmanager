@@ -15,7 +15,7 @@
         android:layout_marginTop="50dp"
         android:text=""
         android:textColor="@color/colorTextOnBackground"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:layout_gravity="center"/>
 
     <RelativeLayout
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/verbraucht"
                 android:textColor="@color/colorTextOnBackground"
-                android:textSize="24sp" />
+                android:textSize="32sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -127,7 +127,7 @@
                 android:id="@+id/textViewErwarteteJahresKosten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/euro"
                 android:textColor="@color/colorTextOnBackground"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
 

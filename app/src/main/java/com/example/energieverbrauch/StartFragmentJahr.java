@@ -64,10 +64,11 @@ public class StartFragmentJahr extends Fragment {
     }
 
     public void aktuelleWerteSetzen() {
-        if (anzahlMonate == 0) {
+/*        if (anzahlMonate == 0) {
             textViewJahr.setText(R.string.nochKeineDater);
-        } else if (anzahlMonate > 1) {
-            textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate));
+        }*/
+        if (anzahlMonate >= 1) {
+            textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate + 1));
         } else {
             textViewJahr.setText(R.string.anzahlMonateEins);
         }
@@ -79,7 +80,7 @@ public class StartFragmentJahr extends Fragment {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (tagImJahr-anfangsTag) * 365; //anfangstag von tagImJahr abziehen
         }
         else if (anfangsTag == tagImJahr){
-            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * (365-anfangsTag);
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * 365;
         }
         else {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365;
