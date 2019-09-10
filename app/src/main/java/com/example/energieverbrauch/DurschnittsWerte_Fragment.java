@@ -64,16 +64,17 @@ public class DurschnittsWerte_Fragment extends Fragment {
         /**
          * This methods calculates and sets the values of the statistics displayed.
          */
-        if (tagDerLetztenEingabe != aktuellerTagImJahr) {
-            if (aktuellerTagImJahr < tagDerLetztenEingabe) {
-                durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (365 - tagDerLetztenEingabe + aktuellerTagImJahr);
+        if (tagDerLetztenEingabe != 0) {
+            if (tagDerLetztenEingabe != aktuellerTagImJahr) {
+                if (aktuellerTagImJahr < tagDerLetztenEingabe) {
+                    durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (365 - tagDerLetztenEingabe + aktuellerTagImJahr);
+                } else {
+                    durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (aktuellerTagImJahr - tagDerLetztenEingabe);
+                }
             } else {
-                durchschnittlicherVerbrauchProTag = (aktuellerStand - vorherigerStand) / (aktuellerTagImJahr - tagDerLetztenEingabe);
+                durchschnittlicherVerbrauchProTag = aktuellerStand - vorherigerStand;
             }
-        } else {
-            durchschnittlicherVerbrauchProTag = aktuellerStand - vorherigerStand;
         }
-
         durchschnittsVerbrauch.setText(String.valueOf(durchschnittlicherVerbrauchProTag));
         durchschnittsKosten.setText(String.valueOf(durchschnittlicherVerbrauchProTag * preisProEinheit));
 

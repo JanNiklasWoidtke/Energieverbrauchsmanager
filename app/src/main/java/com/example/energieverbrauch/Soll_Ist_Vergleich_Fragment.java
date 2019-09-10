@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -186,6 +188,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         monatlicherSollIstVergleich.setData(combinedData);
         monatlicherSollIstVergleich.invalidate();
+
+        addLegend();
     }
 
     public void barChartDataErstellen() {
@@ -271,6 +275,25 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         } else {
             datenVerfuegbar = false;
         }
+    }
+
+    public void addLegend() {
+        Legend legend = monatlicherSollIstVergleich.getLegend();
+        legend.setEnabled(true);
+        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        legend.setXEntrySpace(20f);
+
+        LegendEntry[] legendEntries = new LegendEntry[4];
+        String[] legendLabels = {getResources().getString(R.string.legendeReferenz), getResources().getString(R.string.legendeUnter100), getResources().getString(R.string.legendeUeber100), getResources().getString(R.string.legendeZiel)};
+        int colorArray[] = {ContextCompat.getColor(getContext(), R.color.colorTextOnBackground), ContextCompat.getColor(getContext(), R.color.unter100ProgressColor), ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor), Color.GRAY};
+
+        for (int i = 0; i < legendEntries.length; i++){
+            LegendEntry entry = new LegendEntry();
+            entry.formColor = colorArray[i];
+            entry.label = legendLabels[i];
+            legendEntries[i] = entry;
+        }
+        legend.setCustom(legendEntries);
     }
 
     public interface OnFragmentInteractionListener {

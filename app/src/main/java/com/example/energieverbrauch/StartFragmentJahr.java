@@ -34,6 +34,7 @@ public class StartFragmentJahr extends Fragment {
     int tagImJahr = 0;
     int anzahlMonate = 0;
     int anfangsTag = 0;
+    int anzahlJahre = 0;
     String jahr;
 
     @Nullable
@@ -104,6 +105,7 @@ public class StartFragmentJahr extends Fragment {
         gesamtVerbrauchAktMonat = dataFromMainActivityJahr.getFloat("gesamtVerbrauchAktMonat", 0);
         anzahlMonate = dataFromMainActivityJahr.getInt("anzahlMonate", 0);
         anfangsTag = dataFromMainActivityJahr.getInt("anfangsTag", 0);
+        anzahlJahre = dataFromMainActivityJahr.getInt("anzahlJahre", 0);
 
         if (anzahlMonate > 12) {
             anzahlMonate = 12;

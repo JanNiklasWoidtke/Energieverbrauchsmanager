@@ -205,11 +205,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (aktuellerTagImJahr == 0) {
             aktuellerTagImJahr = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         }
-
-        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("aktuellerTagImJahr", aktuellerTagImJahr);
-        editor.apply();
     }
 
     public void monatsAbgleich() {
@@ -278,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             standBeginn = aktuellerStand;
 
             editor.putFloat("gesamtVerbrauch", gesamtVerbrauch);
+            editor.putInt("anzahlJahre", anzahlJahre);
 
             String standBeginnString = gson.toJson(standBeginn);
             editor.putString("standBeginn", standBeginnString);
@@ -557,13 +553,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gesamtVerbrauchJahr = 0;
 
         int zaehler = monatlicherGesamtVerbrauch.size() - 12;
-
+/*
         for (int i = 0; i < 12 && i < monatlicherGesamtVerbrauch.size(); i++) {
             if (zaehler < 0) {
                 zaehler = 0;
             }
             gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(zaehler);
             zaehler++;
+        } */
+
+        for(int i = monatlicherGesamtVerbrauch.size() - 1 ; i >= 0 && i > monatlicherGesamtVerbrauch.size() - 11; i--) {
+            gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(i);
         }
     }
 
@@ -620,6 +620,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
         sharedPreferences.getInt("anfangsTag", 0);
+        sharedPreferences.getInt("anzahlJahre", 0);
 
         dataToStartFragJahr.putFloat("gesamtVerbrauchJahr", gesamtVerbrauchJahr);
         dataToStartFragJahr.putFloat("maxVerbrauchJahr", maxVerbrauchJahr);
@@ -627,6 +628,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataToStartFragJahr.putFloat("grundBetrag", grundBetrag);
         dataToStartFragJahr.putFloat("gesamtVerbrauchAktMonat", gesamtVerbrauch);
         dataToStartFragJahr.putInt("anfangsTag", anfangsTag);
+        dataToStartFragJahr.putInt("anzahlJahre", anzahlJahre);
         if (monatlicherGesamtVerbrauch != null) {
             dataToStartFragJahr.putInt("anzahlMonate", monatlicherGesamtVerbrauch.size());
         }
