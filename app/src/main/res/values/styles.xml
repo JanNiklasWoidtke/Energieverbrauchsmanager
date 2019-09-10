@@ -10,10 +10,4 @@
         <item name="android:textColorTertiary">@color/colorTextOnBackground</item>
     </style>
 
-    <style name="ButtonStyle">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorWhiteAsStandardBackground</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
 </resources>

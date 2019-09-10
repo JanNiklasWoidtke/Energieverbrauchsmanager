@@ -50,7 +50,7 @@ public class PagerAdapterStats extends FragmentStatePagerAdapter {
         /**
          * This method sets the tabtitles of the tabs from resource strings.
          */
-        String[] tabTitles = new String[]{context.getResources().getString(R.string.durschnittswerte), context.getResources().getString(R.string.sollIst), context.getResources().getString(R.string.referenzwerte)};
+        String[] tabTitles = new String[]{context.getResources().getString(R.string.durchschnittswerte), context.getResources().getString(R.string.sollIst), context.getResources().getString(R.string.referenzwerte)};
         return tabTitles[position];
     }
 }

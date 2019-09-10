@@ -294,6 +294,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
             legendEntries[i] = entry;
         }
         legend.setCustom(legendEntries);
+        legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
     }
 
     public interface OnFragmentInteractionListener {

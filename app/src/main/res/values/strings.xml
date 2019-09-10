@@ -65,7 +65,7 @@
     <string name="jahr">Jahr</string>
     <string name="referenzwerte">Referenzwerte</string>
     <string name="sollIst">Soll-Ist</string>
-    <string name="durschnittswerte">Durchschnittswerte</string>
+    <string name="durchschnittswerte">Durchschnittswerte</string>
     <string name="meinVerbrauch">Mein Verbrauch</string>
     <string name="personen">%1$d Pers.</string>
     <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte pro Jahr</string>

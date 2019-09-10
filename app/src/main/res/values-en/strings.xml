@@ -21,7 +21,7 @@
     <string name="co2Emissionen">CO2-Emissions per Day because of Electric Devices</string>
     <string name="durchKostenProTag">Average Costs</string>
     <string name="durchVerbrauchProTag">Average Consumption</string>
-    <string name="durschnittswerte">Average Values</string>
+    <string name="durchschnittswerte">Average Values</string>
     <string name="erwarteteJahresKosten">Expected Costs for the next Year</string>
     <string name="erwarteteMonatKosten">Expected Costs for the next Month</string>
     <string name="euro">\u0020€</string>

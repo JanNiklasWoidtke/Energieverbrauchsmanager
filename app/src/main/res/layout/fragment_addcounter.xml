@@ -23,7 +23,6 @@
         android:ems="15"
         android:layout_marginTop="20dp"
         android:hint="@string/Zählername"
-        android:textSize="20sp"
         android:textColor="@color/colorTextOnBackground"
         android:inputType="text"/>
 
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:ems="7"
             android:hint="@string/StartStandNeuerZähler"
-            android:textSize="20sp"
             android:textColor="@color/colorTextOnBackground"
             android:inputType="numberDecimal" />
 
@@ -45,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/kWh"
+            android:textSize="14sp"
             android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
@@ -67,17 +66,19 @@
             android:id="@+id/textViewPreisEinheit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/ErstelltenZählerHinzufügen"
-        style="@style/ButtonStyle"
+        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/AddCounter"
+        android:textSize="14sp"
         android:background="@color/colorAccent"
         android:textColor="@color/colorTextOnSecondary"/>
 
