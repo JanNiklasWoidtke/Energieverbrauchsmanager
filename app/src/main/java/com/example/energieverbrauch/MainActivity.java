@@ -551,9 +551,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
 
         gesamtVerbrauchJahr = 0;
-
-        int zaehler = monatlicherGesamtVerbrauch.size() - 12;
 /*
+        int zaehler = monatlicherGesamtVerbrauch.size() - 12;
+
         for (int i = 0; i < 12 && i < monatlicherGesamtVerbrauch.size(); i++) {
             if (zaehler < 0) {
                 zaehler = 0;
@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
 
         maxVerbrauchJahr = 0;
-
+/*
         int zaehler = monatlicherMaximalVerbrauch.size() - 12;
 
         for (int i = 0; i < 12 && i < monatlicherMaximalVerbrauch.size(); i++) {
@@ -583,6 +583,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             maxVerbrauchJahr += monatlicherMaximalVerbrauch.get(zaehler);
             zaehler++;
+        } */
+        for(int i = monatlicherMaximalVerbrauch.size() - 1 ; i >= 0 && i > monatlicherMaximalVerbrauch.size() - 11; i--) {
+            maxVerbrauchJahr += monatlicherMaximalVerbrauch.get(i);
         }
     }
 
