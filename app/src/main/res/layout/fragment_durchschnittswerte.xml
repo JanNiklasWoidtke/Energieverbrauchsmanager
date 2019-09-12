@@ -34,12 +34,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textSize="20sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/kWhProTag"
+                android:textSize="20sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>
@@ -49,6 +51,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/durchVerbrauchProTag"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextOnBackground"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewDurchschnittsKosten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorTextOnBackground"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/euroProTag"
+                android:textSize="20sp"
+                android:textColor="@color/colorTextOnBackground"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/durchKostenProTag"
+            android:textSize="14sp"
             android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
@@ -70,12 +111,14 @@
                 android:id="@+id/co2Verbrauch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/grammProTag"
+                android:textSize="20sp"
                 android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>
@@ -84,48 +127,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/co2Emissionen"
+            android:textSize="14sp"
             android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewDurchschnittsKosten"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/colorTextOnBackground"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/euroProTah"
-                android:textColor="@color/colorTextOnBackground"/>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/durchKostenProTag"
-            android:textColor="@color/colorTextOnBackground"/>
-
-    </LinearLayout>
-
-
 
 </LinearLayout>
