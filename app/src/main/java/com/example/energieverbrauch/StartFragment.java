@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -89,12 +90,14 @@ public class StartFragment extends Fragment {
         alertNeuerMaxVerbrauch.setTitle(R.string.neuesMonatsZielTitle);
         alertNeuerMaxVerbrauch.setMessage(R.string.neuesMonatsZielMessage);
         alertNeuerMaxVerbrauch.setView(editTextNeuerMaxVerbrauch);
+        alertNeuerMaxVerbrauch.setCancelable(false);
 
         alertNeuerMaxVerbrauch.setPositiveButton(R.string.neuesMonatsZielPositiveButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (TextUtils.isEmpty(editTextNeuerMaxVerbrauch.getText())) {
                     neuenMaxVerbrauchMonatFestlegen();
+                    Toast.makeText(getContext(), R.string.fehlerKeinZiel, Toast.LENGTH_SHORT).show();
                 } else {
                     maxVerbrauch = Float.parseFloat(editTextNeuerMaxVerbrauch.getText().toString());
                     listener.dataFromStartFragmentToMainActivity(maxVerbrauch);
