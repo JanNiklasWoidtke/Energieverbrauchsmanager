@@ -6,15 +6,15 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:text="@string/AddCounter"
-        android:textSize="32sp" />
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/Zählername"
@@ -23,6 +23,7 @@
         android:ems="15"
         android:layout_marginTop="20dp"
         android:hint="@string/Zählername"
+        android:textColor="@color/colorTextOnBackground"
         android:inputType="text"/>
 
     <LinearLayout
@@ -35,12 +36,15 @@
             android:layout_height="wrap_content"
             android:ems="7"
             android:hint="@string/StartStandNeuerZähler"
+            android:textColor="@color/colorTextOnBackground"
             android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/kWh" />
+            android:text="@string/kWh"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
 
@@ -55,21 +59,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="7"
+            android:textColor="@color/colorTextOnBackground"
             android:inputType="numberDecimal"/>
 
         <TextView
             android:id="@+id/textViewPreisEinheit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextOnBackground"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/ErstelltenZählerHinzufügen"
-        style="@style/ButtonStyle"
+        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/AddCounter" />
+        android:text="@string/AddCounter"
+        android:textSize="14sp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorTextOnSecondary"/>
 
 </LinearLayout>

@@ -14,44 +14,111 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/SavingTips"
-            android:textColor="@color/colorPrimary"
-            android:textSize="64sp" />
+            android:textSize="24sp"
+            android:textColor="@color/colorTextOnBackground"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/forNature"
-            android:textSize="32sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/schwarzenegger" />
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Tipp1"
-            android:textSize="20sp" />
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp12"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/Tipp1"
-            android:textSize="20sp" />
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Tipp1"
-            android:textSize="20sp" />
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp2"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Tipp1"
-            android:textSize="20sp" />
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp3"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp4"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp5"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp6"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp7"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp8"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp9"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp10"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/Tipp11"
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="14sp" />
+
     </LinearLayout>
 </ScrollView>

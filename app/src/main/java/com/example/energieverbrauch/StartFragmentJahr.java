@@ -34,6 +34,7 @@ public class StartFragmentJahr extends Fragment {
     int tagImJahr = 0;
     int anzahlMonate = 0;
     int anfangsTag = 0;
+    int anzahlJahre = 0;
     String jahr;
 
     @Nullable
@@ -64,10 +65,11 @@ public class StartFragmentJahr extends Fragment {
     }
 
     public void aktuelleWerteSetzen() {
-        if (anzahlMonate == 0) {
+/*        if (anzahlMonate == 0) {
             textViewJahr.setText(R.string.nochKeineDater);
-        } else if (anzahlMonate > 1) {
-            textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate));
+        }*/
+        if (anzahlMonate >= 1) {
+            textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate + 1));
         } else {
             textViewJahr.setText(R.string.anzahlMonateEins);
         }
@@ -79,7 +81,7 @@ public class StartFragmentJahr extends Fragment {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (tagImJahr-anfangsTag) * 365; //anfangstag von tagImJahr abziehen
         }
         else if (anfangsTag == tagImJahr){
-            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * (365-anfangsTag);
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * 365;
         }
         else {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365;
@@ -103,6 +105,7 @@ public class StartFragmentJahr extends Fragment {
         gesamtVerbrauchAktMonat = dataFromMainActivityJahr.getFloat("gesamtVerbrauchAktMonat", 0);
         anzahlMonate = dataFromMainActivityJahr.getInt("anzahlMonate", 0);
         anfangsTag = dataFromMainActivityJahr.getInt("anfangsTag", 0);
+        anzahlJahre = dataFromMainActivityJahr.getInt("anzahlJahre", 0);
 
         if (anzahlMonate > 12) {
             anzahlMonate = 12;

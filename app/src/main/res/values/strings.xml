@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Energieverbrauch</string>
+    <string name="app_name">Energiemanager</string>
     <string name="of">\u0020kWh\u0020von\u0020</string>
     <string name="used">\u0020kWh verbraucht</string>
     <string name="MyCounters">Meine Geräte</string>
@@ -12,7 +12,18 @@
     <string name="Start">Start</string>
     <string name="verbraucht">verbraucht</string>
     <string name="forNature">Für die Umwelt</string>
-    <string name="Tipp1">Tipp 1: Heizen sie nur bei geschlossenem Fenster. Soll im Winter gelüftet werden, nutzen sie Stoßlüften.</string>
+    <string name="Tipp1">Tipp 1: Öffnen Sie beim Lüften die Fenster komplett, anstatt sie nur zu kippen. Durch das Stoßlüften wird die Luft im Raum ausgetauscht, die Wände kühlen dabei jedoch nicht aus. Achten Sie zudem darauf, dass die Heizung bei geöffnetem Fenster ausgeschaltet ist.</string>
+    <string name="Tipp2">Tipp 2: Tauschen Sie Ihre alten Lampen gegen neue Energiesparlampen oder LEDs aus, denn diese verbrauchen bei gleicher Lichtqualität erheblich weniger Strom.</string>
+    <string name="Tipp3">Tipp 3: Tauschen Sie auch alte Geräte wie den Kühlschrank, Herd oder Waschmaschine gegen neue Geräte aus. Denn trotz der höheren Anschaffungskosten zahlt sich eine bessere Energieeffizienzklasse schnell aus. Achten Sie dabei darauf, dass die Energieeffizienzklasse des neuen Gerätes nicht niedriger als A+ ist.</string>
+    <string name="Tipp4">Tipp 4: Achten Sie beim Kauf eines neuen Gerätes zudem auf Ihre persönlichen Nutzungsbedürfnisse, da zu große Geräte trotz einer guten Energieeffizienzklasse mehr Strom als notwendig verbrauchen könnten.</string>
+    <string name="Tipp5">Tipp 5: Schalten Sie alle Geräte, wie zum Beispiel den Fernseher oder Computer, aus, wenn Sie diese gerade nicht benutzen. Trennen Sie diese am besten komplett vom Netz, da auch im Standby-Modus Strom verbraucht wird. Dies ist unter anderem durch abschaltbare Steckerleisten sehr einfach möglich.</string>
+    <string name="Tipp6">Tipp 6: Betreiben Sie Ihre Bildschirme nicht bei zu hoher Helligkeit und schalten Sie den Energiesparmodus ein, um zusätzlich Strom zu sparen.</string>
+    <string name="Tipp7">Tipp 7: Stellen Sie sicher, dass die verwendete Herdplatte nicht größer als der Topf ist und kochen Sie möglichst mit geschlossenem Deckel.</string>
+    <string name="Tipp8">Tipp 8: Stellen Sie die Temperatur Ihrer Kühlgeräte nicht zu niedrig ein. im Allgemeinen genügt beim Kühlschrank eine Temperatur von 6&#8211;7°C und bei der Gefriertruhe -18°C. Tauen Sie die Gefriertruhe zudem regelmäßig ab.</string>
+    <string name="Tipp9">Tipp 9: Betreiben Sie den Geschirrspüler und die Waschmaschine am besten nur, wenn diese gut gefüllt sind, um unnötige Waschgänge zu vermeiden.</string>
+    <string name="Tipp10">Tipp 10: Nutzen Sie zudem so selten wie möglich einen Wäschetrockner. Vor allem im Sommer sollten Sie Wäsche lieber an der Luft trocknen.</string>
+    <string name="Tipp11">Tipp 11: Schalten Sie die Beleuchtung in Räumen aus, in denen Sie sich längere Zeit nicht aufhalten. Tagsüber reicht zudem oftmals das einfallende Tageslicht als Lichtquelle aus.</string>
+    <string name="Tipp12">Motivation: Energiesparen lohnt sich! Zum einen werden dadurch weniger Treibhausgase, wie zum Beispiel CO2, produziert, die bei der Stromerzeugung entstehen. Zum anderen lassen sich pro Jahr mehrere hundert Euro sparen, wenn schon einfache Spartipps beherzigt werden.</string>
     <string name="AddCounter">Zähler hinzufügen</string>
     <string name="Zählername">Zählername</string>
     <string name="StartStandNeuerZähler">Aktueller Stand</string>
@@ -24,10 +35,10 @@
     <string name="anteilGesVerbrauch">Anteil am Verbrauch</string>
     <string name="werteAkt">Werte aktualisieren</string>
     <string name="werteAktualisiert">Werte aktualisiert!</string>
-    <string name="fehlerhafteEingabe">Füllen sie alle Felder aus!</string>
+    <string name="fehlerhafteEingabe">Bitte füllen sie alle Felder aus!</string>
     <string name="settings">Einstellungen</string>
     <string name="resetData">Reset</string>
-    <string name="textResetData">Löscht alle gemachten Eingaben und versetzt die App in den Neuinstallationszustand</string>
+    <string name="textResetData">Löscht alle Eingaben und versetzt die App in den Neuinstallationszustand</string>
     <string name="resetMessage">Sind sie sicher, dass sie alle Daten löschen wollen?</string>
     <string name="ja">Ja</string>
     <string name="nein">Nein</string>
@@ -45,8 +56,7 @@
     <string name="neuesMonatsZielTitle">Neues Monatsziel festlegen</string>
     <string name="neuesMonatsZielMessage">Geben sie ihr neues Verbrauchsziel für den kommenden Monat ein</string>
     <string name="neuesMonatsZielPositiveButton">Ziel setzen</string>
-    <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel</string>
-    <string name="headerMyConsumptionSollIst2">der letzten 12 Monate</string>
+    <string name="headerMyConsumptionSollIst1">Vergleich Verbrauch - Ziel der letzten 12 Monate</string>
     <string name="hintNeuesZiel">Ziel in kWh</string>
     <string name="anzahlMonate">Vergangene %1$d Monate</string>
     <string name="anzahlMonateEins">Dieser Monat</string>
@@ -55,10 +65,10 @@
     <string name="jahr">Jahr</string>
     <string name="referenzwerte">Referenzwerte</string>
     <string name="sollIst">Soll-Ist</string>
-    <string name="durschnittswerte">Durchschnittswerte</string>
+    <string name="durchschnittswerte">Durchschnittswerte</string>
     <string name="meinVerbrauch">Mein Verbrauch</string>
     <string name="personen">%1$d Pers.</string>
-    <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte</string>
+    <string name="headerReferenz">Referenzwerte für 1 bis 4 Personenhaushalte pro Jahr</string>
     <string name="anzahlPersonen">Anzahl Personen im Haushalt</string>
     <string name="durchVerbrauchProTag">Durchschnittlicher Verbrauch</string>
     <string name="durchKostenProTag">Durchschnittliche Kosten</string>
@@ -68,6 +78,10 @@
     <string name="grammProTag">\u0020g / Tag</string>
     <string name="co2Emissionen">CO2-Emissionen pro Tag durch Strom</string>
     <string name="unzulaessigeEingabe">Unzulässige Eingabe für Zähler %1$s</string>
+    <string name="legendeReferenz">Referenzwerte</string>
+    <string name="legendeUnter100">&lt;100%</string>
+    <string name="legendeUeber100">&gt;100%</string>
+    <string name="legendeZiel">Ziel</string>
 
     <string-array name="EinheitenDropDown">
         <item>€</item>
@@ -75,7 +89,5 @@
         <item>£</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

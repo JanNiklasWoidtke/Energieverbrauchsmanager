@@ -9,9 +9,8 @@
         android:id="@+id/linearLayoutFragment_MyCounters"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -27,7 +26,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/MyCounters"
-                    android:textSize="32sp" />
+                    android:textColor="@color/colorTextOnBackground"
+                    android:textSize="24sp" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -37,19 +37,23 @@
                         android:id="@+id/tableLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/colorTextOnBackground">
 
                     </TableLayout>
                 </HorizontalScrollView>
 
                 <Button
                     android:id="@+id/buttonWerteAkt"
-                    style="@style/ButtonStyle"
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:text="@string/werteAkt" />
+                    android:background="@color/colorAccent"
+                    android:text="@string/werteAkt"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorTextOnSecondary"/>
 
             </LinearLayout>
 
@@ -59,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:src="@drawable/ic_add_black_48dp"
-                android:tint="@color/colorWhiteAsStandardBackground"
-                app:backgroundTint="@color/colorPrimary" />
+                android:tint="@color/colorTextOnSecondary"
+                app:backgroundTint="@color/colorAccent" />
 
         </FrameLayout>
 

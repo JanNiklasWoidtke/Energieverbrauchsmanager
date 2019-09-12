@@ -6,21 +6,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -29,15 +30,17 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
+/**
+ * This fragment displays a combined Bar and LineChart to visualize the consumption and objectives of the user, as well as reference values.
+ */
 
 public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     int anfangsMonatDiagramme = 0;
     int anzahlPersonen = 1;
-
     float aktuellerVerbrauch = 0;
-
     boolean datenVerfuegbar = false;
 
     ArrayList<Float> monatlicherGesamtVerbrauch = new ArrayList<>();
@@ -58,11 +61,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         bundleDataToMainActivityAuslesen();
 
-        // hilfsDatenErstellen();
-
         if (datenVerfuegbar) {
 
-            monatlicherGesamtVerbrauch.remove(monatlicherGesamtVerbrauch.size() - 1);
             monatlicherGesamtVerbrauch.add(aktuellerVerbrauch);
 
             barChartDataErstellen();
@@ -77,12 +77,15 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     }
 
     public void lineChartDataErstellen() {
+        /**
+         *
+         */
 
         if (anzahlPersonen > 3) {
             anzahlPersonen = 3;
         }
 
-        if (anzahlPersonen < 0){
+        if (anzahlPersonen < 0) {
             anzahlPersonen = 0;
         }
 
@@ -91,18 +94,6 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         ArrayList<Entry> entriesReferenzWerte = new ArrayList<>();
 
         int[] percentages = getResources().getIntArray(R.array.percentages);
-/*
-        for (int i = 0; i < 12; i++) {
-            if (i + anfangsMonatDiagramme - 1 < 12) {
-                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1] / 10000));
-            }
-            else {
-                entriesReferenzWerte.add(new Entry(i + 1, referenzVerbrauch * percentages[i + anfangsMonatDiagramme - 1 - 12] / 10000));
-            }
-        }
-*/
-
-
 
         for (int i = 12; i > 0; i--) {
             if (anfangsMonatDiagramme + i - 12 >= 0) {
@@ -115,8 +106,9 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         Collections.sort(entriesReferenzWerte, new EntryXComparator());
 
         LineDataSet lineDataSet = new LineDataSet(entriesReferenzWerte, null);
-        lineDataSet.setColor(R.color.colorPrimaryDark);
-        lineDataSet.setCircleColor(R.color.colorPrimaryDark);
+        lineDataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
+        lineDataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
+        lineDataSet.setCircleColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
 
         lineData.addDataSet(lineDataSet);
     }
@@ -125,18 +117,29 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         //x-Achse formatieren
 
         final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
+        xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(13);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
         anfangsMonatDiagramme++;
+        final String language = Locale.getDefault().getLanguage();
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                String[] monate = getResources().getStringArray(R.array.monate);
-                if (value == 0) return monate[(int) value];
-                else if (value + anfangsMonatDiagramme < 12) {
+                String[] monate;
+                if (language.equals("de")) {
+                    monate = getResources().getStringArray(R.array.monate);
+                } else {
+                    monate = getResources().getStringArray(R.array.months);
+                }
+
+                if (value == 0) {
+                    return monate[(int) value];
+                } else if (value == 13) {
+                    return "";
+                } else if (value + anfangsMonatDiagramme < 12) {
                     return monate[(int) (value + anfangsMonatDiagramme)];
                 } else if (value + anfangsMonatDiagramme - 12 == 0) {
                     return monate[12];
@@ -150,19 +153,34 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
         yAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0);
+        yAxis.setTextColor(ContextCompat.getColor(
+
+                getContext(), R.color.colorTextOnBackground));
 
         //Chart formatieren
 
-        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
-        monatlicherSollIstVergleich.getAxisRight().setEnabled(false);
-        monatlicherSollIstVergleich.getLegend().setEnabled(false);
-        monatlicherSollIstVergleich.getDescription().setEnabled(false);
+        monatlicherSollIstVergleich.getAxisRight().
+
+                setDrawLabels(false);
+        monatlicherSollIstVergleich.getAxisRight().
+
+                setEnabled(false);
+        monatlicherSollIstVergleich.getLegend().
+
+                setEnabled(false);
+        monatlicherSollIstVergleich.getDescription().
+
+                setEnabled(false);
         monatlicherSollIstVergleich.animateY(2000);
         monatlicherSollIstVergleich.invalidate();
 
-        monatlicherSollIstVergleich.setDrawOrder(new CombinedChart.DrawOrder[]{
-                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
-        });
+        monatlicherSollIstVergleich.setDrawOrder(new CombinedChart.DrawOrder[]
+
+                {
+                        CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE
+                });
+
 
         CombinedData combinedData = new CombinedData();
         combinedData.setData(barData);
@@ -170,6 +188,8 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         monatlicherSollIstVergleich.setData(combinedData);
         monatlicherSollIstVergleich.invalidate();
+
+        addLegend();
     }
 
     public void barChartDataErstellen() {
@@ -178,15 +198,6 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         ArrayList<BarEntry> entriesBarGesamtVerbrauchUnter = new ArrayList<>();
         ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
-
-
-        /*for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
-            if (monatlicherGesamtVerbrauch.get(i - 1) < monatlicherMaxVerbrauch.get(i - 1)) {
-                entriesBarGesamtVerbrauchUnter.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
-            } else {
-                entriesBarGesamtVerbrauchUeber.add(new BarEntry(i - 0.2f, monatlicherGesamtVerbrauch.get(i - 1)));
-            }
-        }*/
 
         int stelle = 12;
 
@@ -206,29 +217,26 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
         BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
 
-        barDataSetGesamtVerbrauchUnter.setColor(Color.GREEN);
+        barDataSetGesamtVerbrauchUnter.setColor(ContextCompat.getColor(getContext(), R.color.unter100ProgressColor));
         barDataSetGesamtVerbrauchUnter.setDrawValues(false);
 
-        barDataSetGesamtVerbrauchUeber.setColor(Color.RED);
+        barDataSetGesamtVerbrauchUeber.setColor(ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor));
         barDataSetGesamtVerbrauchUeber.setDrawValues(false);
 
         //MaxVerbrauch Einträge erstellen und formatieren
 
         ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
-/*
-        for (int i = 1; i < monatlicherGesamtVerbrauch.size() + 1; i++) {
-            entriesBarMaxVerbrauch.add(new BarEntry(i + 0.2f, monatlicherMaxVerbrauch.get(i - 1)));
-        }
-*/
+
         stelle = 12;
         for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
             entriesBarMaxVerbrauch.add(new BarEntry(stelle + 0.2f, monatlicherMaxVerbrauch.get(i)));
+            stelle--;
         }
 
         Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());
 
         BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
-        barDataSetMaxVerbrauch.setColor(Color.BLACK);
+        barDataSetMaxVerbrauch.setColor(Color.GRAY);
         barDataSetMaxVerbrauch.setDrawValues(false);
 
         //Data-Sets der Bardata hinzufügen und formatieren
@@ -238,11 +246,12 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         barData.addDataSet(barDataSetMaxVerbrauch);
 
         barData.setBarWidth(0.4f);
-        //monatlicherSollIstVergleich.setData(barDataMonatlicherSollIstVergleich);
     }
 
-    public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {                             //wandelt Float-Array in ArrayList-Float um
-        // wird benötigt, da ArrayList-Float nicht über Bundle an Fragments übergeben werden kann
+    public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {
+        /**
+         * This method transforms an C-Style float[] in an ArrayList<Float>
+         */
         ArrayList<Float> arrayList = new ArrayList<>();
         for (int i = 0; i < FloatArray.length; i++) {
             arrayList.add(FloatArray[i]);
@@ -250,16 +259,10 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         return arrayList;
     }
 
-    public ArrayList<String> stringArraytoStringArrayList(String[] StringArray) {                             //wandelt Float-Array in ArrayList-Float um
-        // wird benötigt, da ArrayList-Float nicht über Bundle an Fragments übergeben werden kann
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < StringArray.length; i++) {
-            arrayList.add(StringArray[i]);
-        }
-        return arrayList;
-    }
-
     public void bundleDataToMainActivityAuslesen() {
+        /**
+         * This method calls a method of the "MainActivity" and
+         */
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToSollIst();
 
         if (dataFromMainActivity.getFloatArray("monatlicherGesamtVerbrauch") != null) {
@@ -269,60 +272,32 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
             monatlicherMaxVerbrauch = floatArrayToArrayList(dataFromMainActivity.getFloatArray("monatlicherMaxVerbrauch"));
             anzahlPersonen = dataFromMainActivity.getInt("anzahlPersonen", 1) - 1;
             aktuellerVerbrauch = dataFromMainActivity.getFloat("aktuellerVerbrauch", 0);
-        }
-        else {
+        } else {
             datenVerfuegbar = false;
         }
     }
 
-    public void hilfsDatenErstellen() {
-        float hilfsfloat = 160;
-        monatlicherGesamtVerbrauch.clear(); //nur zum Testen
-        monatlicherMaxVerbrauch.clear(); //nur zum Testen
+    public void addLegend() {
+        Legend legend = monatlicherSollIstVergleich.getLegend();
+        legend.setEnabled(true);
+        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        legend.setXEntrySpace(20f);
 
-        for (int i = 0; i < 12; i++) {
-            monatlicherGesamtVerbrauch.add(hilfsfloat);
-            hilfsfloat += 2;
-        }
+        LegendEntry[] legendEntries = new LegendEntry[4];
+        String[] legendLabels = {getResources().getString(R.string.legendeReferenz), getResources().getString(R.string.legendeUnter100), getResources().getString(R.string.legendeUeber100), getResources().getString(R.string.legendeZiel)};
+        int colorArray[] = {ContextCompat.getColor(getContext(), R.color.colorTextOnBackground), ContextCompat.getColor(getContext(), R.color.unter100ProgressColor), ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor), Color.GRAY};
 
-        for (int i = 0; i < 12; i++) {
-            monatlicherMaxVerbrauch.add(170f);
+        for (int i = 0; i < legendEntries.length; i++){
+            LegendEntry entry = new LegendEntry();
+            entry.formColor = colorArray[i];
+            entry.label = legendLabels[i];
+            legendEntries[i] = entry;
         }
+        legend.setCustom(legendEntries);
+        legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
     }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 }
-
-/*
-BarChart chart1 = (BarChart)v.findViewById(R.id.barChart);
-
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-
-        barEntries.add(new BarEntry(1,1));
-        barEntries.add(new BarEntry(5,2));
-
-        ArrayList<BarEntry> barEntries1 = new ArrayList<>();
-
-        barEntries1.add(new BarEntry(3,3));
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Test");
-        BarDataSet barDataSet1 = new BarDataSet(barEntries1, "Test1");
-        barDataSet1.setColor(Color.RED);
-
-        BarData barData = new BarData(barDataSet, barDataSet1);
-        chart1.setData(barData);
-        chart1.getAxisRight().setDrawLabels(false);
-        chart1.getLegend().setEnabled(false);
-        XAxis xAxis = chart1.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(0);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f);
-        chart1.invalidate();
-
-        https://stackoverflow.com/questions/45320457/how-to-set-string-value-of-xaxis-in-mpandroidchart
-
-        Combined Chart: https://stackoverflow.com/questions/31056095/mpandroidchart-combined-chart
- */

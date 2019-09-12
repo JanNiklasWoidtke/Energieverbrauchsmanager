@@ -1,24 +1,17 @@
 package com.example.energieverbrauch;
 
-import android.content.Context;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
-public class TabContainerFragmentStart extends Fragment implements StartFragment.OnFragmentInteractionListener,
-        StartFragmentJahr.OnFragmentInteractionListener,
-        StartFragmentAlt.OnFragmentInteractionListener{
+public class TabContainerFragmentStart extends Fragment {
 
 
     @Nullable
@@ -33,7 +26,7 @@ public class TabContainerFragmentStart extends Fragment implements StartFragment
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager)v.findViewById(R.id.viewPager);
-        final PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount(), getContext());
+        final PagerAdapterStart pagerAdapter = new PagerAdapterStart(getFragmentManager(), tabLayout.getTabCount(), getContext());
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -56,10 +49,5 @@ public class TabContainerFragmentStart extends Fragment implements StartFragment
         });
 
         return v;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

@@ -11,8 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TabContainerFragmentStats extends Fragment implements Soll_Ist_Vergleich_Fragment.OnFragmentInteractionListener,
-        Referenzwerte_Fragment.OnFragmentInteractionListener
+public class TabContainerFragmentStats extends Fragment
 {
 
 
@@ -52,10 +51,5 @@ public class TabContainerFragmentStats extends Fragment implements Soll_Ist_Verg
         });
 
         return v;
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * This fragment displays saving tips to save energy to the user
+ */
+
 public class SavingTipsFragment extends Fragment {
     @Nullable
     @Override

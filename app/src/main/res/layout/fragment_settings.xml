@@ -7,14 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20sp">
+        android:layout_margin="16sp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <requestFocus />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/settings"
-            android:textSize="32sp" />
+            android:textColor="@color/colorTextOnBackground"
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,6 +36,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/switchDarkMode"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -41,7 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextPersonen"
@@ -49,12 +57,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
-                android:gravity="end" />
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/anzahlPersonen"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -65,7 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextPreis"
@@ -73,12 +86,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
-                android:gravity="end" />
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textPreisSettings"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -88,7 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="32dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true">
 
             <EditText
                 android:id="@+id/editTextGrundBetrag"
@@ -96,12 +115,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
-                android:gravity="end"/>
+                android:gravity="end"
+                android:textColor="@color/colorTextOnBackground"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/textGrundBetrag"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnBackground"
                 android:layout_marginStart="8dp"
                 android:layout_weight="3"
                 />
@@ -118,11 +140,14 @@
 
             <Button
                 android:id="@+id/buttonResetAllData"
-                style="@style/ButtonStyle"
+                android:padding="8dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@color/colorAccent"
                 android:text="@string/resetData"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnSecondary"
                 android:layout_weight="1"/>
 
             <TextView
@@ -130,11 +155,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:layout_marginStart="8dp"
-                android:text="@string/textResetData" />
+                android:text="@string/textResetData"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextOnBackground"/>
 
         </LinearLayout>
-
-
 
     </LinearLayout>
 

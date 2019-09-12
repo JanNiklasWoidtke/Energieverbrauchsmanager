@@ -6,12 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+/**
+ * This class is used to switch between tabs in a tablayout.
+ */
+
+public class PagerAdapterStart extends FragmentStatePagerAdapter {
 
     int anzahlTabs;
     public Context context;
 
-    public PagerAdapter(FragmentManager fragmentManager, int anzahlTabsPager, Context c) {
+    public PagerAdapterStart(FragmentManager fragmentManager, int anzahlTabsPager, Context c) {
         super(fragmentManager);
         context = c;
         this.anzahlTabs = anzahlTabsPager;
@@ -19,9 +23,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        /**
+         * This method returns the chosen fragment based on the int position.
+         * By swiping between fragments, position is set.
+         */
         switch (position) {
             case 0:
-                return new StartFragmentAlt();
+                return new StartFragment();
             case 1:
                 return new StartFragmentJahr();
             default:
@@ -38,6 +46,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+        /**
+         * This method sets the tabtitles of the tabs from resource strings.
+         */
         String[] tabTitles = new String[] {context.getResources().getString(R.string.monat), context.getResources().getString(R.string.jahr)};
         return tabTitles[position];
     }
