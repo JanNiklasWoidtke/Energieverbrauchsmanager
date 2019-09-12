@@ -74,6 +74,24 @@ public class StartFragmentAlt extends Fragment {
         return v;
     }
 
+    public void aktuelleDatumsInfo() {
+        Calendar calendar = Calendar.getInstance();
+        tag = calendar.get(Calendar.DAY_OF_MONTH);
+        tageImMonat = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        monat = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        jahr = String.valueOf(calendar.get(Calendar.YEAR));
+    }
+
+    public void getBundleDataFromMainActivity() {
+        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();
+
+        maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
+        gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
+        preisProEinheit = dataFromMainActivity.getFloat("preisProEinheit", 0);
+        grundBetrag = dataFromMainActivity.getFloat("grundBetrag", 0);
+        neuerMonat = dataFromMainActivity.getBoolean("neuerMonat", false);
+    }
+
     public void neuenMaxVerbrauchMonatFestlegen() {
         AlertDialog.Builder alertNeuerMaxVerbrauch = new AlertDialog.Builder(getContext());
         final EditText editTextNeuerMaxVerbrauch = new EditText(getContext());
@@ -102,14 +120,6 @@ public class StartFragmentAlt extends Fragment {
                 .show();
     }
 
-    public void aktuelleDatumsInfo() {
-        Calendar calendar = Calendar.getInstance();
-        tag = calendar.get(Calendar.DAY_OF_MONTH);
-        tageImMonat = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        monat = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        jahr = String.valueOf(calendar.get(Calendar.YEAR));
-    }
-
     public void aktuelleWerteSetzen() {
         String anzeigeMonatJahr = monat + " " + jahr;
         textViewMonat.setText(anzeigeMonatJahr);
@@ -125,16 +135,6 @@ public class StartFragmentAlt extends Fragment {
         calculateProgress();
         updateProgressBar();
         updatePercentage();
-    }
-
-    public void getBundleDataFromMainActivity() {
-        Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();
-
-        maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
-        gesamtVerbrauch = dataFromMainActivity.getFloat("gesamtVerbrauch", 0);
-        preisProEinheit = dataFromMainActivity.getFloat("preisProEinheit", 0);
-        grundBetrag = dataFromMainActivity.getFloat("grundBetrag", 0);
-        neuerMonat = dataFromMainActivity.getBoolean("neuerMonat", false);
     }
 
     public void calculateProgress() {
