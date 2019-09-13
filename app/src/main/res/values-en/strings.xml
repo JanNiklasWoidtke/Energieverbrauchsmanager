@@ -25,7 +25,7 @@
     <string name="erwarteteJahresKosten">Expected Costs for the next Year</string>
     <string name="erwarteteMonatKosten">Expected Costs for the next Month</string>
     <string name="euro">\u0020€</string>
-    <string name="euroProTah">\u0020€ / Day</string>
+    <string name="euroProTag">\u0020€ / Day</string>
     <string name="fehlerhafteEingabe">Please fill in all fields</string>
     <string name="forNature">For Mother Nature</string>
     <string name="geraetename">Name of Device</string>

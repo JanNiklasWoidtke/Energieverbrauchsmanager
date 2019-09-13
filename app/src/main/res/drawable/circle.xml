@@ -15,13 +15,13 @@
             android:pivotX="50%"
             android:pivotY="50%"
             android:toDegrees="270">
-            >
+
             <shape
                 android:innerRadiusRatio="2.5"
                 android:shape="ring"
                 android:thicknessRatio="10"
                 android:useLevel="true">
-                <solid android:color="@color/colorPrimary" />
+                <solid android:color="@color/unter100ProgressColor" />
             </shape>
         </rotate>
     </item>
