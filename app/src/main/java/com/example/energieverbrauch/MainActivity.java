@@ -188,10 +188,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          * If the app is started for the very first time, "anfangstag" is set by using the Calendar of android.
          * The value is saved in SharedPreferences for later usage.
          */
+        SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        anfangsTag = sharedPreferences.getInt("anfangsTag", 0);
+
         if (anfangsTag == 0) {
             anfangsTag = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-            SharedPreferences sharedPreferences = getSharedPreferences("shared Preferences", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+
             editor.putInt("anfangsTag", anfangsTag);
             editor.apply();
         }
@@ -551,18 +555,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
 
         gesamtVerbrauchJahr = 0;
-/*
-        int zaehler = monatlicherGesamtVerbrauch.size() - 12;
 
-        for (int i = 0; i < 12 && i < monatlicherGesamtVerbrauch.size(); i++) {
-            if (zaehler < 0) {
-                zaehler = 0;
-            }
-            gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(zaehler);
-            zaehler++;
-        } */
-
-        for(int i = monatlicherGesamtVerbrauch.size() - 1 ; i >= 0 && i > monatlicherGesamtVerbrauch.size() - 11; i--) {
+        for(int i = monatlicherGesamtVerbrauch.size() - 1 ; i >= 0 && i > monatlicherGesamtVerbrauch.size() - 12; i--) {
             gesamtVerbrauchJahr += monatlicherGesamtVerbrauch.get(i);
         }
     }
@@ -574,17 +568,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
 
         maxVerbrauchJahr = 0;
-/*
-        int zaehler = monatlicherMaximalVerbrauch.size() - 12;
 
-        for (int i = 0; i < 12 && i < monatlicherMaximalVerbrauch.size(); i++) {
-            if (zaehler < 0) {
-                zaehler = 0;
-            }
-            maxVerbrauchJahr += monatlicherMaximalVerbrauch.get(zaehler);
-            zaehler++;
-        } */
-        for(int i = monatlicherMaximalVerbrauch.size() - 1 ; i >= 0 && i > monatlicherMaximalVerbrauch.size() - 11; i--) {
+        for(int i = monatlicherMaximalVerbrauch.size() - 1 ; i >= 0 && i > monatlicherMaximalVerbrauch.size() - 13; i--) {
             maxVerbrauchJahr += monatlicherMaximalVerbrauch.get(i);
         }
     }

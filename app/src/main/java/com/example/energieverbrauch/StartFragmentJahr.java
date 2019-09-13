@@ -77,14 +77,17 @@ public class StartFragmentJahr extends Fragment {
 
         textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauchJahr));
 
-        if (anfangsTag < tagImJahr) {
+        if (anfangsTag < tagImJahr && anzahlJahre == 0) {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (tagImJahr-anfangsTag) * 365; //anfangstag von tagImJahr abziehen
         }
-        else if (anfangsTag == tagImJahr){
+        else if (anfangsTag == tagImJahr && anzahlJahre == 0){
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) * 365;
         }
+        else if(anfangsTag > tagImJahr && anzahlJahre == 1) {
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (365 - anfangsTag + tagImJahr) * 365;
+        }
         else {
-            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / tagImJahr * 365;
+            erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat);
         }
 
         textViewerwarteteJahresKosten.setText(String.format("%.2f", erwarteteJahresKosten));
