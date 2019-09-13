@@ -82,6 +82,7 @@
     <string name="legendeUnter100">&lt;100%</string>
     <string name="legendeUeber100">&gt;100%</string>
     <string name="legendeZiel">Ziel</string>
+    <string name="mehrAls100">Mehr als 100%</string>
 
     <string name="fehlerKeinZiel">Bitte geben sie ein Verbrauchsziel ein!</string>
 

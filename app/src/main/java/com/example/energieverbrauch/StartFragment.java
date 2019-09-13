@@ -157,8 +157,8 @@ public class StartFragment extends Fragment {
         if (progress < 100) {
             TextViewProzentAnzeige.setText(progress + "%");
             ProgressBar.getProgressDrawable().clearColorFilter();
-        } else {
-            TextViewProzentAnzeige.setText("Mehr als 100%");
+        } else  {
+            TextViewProzentAnzeige.setText(R.string.mehrAls100);
             ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);
         }
     }

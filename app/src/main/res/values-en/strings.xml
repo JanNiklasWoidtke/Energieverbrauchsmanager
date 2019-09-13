@@ -84,4 +84,5 @@
     <string name="legendeUnter100">&lt;100%</string>
     <string name="legendeZiel">Objective</string>
     <string name="fehlerKeinZiel">Please fill in a consumption objective!</string>
+    <string name="mehrAls100">More than 100%</string>
 </resources>

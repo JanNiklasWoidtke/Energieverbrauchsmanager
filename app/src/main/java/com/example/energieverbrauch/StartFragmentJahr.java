@@ -130,7 +130,7 @@ public class StartFragmentJahr extends Fragment {
         if (progressJahr < 100) {
             TextViewProzentAnzeige.setText(progressJahr + "%");
         } else {
-            TextViewProzentAnzeige.setText("Mehr als 100%");
+            TextViewProzentAnzeige.setText(R.string.mehrAls100);
             ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);
         }
     }
