@@ -27,7 +27,6 @@
     <string name="euro">\u0020€</string>
     <string name="euroProTag">\u0020€ / Day</string>
     <string name="fehlerhafteEingabe">Please fill in all fields</string>
-    <string name="forNature">For Mother Nature</string>
     <string name="geraetename">Name of Device</string>
     <string name="grammProTag">\u0020g / Day</string>
     <string name="headerMyConsumptionSollIst1">Consumption vs. Objective \nfor the last 12 Months</string>
@@ -70,14 +69,14 @@
     <string name="Tipp1">Tip 1: Open your windows completely during ventilation instead of just tilting them. Thus, the air in the room gets exchanged while the walls are not cooling down. Also make sure that the radiator is switched off when the window is open.</string>
     <string name="Tipp10">"Tip 10: Moreover, use the tumble dryer as rarely as possible. Especially in the summer the laundry should rather be air dried. "</string>
     <string name="Tipp11">Tip 11: Turn off the light in rooms you are not staying in for some time. During the day, the incoming daylight is often sufficient as a light source.</string>
-    <string name="Tipp12">Motivation: Saving energy pais off! On the one hand fewer greenhouse gases like CO2 are produced  in the process of power generation. On the other hand several hundred euro can be safed  by following simple energy saving tips.</string>
+    <string name="Motivation">Motivation: Saving energy pais off! On the one hand fewer greenhouse gases like CO2 are produced  in the process of power generation. On the other hand several hundred euro can be safed  by following simple energy saving tips.</string>
     <string name="Tipp2">Tip 2: Replace your old lightbulbs with new energy-saving bulbs or LEDs because the latter ones consume significantly fewer electricity by maintaining the same light quality.</string>
-    <string name="Tipp3">Tip 3: Also replace your old devices such as the refridgerator, the stove or the washing machine with newer ones. Despite the higher acquisition costs, a higher energy efficiency class quickly pays off. Make sure that the energiy-efficiency-class of the new device is not lower than A+.</string>
+    <string name="Tipp3">Tip 3: Also replace your old devices such as the refrigerator, the stove or the washing machine with newer ones. Despite the higher acquisition costs, a higher energy efficiency class quickly pays off. Make sure that the energiy-efficiency-class of the new device is not lower than A+.</string>
     <string name="Tipp4">Tip 4: Furthermore, take your own usage requirements into account because too large devices could consume more electricity than necessary, despite a good energy efficiency class.</string>
     <string name="Tipp5">Tip 5: Turn off all devices not in use, e.g. the TV or your computer. Ideally, disconnect them completely from the power grid, since electricity is also consumed in standby mode. This is easily possible through the use of a disconnectable connector strip.</string>
     <string name="Tipp6">Tip 6: Do not set the brightness of your screens too high and turn on the energy saving mode to additionally safe electricity.</string>
     <string name="Tipp7">Tip 7: Make sure that the stove pot you are using is not larger than the pot and, if possible, always cook with the pot lid closed.</string>
-    <string name="Tipp8">Tip 8: Do not set the temperature of your cooling devices too low. Generally a temperature of 6-7°C in the refridgerator and -18°C in the freezer is sufficient. Besides, defrost the freezer regularly.</string>
+    <string name="Tipp8">Tip 8: Do not set the temperature of your cooling devices too low. Generally a temperature of 6&#8211;7°C in the refrigerator and -18°C in the freezer is sufficient. Besides, defrost the freezer regularly.</string>
     <string name="Tipp9">Tip 9: It is best to use the dishwasher and the washing machine if they are well filled, to avoid unnecessary washings.</string>
     <string name="legendeReferenz">Reference Values</string>
     <string name="legendeUeber100">&gt;100%</string>
