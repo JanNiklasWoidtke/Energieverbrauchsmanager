@@ -108,7 +108,7 @@ public class MyCountersFragment extends Fragment {
                     anteilVerbrauchBerechnen();
                 }
 
-                listener.dataFromMyCountersToMainActivity(aktuellerStand, gesamtVerbrauch);        //aktueller Stand wird an MainActivity übergeben
+                listener.dataFromMyCountersToMainActivity(aktuellerStand, gesamtVerbrauch);
             }
         });
 
@@ -147,10 +147,9 @@ public class MyCountersFragment extends Fragment {
          */
         anteilJedesZaehlers.clear();
         for (int i = 0; i < verbrauchJedesZaehlers.size(); i++) {
-            if (gesamtVerbrauch != 0) {
-                anteilJedesZaehlers.add(verbrauchJedesZaehlers.get(i) / gesamtVerbrauch);
-            }
+            anteilJedesZaehlers.add(verbrauchJedesZaehlers.get(i) / gesamtVerbrauch);
         }
+
     }
 
     public void getDataFromMainActivity() {
@@ -202,7 +201,9 @@ public class MyCountersFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        for (int i = 0; i < 3; i++) {                               // Headerzeile mit Überschriften erstellen
+        //Create Header
+
+        for (int i = 0; i < 3; i++) {
             headerElemente = new TextView(getContext());
             tableRow.setLayoutParams(layoutParamsTableRow);
             headerElemente.setLayoutParams(layoutParamsTableRow);
@@ -238,14 +239,14 @@ public class MyCountersFragment extends Fragment {
             aktuellerStandListe.setLayoutParams(layoutParamsTableRow);
 
             if (aktuellerStand.size() > 0)
-                aktuellerStandListe.setText(String.valueOf(aktuellerStand.get(i))); //Sind noch keine neuen Werte eingegeben, wird der Anfanswert als Text gesetzt
+                aktuellerStandListe.setText(String.valueOf(aktuellerStand.get(i)));
             else aktuellerStandListe.setText(String.valueOf(standBeginn.get(i)));
 
             aktuellerStandListe.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             aktuellerStandListe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             aktuellerStandListe.setGravity(Gravity.END);
 
-            alleEditTextAktuellerStand.add(aktuellerStandListe); //fügt EditText dem Array hinzu, um später über ID Wert abzufragen
+            alleEditTextAktuellerStand.add(aktuellerStandListe);
 
             // Fill third column: Proportions of the consumption
 
@@ -286,12 +287,10 @@ public class MyCountersFragment extends Fragment {
         }
 
         if (!unzulaessigeEingabe) {
-            for (int i = 0; i < zaehlername.size(); i++) {                                                                  //für alle Zähler
-                if (!TextUtils.isEmpty(alleEditTextAktuellerStand.get(i).getText()) && !alleEditTextAktuellerStand.get(i).getText().toString().equals(".")) {                                      //wenn das EditTet-Feld nicht leer ist
-                    aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));        //ändere den aktuellen Stand jedes geänderten Zählers auf den eingegebenen Wert
-                }
+            for (int i = 0; i < zaehlername.size(); i++) {
+                aktuellerStand.set(i, Float.parseFloat(alleEditTextAktuellerStand.get(i).getText().toString()));
             }
-            Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();                                  //Toast zur visuellen Bestätigung, bis jetzt ohne Prüfung, ob tatsächlich Werte aktualisiert wurden
+            Toast.makeText(getContext(), R.string.werteAktualisiert, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), String.format(getResources().getString(R.string.unzulaessigeEingabe), zaehlername.get(zeile)), Toast.LENGTH_SHORT).show();
         }
