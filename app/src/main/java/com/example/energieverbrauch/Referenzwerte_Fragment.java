@@ -77,12 +77,18 @@ public class Referenzwerte_Fragment extends Fragment {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
 
         int stelleEigenerVerbrauch = 0;
+        boolean eigenenVerbrauchHinzufuegen = true;
 
         for (int i = 1; i <= referenzwerte.size(); i++) {
             if (referenzwerte.get(i - 1) != eigenerVerbrauch) {
                 barEntries.add(new BarEntry(i, referenzwerte.get(i - 1)));
             } else {
-                stelleEigenerVerbrauch = i;
+                if (eigenenVerbrauchHinzufuegen) {
+                    stelleEigenerVerbrauch = i;
+                    eigenenVerbrauchHinzufuegen = false;
+                } else {
+                    barEntries.add(new BarEntry(i, referenzwerte.get(i - 1)));
+                }
             }
         }
 
