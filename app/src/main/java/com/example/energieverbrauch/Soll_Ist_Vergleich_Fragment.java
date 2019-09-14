@@ -210,24 +210,14 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
         yAxis.setDrawGridLines(false);
         yAxis.setAxisMinimum(0);
-        yAxis.setTextColor(ContextCompat.getColor(
-
-                getContext(), R.color.colorTextOnBackground));
+        yAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
 
         //Chart formatieren
 
-        monatlicherSollIstVergleich.getAxisRight().
+        monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
+        monatlicherSollIstVergleich.getAxisRight().setEnabled(false);
+        monatlicherSollIstVergleich.getDescription().setEnabled(false);
 
-                setDrawLabels(false);
-        monatlicherSollIstVergleich.getAxisRight().
-
-                setEnabled(false);
-        monatlicherSollIstVergleich.getLegend().
-
-                setEnabled(false);
-        monatlicherSollIstVergleich.getDescription().
-
-                setEnabled(false);
         monatlicherSollIstVergleich.animateY(2000);
         monatlicherSollIstVergleich.invalidate();
 
@@ -279,7 +269,6 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     public void addLegend() {
         Legend legend = monatlicherSollIstVergleich.getLegend();
-        legend.setEnabled(true);
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         legend.setXEntrySpace(20f);
 
