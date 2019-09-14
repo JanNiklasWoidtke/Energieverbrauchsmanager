@@ -89,25 +89,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        editTextGrundBetrag.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(editTextGrundBetrag.getText()) && !editTextGrundBetrag.getText().toString().equals(".")) {
-                    listener.setGrundBetrag(Float.parseFloat(editTextGrundBetrag.getText().toString()));
-                }
-            }
-        });
-
         editTextPersonen.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -142,6 +123,25 @@ public class SettingsFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(editTextPreisProEinheit.getText()) && !editTextPreisProEinheit.getText().toString().equals(".")) {
                     listener.setPreisProEinheit(Float.parseFloat(editTextPreisProEinheit.getText().toString()));
+                }
+            }
+        });
+
+        editTextGrundBetrag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(editTextGrundBetrag.getText()) && !editTextGrundBetrag.getText().toString().equals(".")) {
+                    listener.setGrundBetrag(Float.parseFloat(editTextGrundBetrag.getText().toString()));
                 }
             }
         });
