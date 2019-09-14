@@ -76,6 +76,62 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         return v;
     }
 
+    public void barChartDataErstellen() {
+
+        //Gesamtverbrauch Einträge erstellen und formatieren
+
+        ArrayList<BarEntry> entriesBarGesamtVerbrauchUnter = new ArrayList<>();
+        ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
+
+        int stelle = 12;
+
+        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
+            if (monatlicherGesamtVerbrauch.get(i) < monatlicherMaxVerbrauch.get(i)) {
+                entriesBarGesamtVerbrauchUnter.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
+
+            } else {
+                entriesBarGesamtVerbrauchUeber.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
+            }
+            stelle--;
+        }
+
+        Collections.sort(entriesBarGesamtVerbrauchUeber, new EntryXComparator());
+        Collections.sort(entriesBarGesamtVerbrauchUnter, new EntryXComparator());
+
+        BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
+        BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
+
+        barDataSetGesamtVerbrauchUnter.setColor(ContextCompat.getColor(getContext(), R.color.unter100ProgressColor));
+        barDataSetGesamtVerbrauchUnter.setDrawValues(false);
+
+        barDataSetGesamtVerbrauchUeber.setColor(ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor));
+        barDataSetGesamtVerbrauchUeber.setDrawValues(false);
+
+        //MaxVerbrauch Einträge erstellen und formatieren
+
+        ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
+
+        stelle = 12;
+        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
+            entriesBarMaxVerbrauch.add(new BarEntry(stelle + 0.2f, monatlicherMaxVerbrauch.get(i)));
+            stelle--;
+        }
+
+        Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());
+
+        BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
+        barDataSetMaxVerbrauch.setColor(Color.GRAY);
+        barDataSetMaxVerbrauch.setDrawValues(false);
+
+        //Data-Sets der Bardata hinzufügen und formatieren
+
+        barData.addDataSet(barDataSetGesamtVerbrauchUnter);
+        barData.addDataSet(barDataSetGesamtVerbrauchUeber);
+        barData.addDataSet(barDataSetMaxVerbrauch);
+
+        barData.setBarWidth(0.4f);
+    }
+
     public void lineChartDataErstellen() {
         /**
          *
@@ -190,62 +246,6 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         monatlicherSollIstVergleich.invalidate();
 
         addLegend();
-    }
-
-    public void barChartDataErstellen() {
-
-        //Gesamtverbrauch Einträge erstellen und formatieren
-
-        ArrayList<BarEntry> entriesBarGesamtVerbrauchUnter = new ArrayList<>();
-        ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
-
-        int stelle = 12;
-
-        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
-            if (monatlicherGesamtVerbrauch.get(i) < monatlicherMaxVerbrauch.get(i)) {
-                entriesBarGesamtVerbrauchUnter.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
-
-            } else {
-                entriesBarGesamtVerbrauchUeber.add(new BarEntry(stelle - 0.2f, monatlicherGesamtVerbrauch.get(i)));
-            }
-            stelle--;
-        }
-
-        Collections.sort(entriesBarGesamtVerbrauchUeber, new EntryXComparator());
-        Collections.sort(entriesBarGesamtVerbrauchUnter, new EntryXComparator());
-
-        BarDataSet barDataSetGesamtVerbrauchUnter = new BarDataSet(entriesBarGesamtVerbrauchUnter, null);
-        BarDataSet barDataSetGesamtVerbrauchUeber = new BarDataSet(entriesBarGesamtVerbrauchUeber, null);
-
-        barDataSetGesamtVerbrauchUnter.setColor(ContextCompat.getColor(getContext(), R.color.unter100ProgressColor));
-        barDataSetGesamtVerbrauchUnter.setDrawValues(false);
-
-        barDataSetGesamtVerbrauchUeber.setColor(ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor));
-        barDataSetGesamtVerbrauchUeber.setDrawValues(false);
-
-        //MaxVerbrauch Einträge erstellen und formatieren
-
-        ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
-
-        stelle = 12;
-        for (int i = monatlicherGesamtVerbrauch.size() - 1; i >= 0; i--) {
-            entriesBarMaxVerbrauch.add(new BarEntry(stelle + 0.2f, monatlicherMaxVerbrauch.get(i)));
-            stelle--;
-        }
-
-        Collections.sort(entriesBarMaxVerbrauch, new EntryXComparator());
-
-        BarDataSet barDataSetMaxVerbrauch = new BarDataSet(entriesBarMaxVerbrauch, null);
-        barDataSetMaxVerbrauch.setColor(Color.GRAY);
-        barDataSetMaxVerbrauch.setDrawValues(false);
-
-        //Data-Sets der Bardata hinzufügen und formatieren
-
-        barData.addDataSet(barDataSetGesamtVerbrauchUnter);
-        barData.addDataSet(barDataSetGesamtVerbrauchUeber);
-        barData.addDataSet(barDataSetMaxVerbrauch);
-
-        barData.setBarWidth(0.4f);
     }
 
     public ArrayList<Float> floatArrayToArrayList(float[] FloatArray) {
