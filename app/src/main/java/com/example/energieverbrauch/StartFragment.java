@@ -23,6 +23,12 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * This fragment is the start and home screen of the application.
+ * The consumption of the current month is displayed in a circular progress bar.
+ * Also, a forecast of the expected costs is also given.
+ */
+
 public class StartFragment extends Fragment {
 
     public StartFragmentListener listener;
@@ -46,7 +52,11 @@ public class StartFragment extends Fragment {
 
     boolean neuerMonat = false;
 
-    public interface StartFragmentListener { //ermöglicht Senden an MainActivity
+    public interface StartFragmentListener {
+        /**
+         * Enables data transfer to the "MainActivity"
+         * @param maxVerbrauch maximum consumption objective set by user
+         */
         void dataFromStartFragmentToMainActivity(float maxVerbrauch);
     }
 
@@ -79,6 +89,13 @@ public class StartFragment extends Fragment {
     }
 
     public void neuenMaxVerbrauchMonatFestlegen() {
+        /**
+         * This method is used to display a DialogBox if a new month started.
+         * Here, the user has to put in a new consumption objective.
+         * The box is not dismissable.
+         * If a valid value is entered, the data is transfered to the MainActivity using the interface.
+         */
+
         AlertDialog.Builder alertNeuerMaxVerbrauch = new AlertDialog.Builder(getContext());
         final EditText editTextNeuerMaxVerbrauch = new EditText(getContext());
 
@@ -109,6 +126,10 @@ public class StartFragment extends Fragment {
     }
 
     public void aktuelleDatumsInfo() {
+        /**
+         * This method is used to get the required data information in this fragment.
+         * An instance of the android calendar is called and used.
+         */
         Calendar calendar = Calendar.getInstance();
         tag = calendar.get(Calendar.DAY_OF_MONTH);
         tageImMonat = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -117,6 +138,10 @@ public class StartFragment extends Fragment {
     }
 
     public void aktuelleWerteSetzen() {
+        /**
+         * In this method the current values are set.
+         * Also the expected costs are calculated.
+         */
         String anzeigeMonatJahr = monat + " " + jahr;
         textViewMonat.setText(anzeigeMonatJahr);
 
@@ -133,6 +158,10 @@ public class StartFragment extends Fragment {
     }
 
     public void getBundleDataFromMainActivity() {
+        /**
+         * This method is used to call a method from the MainActivity and get the returned bundle.
+         * The bundle contains the relevant data for this fragment.
+         */
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToStartFragMethod();
 
         maxVerbrauch = dataFromMainActivity.getFloat("maxVerbrauch", 0);
@@ -143,6 +172,10 @@ public class StartFragment extends Fragment {
     }
 
     public void calculateProgress() {
+        /**
+         * This method is ued to set/calculate the progress based on states ot other variables.
+         * After calculation, the progress is set.
+         */
         if (maxVerbrauch != 0) {
             progress = (int) (gesamtVerbrauch / maxVerbrauch * 100);
         } else if (gesamtVerbrauch == 0) {
@@ -154,6 +187,10 @@ public class StartFragment extends Fragment {
     }
 
     public void updatePercentage() {
+        /**
+         * This method is used to update the percentage display.
+         * Bases on the value of progress, the ProgressBar is colored.
+         */
         if (progress < 100) {
             TextViewProzentAnzeige.setText(progress + "%");
             ProgressBar.getProgressDrawable().clearColorFilter();
@@ -162,23 +199,4 @@ public class StartFragment extends Fragment {
             ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);
         }
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof StartFragmentListener) {
-            listener = (StartFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement StartFragmentListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
 }
-
-
-//Mock-Ups: https://placeit.net/c/mockups/stages/galaxy-s9-mockup-template-against-transparent-background-a19508?customG_0=pwu6ngf3d7

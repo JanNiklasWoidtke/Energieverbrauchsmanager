@@ -14,6 +14,11 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+/**
+ * This fragment displays information about the consumption on a bigger time scale to the user.
+ * Values for max 12 months are presented.
+ */
+
 public class StartFragmentJahr extends Fragment {
 
     public TextView textViewMaxVerbrauchSoll;
@@ -59,15 +64,21 @@ public class StartFragmentJahr extends Fragment {
     }
 
     public void aktuelleDatumsInfo() {
+        /**
+         * This method is used to get the required data information in this fragment.
+         * An instance of the android calendar is called and used.
+         */
         Calendar calendar = Calendar.getInstance();
         tagImJahr = calendar.get(Calendar.DAY_OF_YEAR);
         jahr = String.valueOf(calendar.get(Calendar.YEAR));
     }
 
     public void aktuelleWerteSetzen() {
-/*        if (anzahlMonate == 0) {
-            textViewJahr.setText(R.string.nochKeineDater);
-        }*/
+        /**
+         * In this method the current values are set.
+         * Also the expected costs are calculated.
+         */
+
         if (anzahlMonate >= 1) {
             textViewJahr.setText(String.format(getResources().getString(R.string.anzahlMonate), anzahlMonate + 1));
         } else {
@@ -76,6 +87,8 @@ public class StartFragmentJahr extends Fragment {
         TextViewAktuellerVerbrauchJahr.setText(String.valueOf(gesamtVerbrauchJahr + gesamtVerbrauchAktMonat));
 
         textViewMaxVerbrauchSoll.setText(String.valueOf(maxVerbrauchJahr));
+
+        //Expected cost calculation
 
         if (anfangsTag < tagImJahr && anzahlJahre == 0) {
             erwarteteJahresKosten = grundBetrag + preisProEinheit * (gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / (tagImJahr-anfangsTag) * 365; //anfangstag von tagImJahr abziehen
@@ -93,12 +106,16 @@ public class StartFragmentJahr extends Fragment {
         textViewerwarteteJahresKosten.setText(String.format("%.2f", erwarteteJahresKosten));
 
         calculateProgress();
-        updateProgressBar();
         updatePercentage();
     }
 
 
     public void getBundleDataFromMainActivity() {
+        /**
+         * This method is used to call a method from the MainActivity and get the returned bundle.
+         * The bundle contains the relevant data for this fragment.
+         * The maximum timeframe to watch is 12 months.
+         */
         Bundle dataFromMainActivityJahr = ((MainActivity) getActivity()).dataToStartFragJahrMethod();
 
         gesamtVerbrauchJahr = dataFromMainActivityJahr.getFloat("gesamtVerbrauchJahr", 0);
@@ -116,6 +133,10 @@ public class StartFragmentJahr extends Fragment {
     }
 
     public void calculateProgress() {
+        /**
+         * This method is ued to set/calculate the progress based on states ot other variables.
+         * After calculation, the progress is set.
+         */
         if (maxVerbrauchJahr != 0) {
             progressJahr = (int) ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) / maxVerbrauchJahr * 100);
         } else if ((gesamtVerbrauchJahr + gesamtVerbrauchAktMonat) == 0) {
@@ -123,23 +144,20 @@ public class StartFragmentJahr extends Fragment {
         } else {
             progressJahr = 101;
         }
-    }
-
-    public void updateProgressBar() {
         ProgressBar.setProgress(progressJahr);
     }
 
     public void updatePercentage() {
+        /**
+         * This method is used to update the percentage display.
+         * Bases on the value of progress, the ProgressBar is colored.
+         */
         if (progressJahr < 100) {
             TextViewProzentAnzeige.setText(progressJahr + "%");
         } else {
             TextViewProzentAnzeige.setText(R.string.mehrAls100);
             ProgressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.ueber100ProgressColor), PorterDuff.Mode.SRC_IN);
         }
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
 

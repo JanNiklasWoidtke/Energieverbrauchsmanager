@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * This fragment is a container for the fragments to display in the TabLayout.
+ * It contains the logic necessary to initialize the TabLayout.
+ */
+
 public class TabContainerFragmentStart extends Fragment {
 
 

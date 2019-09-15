@@ -77,8 +77,11 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     }
 
     public void barChartDataErstellen() {
+        /**
+         * This method is used to create and format the barData for the combinedChart
+         */
 
-        //Gesamtverbrauch Einträge erstellen und formatieren
+        //Create total consumption entries
 
         ArrayList<BarEntry> entriesBarGesamtVerbrauchUnter = new ArrayList<>();
         ArrayList<BarEntry> entriesBarGesamtVerbrauchUeber = new ArrayList<>();
@@ -107,7 +110,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         barDataSetGesamtVerbrauchUeber.setColor(ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor));
         barDataSetGesamtVerbrauchUeber.setDrawValues(false);
 
-        //MaxVerbrauch Einträge erstellen und formatieren
+        //Create maxConsumption entries
 
         ArrayList<BarEntry> entriesBarMaxVerbrauch = new ArrayList<>();
 
@@ -123,7 +126,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         barDataSetMaxVerbrauch.setColor(Color.GRAY);
         barDataSetMaxVerbrauch.setDrawValues(false);
 
-        //Data-Sets der Bardata hinzufügen und formatieren
+        //Add data sets to barData
 
         barData.addDataSet(barDataSetGesamtVerbrauchUnter);
         barData.addDataSet(barDataSetGesamtVerbrauchUeber);
@@ -134,7 +137,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     public void lineChartDataErstellen() {
         /**
-         *
+         * This method is used to create and format the lineData for the combinedChart.
          */
 
         if (anzahlPersonen > 3) {
@@ -170,7 +173,11 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     }
 
     public void combinedChartErstellen() {
-        //x-Achse formatieren
+        /**
+         * This method is used to create and format the combinedChart out of the barChart and the lineChart
+         */
+
+        //format x-Axis
 
         final XAxis xAxis = monatlicherSollIstVergleich.getXAxis();
         xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
@@ -205,14 +212,14 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
             }
         });
 
-        //y-Achse formmatieren
+        //format left y-Axis
 
         final YAxis yAxis = monatlicherSollIstVergleich.getAxisLeft();
         yAxis.setDrawGridLines(false);
         yAxis.setAxisMinimum(0);
         yAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
 
-        //Chart formatieren
+        //format the combinedChart
 
         monatlicherSollIstVergleich.getAxisRight().setDrawLabels(false);
         monatlicherSollIstVergleich.getAxisRight().setEnabled(false);
@@ -251,7 +258,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
     public void bundleDataToMainActivityAuslesen() {
         /**
-         * This method calls a method of the "MainActivity" and
+         * This method calls a method of the "MainActivity" to get the requrred data in to a fragment in a TabLayout
          */
         Bundle dataFromMainActivity = ((MainActivity) getActivity()).dataToSollIst();
 
@@ -268,6 +275,9 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
     }
 
     public void addLegend() {
+        /**
+         * This method is used to create and format the legend of the combinedChart
+         */
         Legend legend = monatlicherSollIstVergleich.getLegend();
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         legend.setXEntrySpace(20f);
@@ -284,9 +294,5 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
         }
         legend.setCustom(legendEntries);
         legend.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextOnBackground));
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }
