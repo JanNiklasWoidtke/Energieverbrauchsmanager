@@ -25,14 +25,14 @@ public class TabContainerFragmentStats extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab_container_stats, container, false);
 
-        final TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayoutStats);
+        final TabLayout tabLayout = v.findViewById(R.id.tablayoutStats);
 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPagerStats = (ViewPager)v.findViewById(R.id.viewPagerStats);
+        final ViewPager viewPagerStats = v.findViewById(R.id.viewPagerStats);
         final PagerAdapterStats pagerAdapterStats = new PagerAdapterStats(getFragmentManager(), tabLayout.getTabCount(), getContext());
 
         viewPagerStats.setAdapter(pagerAdapterStats);

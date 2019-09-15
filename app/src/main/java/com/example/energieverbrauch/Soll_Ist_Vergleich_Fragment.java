@@ -284,7 +284,7 @@ public class Soll_Ist_Vergleich_Fragment extends Fragment {
 
         LegendEntry[] legendEntries = new LegendEntry[4];
         String[] legendLabels = {getResources().getString(R.string.legendeReferenz), getResources().getString(R.string.legendeUnter100), getResources().getString(R.string.legendeUeber100), getResources().getString(R.string.legendeZiel)};
-        int colorArray[] = {ContextCompat.getColor(getContext(), R.color.colorTextOnBackground), ContextCompat.getColor(getContext(), R.color.unter100ProgressColor), ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor), Color.GRAY};
+        int[] colorArray = {ContextCompat.getColor(getContext(), R.color.colorTextOnBackground), ContextCompat.getColor(getContext(), R.color.unter100ProgressColor), ContextCompat.getColor(getContext(), R.color.ueber100ProgressColor), Color.GRAY};
 
         for (int i = 0; i < legendEntries.length; i++){
             LegendEntry entry = new LegendEntry();

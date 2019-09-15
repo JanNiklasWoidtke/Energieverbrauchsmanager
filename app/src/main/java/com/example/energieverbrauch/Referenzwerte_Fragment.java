@@ -153,7 +153,4 @@ public class Referenzwerte_Fragment extends Fragment {
         barChartReferenz.animateY(2000);
         barChartReferenz.invalidate();
     }
-
-    public interface OnFragmentInteractionListener {
-    }
 }

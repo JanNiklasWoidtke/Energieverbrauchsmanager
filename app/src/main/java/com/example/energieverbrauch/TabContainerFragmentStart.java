@@ -24,13 +24,13 @@ public class TabContainerFragmentStart extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab_container, container, false);
 
-        final TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tablayout);
+        final TabLayout tabLayout = v.findViewById(R.id.tablayout);
 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager)v.findViewById(R.id.viewPager);
+        final ViewPager viewPager = v.findViewById(R.id.viewPager);
         final PagerAdapterStart pagerAdapter = new PagerAdapterStart(getFragmentManager(), tabLayout.getTabCount(), getContext());
 
         viewPager.setAdapter(pagerAdapter);
